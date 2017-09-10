@@ -1,7 +1,9 @@
-<h1>Users:</h1>
+<h1>Registered users:</h1>
+
+DEV: this should only be seen by admins
 
 <ul>
-  <% users.forEach((ong) => { %>
-    <li><%= ong.name %></li>
+  <% users.forEach((user) => { %>
+    <li><%= user.username %></li>
   <% }) %>
 </ul>

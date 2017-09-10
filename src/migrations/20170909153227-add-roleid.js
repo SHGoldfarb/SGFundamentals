@@ -17,7 +17,6 @@ module.exports = {
           model: 'roles',
           key: 'id',
         },
-        onDelete: 'cascade',
       },
     );
   },
