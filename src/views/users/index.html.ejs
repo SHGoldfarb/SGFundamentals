@@ -1,14 +1,7 @@
-<h1>Registered users:</h1>
-
-DEV: this should only be seen by admins
+<h1>Usuarios registrados:</h1>
 
 <ul>
   <% users.forEach((user) => { %>
-    <li>
-      <%= user.id + ' ' %>
-      <%= user.username + ' ' %>
-      <%= user.password + ' ' %>
-      <%= user.email + ' ' %>
-    </li>
+    <li><a href="<%= buildUserPath(user) %>"><%= user.username %></a></li>
   <% }) %>
 </ul>

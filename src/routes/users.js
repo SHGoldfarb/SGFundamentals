@@ -6,7 +6,11 @@ const router = new KoaRouter();
 // GET /users
 router.get('users', '/', async (ctx) => {
   const users = await ctx.orm.user.findAll();
-  await ctx.render('users/index', { users });
+  await ctx.render('users/index', {
+    users,
+    buildUserPath: user =>
+      ctx.router.url('user', { id: user.id }),
+  });
 });
 
 // GET /users/new
@@ -32,6 +36,13 @@ router.post('usersCreate', '/', async (ctx) => {
   // TODO: catch error
   const user = await ctx.orm.user.create(ctx.request.body);
   ctx.redirect(ctx.router.url('users'));
+});
+
+// GET /user/1
+router.get('user', '/:id', async (ctx) => {
+  const user = await ctx.orm.user.findById(ctx.params.id);
+  const role = await ctx.orm.role.findById(user.roleId);
+  await ctx.render('users/show', { role, user });
 });
 
 module.exports = router;
