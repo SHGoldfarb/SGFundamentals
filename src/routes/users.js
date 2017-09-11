@@ -46,4 +46,19 @@ router.get('user', '/:id', async (ctx) => {
   await ctx.render('users/show', { user, roles });
 });
 
+// GET /user/1/edit
+router.get('usersEdit', '/:id/edit', async (ctx) => {
+  const user = await ctx.orm.user.findById(ctx.params.id);
+  await ctx.render('users/edit', {
+    user,
+    updateUserPath: ctx.router.url('usersUpdate', user.id),
+  });
+});
+
+router.patch('usersUpdate', '/:id', async (ctx) => {
+  const user = await ctx.orm.user.findById(ctx.params.id);
+  await user.update(ctx.request.body);
+  ctx.redirect(ctx.router.url('user', { id: user.id }));
+});
+
 module.exports = router;
