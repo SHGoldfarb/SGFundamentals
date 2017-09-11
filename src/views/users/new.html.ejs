@@ -1,0 +1,19 @@
+<h1>Crear un usuario:</h1>
+
+<form action="<%= createUserPath %>" method="post">
+    <div>
+      <label for="email">Email</label>
+      <input type="text" name="email" value="<%= user.email %>" />
+    </div>
+    <div>
+      <label for="username">Username</label>
+      <input type="text" name="username" value="<%= user.username %>" />
+    </div>
+    <div>
+      <label for="password">Contraseña</label>
+      <input type="text" name="password" value="<%= user.password %>" />
+    </div>
+    <div>
+      <input type="submit" name="create" value="Crea Usuario" />
+    </div>
+  </form>
