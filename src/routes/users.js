@@ -8,6 +8,7 @@ router.get('users', '/', async (ctx) => {
   const users = await ctx.orm.user.findAll();
   await ctx.render('users/index', {
     users,
+    newUserPath: ctx.router.url('usersNew'),
     buildUserPath: user =>
       ctx.router.url('user', { id: user.id }),
   });
@@ -43,7 +44,13 @@ router.post('usersCreate', '/', async (ctx) => {
 router.get('user', '/:id', async (ctx) => {
   const user = await ctx.orm.user.findById(ctx.params.id);
   const roles = await user.getRoles();
-  await ctx.render('users/show', { user, roles });
+  await ctx.render('users/show', {
+    user,
+    roles,
+    editUserPath: ctx.router.url('usersEdit', {
+      id: user.id,
+    }),
+  });
 });
 
 // GET /user/1/edit
