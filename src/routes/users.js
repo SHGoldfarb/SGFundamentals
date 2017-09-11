@@ -52,6 +52,7 @@ router.get('usersEdit', '/:id/edit', async (ctx) => {
   await ctx.render('users/edit', {
     user,
     updateUserPath: ctx.router.url('usersUpdate', user.id),
+    deleteUserPath: ctx.router.url('usersDelete', user.id),
   });
 });
 
@@ -59,6 +60,13 @@ router.patch('usersUpdate', '/:id', async (ctx) => {
   const user = await ctx.orm.user.findById(ctx.params.id);
   await user.update(ctx.request.body);
   ctx.redirect(ctx.router.url('user', { id: user.id }));
+});
+
+router.delete('usersDelete', '/:id', async (ctx) => {
+  const user = await ctx.orm.user.findById(ctx.params.id);
+  await user.setRoles([]);
+  await user.destroy();
+  ctx.redirect(ctx.router.url('users'));
 });
 
 module.exports = router;

@@ -28,4 +28,11 @@
       <input type="submit" name="create" value="Guardar" />
     </div>
   </form>
+  <br />
+  <form action="<%= deleteUserPath %>" method="post">
+    <input type="hidden" name="_method" value="delete" />
+    <div>
+      <input type="submit" name="delete" value="Eliminar" />
+    </div>
+  </form>
 </div>
