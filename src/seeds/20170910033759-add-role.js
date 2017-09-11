@@ -11,8 +11,11 @@ module.exports = {
       }], {});
     */
     return queryInterface.bulkInsert('roles', [{
-      id: 1,
       tag: 'admin',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      tag: 'user',
       createdAt: new Date(),
       updatedAt: new Date(),
     }]);

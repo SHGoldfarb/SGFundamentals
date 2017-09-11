@@ -14,6 +14,8 @@
       Mail: <%= user.email %>
   </li>
   <li>
-      Rol: <%= role.tag %>
+    Rol: <% roles.forEach((role) => { %>
+      <%= role.tag + ' ' %>
+    <% }) %>
   </li>
 </ul>

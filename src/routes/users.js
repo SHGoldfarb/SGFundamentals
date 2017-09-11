@@ -24,25 +24,26 @@ router.get('usersNew', '/new', async (ctx) => {
 
 // POST /users
 router.post('usersCreate', '/', async (ctx) => {
-  // Create a role
-  const role = await ctx.orm.role.create({
-    tag: 'user',
+  const roles = await ctx.orm.role.findAll({
+    where: {
+      tag: 'user',
+    },
   });
 
-  // Add roleId to other params
-  ctx.request.body.roleId = role.id;
+  const role = roles[0];
 
-  // Create user
-  // TODO: catch error
   const user = await ctx.orm.user.create(ctx.request.body);
+  user.addRole(role);
+  // role.addUser(user);
+
   ctx.redirect(ctx.router.url('users'));
 });
 
 // GET /user/1
 router.get('user', '/:id', async (ctx) => {
   const user = await ctx.orm.user.findById(ctx.params.id);
-  const role = await ctx.orm.role.findById(user.roleId);
-  await ctx.render('users/show', { role, user });
+  const roles = await user.getRoles();
+  await ctx.render('users/show', { user, roles });
 });
 
 module.exports = router;
