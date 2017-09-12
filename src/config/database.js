@@ -4,7 +4,7 @@ const config = {
     password: process.env.DB_PASSWORD,
     dialect: process.env.DB_DIALECT || 'postgres',
     database: process.env.DB_NAME,
-    host: process.env.DB_HOST || '127.0.0.1',
+    // host: process.env.DB_HOST || '127.0.0.1',
   },
   development: {
     extend: 'default',
@@ -17,7 +17,7 @@ const config = {
   production: {
     extend: 'default',
     // database: 'iic2513template_production',
-    database: process.env.DATABASE_URL + '?ssl=true',
+    database: process.env.DATABASE_URL,
   },
 };
 
