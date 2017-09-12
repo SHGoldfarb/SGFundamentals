@@ -4,6 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/IIC2513-2017-2/template.git",
   "license": "MIT",
+  "engines": {
+    "node": "8.4.0"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
