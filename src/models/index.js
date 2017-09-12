@@ -6,8 +6,7 @@ const config = require('../config/database.js')[process.env.NODE_ENV || 'develop
 const basename = path.basename(module.filename);
 
 const db = {};
-
-const sequelize = new Sequelize(config.database);
+const sequelize = new Sequelize(process.env.NODE_ENV ? config.database : config);
 
 fs
   .readdirSync(__dirname)
