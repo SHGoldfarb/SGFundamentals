@@ -28,4 +28,4 @@ Object.keys(config).forEach((configKey) => {
   }
 });
 
-module.exports = process.env.NODE_ENV ? process.env.DATABASE_URL : config;
+module.exports = process.env.NODE_ENV ? process.env.DATABASE_URL : config['development'];
