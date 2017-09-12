@@ -33,6 +33,11 @@ createdb iic2513template_dev
 ./node_modules/.bin/sequelize db:migrate
 ```
 
+### Run seeds
+```sh
+./node_modules/.bin/sequelize db:seed:all
+```
+
 ## Run the app!
 
 ```sh
