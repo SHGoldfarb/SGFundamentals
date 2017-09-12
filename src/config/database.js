@@ -21,7 +21,7 @@ const config = {
   production: {
     extend: 'default',
     // database: 'iic2513template_production',
-    database: dbUrl.path,
+    database: dbUrl.pathsubstr(1, dbUrl.auth.length),
     username: dbUrl.auth.substr(0, dbUrl.auth.indexOf(':')),
     password: dbUrl.auth.substr(dbUrl.auth.indexOf(':') + 1, dbUrl.auth.length),
     dialect: dbUrl.protocol.substr(0, dbUrl.protocol.length - 1) || 'postgres',
