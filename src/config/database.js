@@ -1,6 +1,6 @@
 const url = require('url');
 
-const dbUrl = url.parse(process.env.DATABASE_URL);
+const dbUrl = process.env.DATABSE_URL ? url.parse(process.env.DATABASE_URL) : false;
 
 const config = {
   default: {
@@ -21,12 +21,12 @@ const config = {
   production: {
     extend: 'default',
     // database: 'iic2513template_production',
-    database: dbUrl.path.substr(1, dbUrl.auth.length),
-    username: dbUrl.auth.substr(0, dbUrl.auth.indexOf(':')),
-    password: dbUrl.auth.substr(dbUrl.auth.indexOf(':') + 1, dbUrl.auth.length),
-    dialect: dbUrl.protocol.substr(0, dbUrl.protocol.length - 1) || 'postgres',
-    host: dbUrl.host.substr(0, dbUrl.host.length - 5) || '127.0.0.1',
-    port: dbUrl.host.substr(dbUrl.host.length - 4, dbUrl.host.length),
+    database: dbUrl ? dbUrl.path.substr(1, dbUrl.auth.length) : null,
+    username: dbUrl ? dbUrl.auth.substr(0, dbUrl.auth.indexOf(':')) : null,
+    password: dbUrl ? dbUrl.auth.substr(dbUrl.auth.indexOf(':') + 1, dbUrl.auth.length) : null,
+    dialect: dbUrl ? dbUrl.protocol.substr(0, dbUrl.protocol.length - 1) || 'postgres' : null,
+    host: dbUrl ? dbUrl.host.substr(0, dbUrl.host.length - 5) || '127.0.0.1' : null,
+    port: dbUrl ? dbUrl.host.substr(dbUrl.host.length - 4, dbUrl.host.length) : null,
   },
 };
 
