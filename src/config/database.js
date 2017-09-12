@@ -28,4 +28,4 @@ Object.keys(config).forEach((configKey) => {
   }
 });
 
-module.exports = process.env.NODE_ENV ? config['production'].database : config;
+module.exports = process.env.NODE_ENV ? config[process.env.NODE_ENV].database : config;
