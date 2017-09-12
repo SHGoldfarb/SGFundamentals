@@ -10,16 +10,16 @@
         </tr>
     </thead>
     <tbody>
-        <% excercises.forEach(e =>{ %>
+        <% questions.forEach(question =>{ %>
             <tr>
-                <td><a href="<%= buildExcercisePath(e.id) %>"><%= e.id %></a></td>
-                <td><%= e.content %></td>
+                <td><a href="<%= buildQuestionPath(question.id) %>"><%= question.id %></a></td>
+                <td><%= question.content %></td>
                 <td>
                     <ul>
-                        <li><a href="<%= buildExcercisePath(e.id) %>">Ver</a></li>
-                        <li><a href="<%= buildExcerciseEditPath(e.id)%>">Editar</a></li>
+                        <li><a href="<%= buildQuestionPath(question.id) %>">Ver</a></li>
+                        <li><a href="<%= buildQuestionEditPath(question.id)%>">Editar</a></li>
                         <li>
-                            <form action="<%= buildExcerciseDeletePath(e.id) %>" method="post">
+                            <form action="<%= buildQuestionDeletePath(question.id) %>" method="post">
                                 <input type="hidden" name="_method" value="delete" />
                                 <div>
                                     <input type="submit" name="delete" value="Eliminar" />
