@@ -1,0 +1,35 @@
+<h1>Ejercicios</h1>
+
+<a href="<%= newExcercisePath %>">Crear Ejercicio</a>
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th></th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% excercises.forEach(e =>{ %>
+            <tr>
+                <td><a href="<%= buildExcercisePath(e.id) %>"><%= e.id %></a></td>
+                <td><%= e.content %></td>
+                <td>
+                    <ul>
+                        <li><a href="<%= buildExcercisePath(e.id) %>">Ver</a></li>
+                        <li><a href="<%= buildExcerciseEditPath(e.id)%>">Editar</a></li>
+                        <li>
+                            <form action="<%= buildExcerciseDeletePath(e.id) %>" method="post">
+                                <input type="hidden" name="_method" value="delete" />
+                                <div>
+                                    <input type="submit" name="delete" value="Eliminar" />
+                                </div>
+                                </form>
+                            </div>
+                        </li>                                    
+                    </ul>
+                </td>
+            </tr>
+        <% })%>
+    </tbody>
+</table>
