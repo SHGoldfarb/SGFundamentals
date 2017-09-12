@@ -1,17 +1,17 @@
-<h1>Editar Ejercicio #<%= excercise.id %></h1>
+<h1>Editar Pregunta #<%= question.id %></h1>
 
-<form method="POST" action="<%= updateExcercisePath %>">
+<form method="POST" action="<%= updateQuestionPath %>">
     <input type="hidden" name="_method" value="patch" />
     <label for="content">Contenido</label>
-    <textarea name="content" id="content"><%= excercise.content %></textarea>
+    <textarea name="content" id="content"><%= question.content %></textarea>
     <button type="submit">Actualizar</button>
 </form>
-<form action="<%= deleteExcercisePath %>" method="post">
+<form action="<%= deleteQuestionPath %>" method="post">
     <input type="hidden" name="_method" value="delete" />
     <div>
         <input type="submit" name="delete" value="Eliminar" />
     </div>
     </form>
 </div>
-    
+
 <a href="<%= backToList %>">Volver</a>

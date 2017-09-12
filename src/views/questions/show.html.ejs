@@ -1,12 +1,12 @@
-<h1>Ejercicio #<%= excercise.id %></h1>
+<h1>Pregunta #<%= question.id %></h1>
 
 <p>
-    <%= excercise.content %>
+    <%= question.content %>
 </p>
 
 <ul>
-    <li><a href="<%= editExcercisePath %>">Editar</a></li>
-    <li><form action="<%= deleteExcercisePath %>" method="post">
+    <li><a href="<%= editQuestionPath %>">Editar</a></li>
+    <li><form action="<%= deleteQuestionPath %>" method="post">
             <input type="hidden" name="_method" value="delete" />
             <div>
                 <input type="submit" name="delete" value="Eliminar" />
