@@ -7,6 +7,7 @@ const basename = path.basename(module.filename);
 
 const db = {};
 
+console.log('DATABASE ' + config.database);
 const sequelize = new Sequelize(config);
 
 fs
