@@ -25,7 +25,8 @@ const config = {
     username: dbUrl.auth.substr(0, dbUrl.auth.indexOf(':')),
     password: dbUrl.auth.substr(dbUrl.auth.indexOf(':') + 1, dbUrl.auth.length),
     dialect: dbUrl.protocol.substr(0, dbUrl.protocol.length - 1) || 'postgres',
-    host: dbUrl.host || '127.0.0.1',
+    host: dbUrl.host.substr(0, dbUrl.host.length - 5) || '127.0.0.1',
+    port: dbUrl.host.substr(dbUrl.host.length - 4, dbUrl.host.length),
   },
 };
 
