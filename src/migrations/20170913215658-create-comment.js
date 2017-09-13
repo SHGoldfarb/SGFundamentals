@@ -13,8 +13,8 @@ module.exports = {
       parentId: {
         type: Sequelize.INTEGER,
       },
-      questionId: {
-        type: Sequelize.INTEGER,
+      type: {
+        type: Sequelize.STRING,
       },
       userId: {
         type: Sequelize.INTEGER,
