@@ -13,7 +13,7 @@ module.exports = {
       content: {
         type: Sequelize.TEXT,
       },
-      ownerId: {
+      userId: {
         type: Sequelize.INTEGER,
       },
       createdAt: {

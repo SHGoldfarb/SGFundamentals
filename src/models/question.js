@@ -2,7 +2,7 @@ module.exports = function definequestion(sequelize, DataTypes) {
   const question = sequelize.define('question', {
     title: DataTypes.STRING,
     content: DataTypes.TEXT,
-    ownerId: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
   });
   question.associate = function associate(models) {
     // associations can be defined here
