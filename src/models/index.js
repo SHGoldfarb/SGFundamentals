@@ -4,11 +4,10 @@ const Sequelize = require('sequelize');
 const config = require('../config/database.js');
 // const config = require('../config/database.js')[process.env.NODE_ENV || 'development'];
 
-console.log('SAAAAM' + config.dialect);
 const basename = path.basename(module.filename);
 
 const db = {};
-// const sequelize = new Sequelize(process.env.NODE_ENV ? config.database : config);
+
 const sequelize = new Sequelize(config);
 
 fs
