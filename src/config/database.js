@@ -1,6 +1,6 @@
 const url = require('url');
 
-const dbUrl = process.env.DATABSE_URL ? url.parse(process.env.DATABASE_URL) : false;
+const dbUrl = process.env.DATABASE_URL ? url.parse(process.env.DATABASE_URL) : false;
 
 const config = {
   default: {
@@ -37,4 +37,4 @@ Object.keys(config).forEach((configKey) => {
   }
 });
 
-module.exports = process.env.NODE_ENV ? config.production : config.development;
+module.exports = dbUrl ? config.production : config.development;
