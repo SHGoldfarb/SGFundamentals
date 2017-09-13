@@ -1,0 +1,14 @@
+<form method="POST" action="<%= submitCommentPath %>">
+  <%if (!comment.isNewRecord) { %>
+    <input type="hidden" name="_method" value="patch" />
+  <% }%>
+  <label for="content">Contenido</label>
+  <textarea name="content" id="content"><%= comment.content %></textarea>
+  <button type="submit">
+    <%if (comment.isNewRecord) { %>
+      Crear
+    <% } else { %>
+      Guardar
+    <% } %>
+  </button>
+</form>
