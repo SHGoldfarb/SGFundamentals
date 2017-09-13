@@ -17,7 +17,7 @@ router.get('questionsNew', '/new', async (ctx) => {
   const question = await ctx.orm.question.build();
   await ctx.render('questions/new', {
     question,
-    createQuestionPath: ctx.router.url('questionsCreate'),
+    submitQuestionPath: ctx.router.url('questionsCreate'),
     backToList: ctx.router.url('questions'),
   });
 });
@@ -41,7 +41,7 @@ router.get('questionsEdit', '/:id/edit', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
   await ctx.render('questions/edit', {
     question,
-    updateQuestionPath: ctx.router.url('questionsUpdate', { id: ctx.params.id }),
+    submitQuestionPath: ctx.router.url('questionsUpdate', { id: ctx.params.id }),
     deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
     backToList: ctx.router.url('questions'),
   });

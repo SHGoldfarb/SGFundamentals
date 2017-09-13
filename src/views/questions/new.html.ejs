@@ -1,9 +1,5 @@
 <h1>Nueva Pregunta</h1>
 
-<form method="POST" action="<%= createQuestionPath %>">
-    <label for="content">Contenido</label>
-    <textarea name="content" id="content"></textarea>
-    <button type="submit">Crear</button>
-</form>
+<%- include('_form') %>
 
 <a href="<%= backToList %>">Volver</a>
