@@ -23,8 +23,17 @@ router.get('excercisesNew', '/new', async (ctx) => {
 });
 
 router.post('excercisesCreate', '/', async (ctx) => {
-  const excercise = await ctx.orm.excercise.create(ctx.request.body);
-  ctx.redirect(ctx.router.url('excercise', { id: excercise.id }));
+  try {
+    const excercise = await ctx.orm.excercise.create(ctx.request.body);
+    ctx.redirect(ctx.router.url('excercise', { id: excercise.id }));
+  } catch (validationError) {
+    await ctx.render('excercises/new', {
+      excercise: ctx.orm.excercise.build(ctx.request.body),
+      submitExcercisePath: ctx.router.url('excercisesCreate'),
+      backToList: ctx.router.url('excercises'),
+      error: validationError,
+    });
+  }
 });
 
 router.get('excercise', '/:id', async (ctx) => {
@@ -48,9 +57,21 @@ router.get('excercisesEdit', '/:id/edit', async (ctx) => {
 });
 
 router.patch('excercisesUpdate', '/:id', async (ctx) => {
-  const excercise = await ctx.orm.excercise.findById(ctx.params.id);
-  await excercise.update(ctx.request.body);
-  ctx.redirect(ctx.router.url('excercise', { id: ctx.params.id }));
+  try {
+    const excercise = await ctx.orm.excercise.findById(ctx.params.id);
+    await excercise.update(ctx.request.body);
+    ctx.redirect(ctx.router.url('excercise', { id: ctx.params.id }));
+  } catch (validationError) {
+    const excercise = await ctx.orm.excercise.findById(ctx.params.id);
+    await excercise.set(ctx.request.body);
+    await ctx.render('excercises/edit', {
+      excercise,
+      submitExcercisePath: ctx.router.url('excercisesUpdate', { id: ctx.params.id }),
+      deleteExcercisePath: ctx.router.url('excercisesDelete', { id: ctx.params.id }),
+      backToList: ctx.router.url('excercises'),
+      error: validationError,
+    });
+  }
 });
 
 router.delete('excercisesDelete', '/:id', async (ctx) => {

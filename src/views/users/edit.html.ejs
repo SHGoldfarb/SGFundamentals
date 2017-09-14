@@ -1,15 +1,5 @@
 <h1>Editar usuario</h1>
 <div>
-  <% if (locals.errors) { %>
-    <div class="errors">
-      Necesitas arreglar los siguiente errores:
-      <ul>
-        <% errors.forEach(error => { %>
-          <li><%= error.message %></li>
-        <% }); %>
-      </ul>
-    </div>
-  <% } %>
   <%- include('_form') %>
   <br />
   <form action="<%= deleteUserPath %>" method="post">
