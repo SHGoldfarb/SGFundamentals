@@ -23,8 +23,17 @@ router.get('questionsNew', '/new', async (ctx) => {
 });
 
 router.post('questionsCreate', '/', async (ctx) => {
-  const question = await ctx.orm.question.create(ctx.request.body);
-  ctx.redirect(ctx.router.url('question', { id: question.id }));
+  try {
+    const question = await ctx.orm.question.create(ctx.request.body);
+    ctx.redirect(ctx.router.url('question', { id: question.id }));
+  } catch (validationError) {
+    await ctx.render('questions/new', {
+      question: ctx.orm.question.build(ctx.request.body),
+      submitQuestionPath: ctx.router.url('questionsCreate'),
+      backToList: ctx.router.url('questions'),
+      error: validationError,
+    });
+  }
 });
 
 router.get('question', '/:id', async (ctx) => {
@@ -48,9 +57,21 @@ router.get('questionsEdit', '/:id/edit', async (ctx) => {
 });
 
 router.patch('questionsUpdate', '/:id', async (ctx) => {
-  const question = await ctx.orm.question.findById(ctx.params.id);
-  await question.update(ctx.request.body);
-  ctx.redirect(ctx.router.url('question', { id: ctx.params.id }));
+  try {
+    const question = await ctx.orm.question.findById(ctx.params.id);
+    await question.update(ctx.request.body);
+    ctx.redirect(ctx.router.url('question', { id: ctx.params.id }));
+  } catch (validationError) {
+    const question = await ctx.orm.question.findById(ctx.params.id);
+    await question.set(ctx.request.body);
+    await ctx.render('questions/edit', {
+      question,
+      submitQuestionPath: ctx.router.url('questionsUpdate', { id: ctx.params.id }),
+      deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
+      backToList: ctx.router.url('questions'),
+      error: validationError,
+    });
+  }
 });
 
 router.delete('questionsDelete', '/:id', async (ctx) => {

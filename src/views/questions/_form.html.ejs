@@ -2,13 +2,21 @@
   <%if (!question.isNewRecord) { %>
     <input type="hidden" name="_method" value="patch" />
   <% }%>
-  <label for="content">Contenido</label>
-  <textarea name="content" id="content"><%= question.content %></textarea>
-  <button type="submit">
-    <%if (question.isNewRecord) { %>
-      Crear
-    <% } else { %>
-      Actualizar
-    <% } %>
-  </button>
+  <div>
+    <label for="userId">Id del usuario</label>
+    <textarea name="userId" id="userId"><%= question.userId %></textarea>
+  </div>
+  <div>
+    <label for="content">Contenido</label>
+    <textarea name="content" id="content"><%= question.content %></textarea>
+  </div>
+  <div>
+    <button type="submit">
+      <%if (question.isNewRecord) { %>
+        Crear
+      <% } else { %>
+        Actualizar
+      <% } %>
+    </button>
+  </div>
 </form>
