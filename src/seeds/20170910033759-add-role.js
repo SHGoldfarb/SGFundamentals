@@ -25,16 +25,6 @@ module.exports = {
     }]);
   },
 
-
-  // up(queryInterface, Sequelize) {
-  //   return queryInterface.bulkInsert('roles', [{
-  //     id: 1,
-  //     tag: 'admin',
-  //     createdAt: new Date(),
-  //     updatedAt: new Date(),
-  //   }]);
-  // },
-
   down(queryInterface, Sequelize) {
     /*
       Add reverting commands here.
