@@ -10,14 +10,34 @@ module.exports = {
       content: {
         type: Sequelize.TEXT,
       },
-      parentId: {
+      commentId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'comments',
+          key: 'id',
+        },
       },
-      type: {
-        type: Sequelize.STRING,
+      questionId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'questions',
+          key: 'id',
+        },
+      },
+      excerciseId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'excercises',
+          key: 'id',
+        },
       },
       userId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,

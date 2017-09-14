@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 module.exports = {
   up(queryInterface, Sequelize) {
@@ -14,6 +14,11 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
       },
       guide_id: {
         type: Sequelize.INTEGER,
