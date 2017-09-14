@@ -23,8 +23,17 @@ router.get('commentsNew', '/new', async (ctx) => {
 });
 
 router.post('commentsCreate', '/', async (ctx) => {
-  const comment = await ctx.orm.comment.create(ctx.request.body);
-  ctx.redirect(ctx.router.url('comment', { id: comment.id }));
+  try {
+    const comment = await ctx.orm.comment.create(ctx.request.body);
+    ctx.redirect(ctx.router.url('comment', { id: comment.id }));
+  } catch (validationError) {
+    await ctx.render('comments/new', {
+      comment: ctx.orm.comment.build(ctx.request.body),
+      submitCommentPath: ctx.router.url('commentsCreate'),
+      backToList: ctx.router.url('comments'),
+      error: validationError,
+    });
+  }
 });
 
 router.get('comment', '/:id', async (ctx) => {
@@ -48,9 +57,21 @@ router.get('commentsEdit', '/:id/edit', async (ctx) => {
 });
 
 router.patch('commentsUpdate', '/:id', async (ctx) => {
-  const comment = await ctx.orm.comment.findById(ctx.params.id);
-  await comment.update(ctx.request.body);
-  ctx.redirect(ctx.router.url('comment', { id: ctx.params.id }));
+  try {
+    const comment = await ctx.orm.comment.findById(ctx.params.id);
+    await comment.update(ctx.request.body);
+    ctx.redirect(ctx.router.url('comment', { id: ctx.params.id }));
+  } catch (validationError) {
+    const comment = await ctx.orm.comment.findById(ctx.params.id);
+    await comment.set(ctx.request.body);
+    await ctx.render('comments/edit', {
+      comment,
+      submitCommentPath: ctx.router.url('commentsUpdate', { id: ctx.params.id }),
+      deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
+      backToList: ctx.router.url('comments'),
+      error: validationError,
+    });
+  }
 });
 
 router.delete('commentsDelete', '/:id', async (ctx) => {
