@@ -19,7 +19,7 @@ router.get('usersNew', '/new', async (ctx) => {
   const user = ctx.orm.user.build();
   await ctx.render('users/new', {
     user,
-    createUserPath: ctx.router.url('usersCreate'),
+    submitUserPath: ctx.router.url('usersCreate'),
   });
 });
 
@@ -58,7 +58,7 @@ router.get('usersEdit', '/:id/edit', async (ctx) => {
   const user = await ctx.orm.user.findById(ctx.params.id);
   await ctx.render('users/edit', {
     user,
-    updateUserPath: ctx.router.url('usersUpdate', user.id),
+    submitUserPath: ctx.router.url('usersUpdate', user.id),
     deleteUserPath: ctx.router.url('usersDelete', user.id),
   });
 });

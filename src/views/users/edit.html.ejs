@@ -10,24 +10,7 @@
       </ul>
     </div>
   <% } %>
-  <form action="<%= updateUserPath %>" method="post">
-    <input type="hidden" name="_method" value="patch" />
-    <div>
-      <label for="email">Email</label>
-      <input type="text" name="email" value="<%= user.email %>" />
-    </div>
-    <div>
-      <label for="username">Username</label>
-      <input type="text" name="username" value="<%= user.username %>" />
-    </div>
-    <div>
-      <label for="password">Contraseña</label>
-      <input type="text" name="password" value="<%= user.password %>" />
-    </div>
-    <div>
-      <input type="submit" name="create" value="Guardar" />
-    </div>
-  </form>
+  <%- include('_form') %>
   <br />
   <form action="<%= deleteUserPath %>" method="post">
     <input type="hidden" name="_method" value="delete" />
