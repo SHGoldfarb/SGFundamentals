@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   var excercise = sequelize.define('excercise', {
     content: DataTypes.STRING,
-    user_id: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
     guide_id:DataTypes.INTEGER
   }, {
     classMethods: {

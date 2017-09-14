@@ -12,7 +12,7 @@ module.exports = {
       content: {
         type: Sequelize.STRING,
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
       },
       guide_id: {
