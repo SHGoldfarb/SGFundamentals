@@ -18,6 +18,10 @@ module.exports = {
       tag: 'user',
       createdAt: new Date(),
       updatedAt: new Date(),
+    }, {
+      tag: 'moderator',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }]);
   },
 
