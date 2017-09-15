@@ -16,3 +16,15 @@
             </li>
     <li><a href="<%= backToList %>">Volver</a></li>
 </ul>
+
+<% if (comments.length > 0) { %>
+  Respuestas:
+  <ul>
+    <% comments.forEach(comment => { %>
+      <li>
+        <%=  'id: ' + comment.id + ' => ' + comment.content %>
+        <br />
+      </li>
+    <% }) %>
+  </ul>
+<% } %>

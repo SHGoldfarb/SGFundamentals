@@ -26,7 +26,6 @@ router.post('commentsCreate', '/', async (ctx) => {
   ctx.request.body.commentId = ctx.request.body.commentId === '' ? null : ctx.request.body.commentId;
   ctx.request.body.questionId = ctx.request.body.questionId === '' ? null : ctx.request.body.questionId;
   ctx.request.body.excerciseId = ctx.request.body.excerciseId === '' ? null : ctx.request.body.excerciseId;
-  console.log('SAAAAM' + ctx.request.body.excerciseId);
   try {
     const comment = await ctx.orm.comment.create(ctx.request.body);
     ctx.redirect(ctx.router.url('comment', { id: comment.id }));
@@ -42,11 +41,13 @@ router.post('commentsCreate', '/', async (ctx) => {
 
 router.get('comment', '/:id', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
+  const comments = await comment.getComments();
   await ctx.render('comments/show', {
     comment,
     editCommentPath: ctx.router.url('commentsEdit', { id: ctx.params.id }),
     deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
     backToList: ctx.router.url('comments'),
+    comments,
   });
 });
 
