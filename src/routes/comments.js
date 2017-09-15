@@ -23,6 +23,10 @@ router.get('commentsNew', '/new', async (ctx) => {
 });
 
 router.post('commentsCreate', '/', async (ctx) => {
+  ctx.request.body.commentId = ctx.request.body.commentId === '' ? null : ctx.request.body.commentId;
+  ctx.request.body.questionId = ctx.request.body.questionId === '' ? null : ctx.request.body.questionId;
+  ctx.request.body.excerciseId = ctx.request.body.excerciseId === '' ? null : ctx.request.body.excerciseId;
+  console.log('SAAAAM' + ctx.request.body.excerciseId);
   try {
     const comment = await ctx.orm.comment.create(ctx.request.body);
     ctx.redirect(ctx.router.url('comment', { id: comment.id }));
