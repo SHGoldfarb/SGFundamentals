@@ -1,4 +1,8 @@
-# Template
+# SG Fundamentals
+
+A web app that lets you share your study material, along with answers and comments for everyone to see and contribute. You can see it working on [sgfundamentals.herokuapp.com](https://sgfundamentals.herokuapp.com/).
+
+## Template
 
 Template built with [koa](http://koajs.com/) for IIC2513 - Tecnologías y Aplicaciones Web, Pontificia Universidad Católica de Chile.
 
@@ -59,7 +63,22 @@ node index.js
 or, if you want automatic restart after any change in your files
 
 ```sh
+yarn dev
+```
+
+or directly
+
+```sh
 ./node_modules/.bin/nodemon
 ```
 
 Now go to http://localhost:3000 and start browsing :)
+
+Remember to 
+
+```sh
+./node_modules/.bin/sequelize db:migrate:undo:all
+./node_modules/.bin/sequelize db:migrate
+./node_modules/.bin/sequelize db:seed:all
+```
+each time you pull an updated version!

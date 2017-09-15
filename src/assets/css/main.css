@@ -8,6 +8,11 @@ body{
     position: absolute;
     width: 100%;
     min-height: 100%;
+    font-family: sans-serif;
+}
+
+.error {
+  color: darkred;
 }
 
 /**
@@ -62,7 +67,9 @@ Containers
 
 .wrapper{
     display: flex;
-    flex-flow: column nowrap
+    flex-flow: column nowrap;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 .row{
     flex: 1 0 auto;

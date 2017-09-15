@@ -78,6 +78,7 @@ router.patch('excercisesUpdate', '/:id', async (ctx) => {
 
 router.delete('excercisesDelete', '/:id', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id);
+  await excercise.setComments([]);
   await excercise.destroy();
   ctx.redirect(ctx.router.url('excercises'));
 });

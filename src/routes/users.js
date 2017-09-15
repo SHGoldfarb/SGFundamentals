@@ -71,6 +71,9 @@ router.patch('usersUpdate', '/:id', async (ctx) => {
 
 router.delete('usersDelete', '/:id', async (ctx) => {
   const user = await ctx.orm.user.findById(ctx.params.id);
+  await user.setQuestions([]);
+  await user.setExcercises([]);
+  await user.setComments([]);
   await user.setRoles([]);
   await user.destroy();
   ctx.redirect(ctx.router.url('users'));
