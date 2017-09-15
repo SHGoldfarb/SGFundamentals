@@ -13,6 +13,7 @@ router.use('/', async (ctx,next) => {
   ctx.state.questionsPath = router.url('questions');
   ctx.state.commentsPath = router.url('comments');
   ctx.state.usersPath = router.url('users');
+  ctx.state.currentUrl = ctx.url;
   await next()
 })
 
@@ -23,5 +24,6 @@ router.use('/users', users.routes());
 router.use('/excercises', excercises.routes());
 router.use('/questions', questions.routes());
 router.use('/comments', comments.routes());
+
 
 module.exports = router;

@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>IIC2513 - CHANGE-ME</title>
     <link href="/css/main.css" type="text/css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
   </head>
 
   <body>
@@ -17,11 +18,21 @@
 
     <div class="nav">
       <div class="nav-section">
-        <a class="nav-link" href="/">Inicio</a>
-        <a class="nav-link" href="<%= excercisesPath %>">Ejercicios</a>
-        <a class="nav-link" href="<%= questionsPath %>">Preguntas</a>
-        <a class="nav-link" href="<%= commentsPath %>">Comentarios</a>
-        <a class="nav-link" href="<%= usersPath %>">Usuarios</a>
+        <a class="nav-link <%= currentUrl == "/" ? "active" : "" %>" 
+          href="/">Inicio
+        </a>
+        <a class="nav-link <%= currentUrl.substr(0,excercisesPath.length) == excercisesPath ? "active" : "" %>" 
+          href="<%= excercisesPath %>">Ejercicios
+        </a>
+        <a class="nav-link <%= currentUrl.substr(0,questionsPath.length) == questionsPath ? "active" : "" %>" 
+          href="<%= questionsPath %>">Preguntas
+        </a>
+        <a class="nav-link <%= currentUrl.substr(0,commentsPath.length) == commentsPath ? "active" : "" %>" 
+          href="<%= commentsPath %>">Comentarios
+        </a>
+        <a class="nav-link <%= currentUrl.substr(0,usersPath.length) == usersPath ? "active" : "" %>" 
+          href="<%= usersPath %>">Usuarios
+        </a>
       </div>
       <div class="nav-section">
         <a class="nav-link" href="#">Link</a>

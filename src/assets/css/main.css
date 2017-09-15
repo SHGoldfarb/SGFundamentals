@@ -16,11 +16,12 @@ Navigation Bar
 
 .nav{
     height: 70px;
-    background: rgba(93, 6, 193, 0.70);
+    background: rgba(35, 189, 10, 0.80);
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    border-bottom: 1px black solid;
+    
+    box-shadow: 0 5px 5px #888888
 }
 
 .nav-section{
@@ -29,9 +30,22 @@ Navigation Bar
     flex-flow: row nowrap;
 }
 .nav-link{
-    color: white;
-    align-content: center;
+    color: rgb(255, 255, 255);
+    align-self: center;
     margin: 0 15px;
+    text-decoration: none;
+    font-size: 18px;
+    font-family: 'Allerta'
+}
+.nav-link:hover{
+    color: rgb(202, 210, 201);
+}
+
+.nav-link.active{
+    color: black;
+}
+.nav-link.active:hover{
+
 }
 
 /**
