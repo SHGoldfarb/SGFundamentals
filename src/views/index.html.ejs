@@ -1,5 +1,5 @@
 <div class="row">
-  <% for(let i=0; i< 20; i++){ %>
+  <% for(let i=0; i< 6; i++){ %>
   <div class="col-fill">
       <div class="panel">
         <h1>Hello world</h1>
@@ -11,4 +11,18 @@
       </div>
     </div>
   <% } %>
+</div>
+<div class="row">
+    <% for(let i=0; i< 6; i++){ %>
+      <div class="col">
+          <div class="panel">
+            <h1>Hello world</h1>
+        <hr>
+            <p>
+              App web version
+              <%= appVersion %>
+            </p>
+          </div>
+        </div>
+      <% } %>
 </div>
