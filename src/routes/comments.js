@@ -62,6 +62,9 @@ router.get('commentsEdit', '/:id/edit', async (ctx) => {
 });
 
 router.patch('commentsUpdate', '/:id', async (ctx) => {
+  ctx.request.body.commentId = ctx.request.body.commentId === '' ? null : ctx.request.body.commentId;
+  ctx.request.body.questionId = ctx.request.body.questionId === '' ? null : ctx.request.body.questionId;
+  ctx.request.body.excerciseId = ctx.request.body.excerciseId === '' ? null : ctx.request.body.excerciseId;
   try {
     const comment = await ctx.orm.comment.findById(ctx.params.id);
     await comment.update(ctx.request.body);
