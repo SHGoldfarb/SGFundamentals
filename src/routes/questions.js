@@ -78,6 +78,7 @@ router.patch('questionsUpdate', '/:id', async (ctx) => {
 
 router.delete('questionsDelete', '/:id', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
+  await question.setComments([]);
   await question.destroy();
   ctx.redirect(ctx.router.url('questions'));
 });
