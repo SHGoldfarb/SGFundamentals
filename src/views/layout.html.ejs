@@ -10,11 +10,7 @@
 
   <body>
 
-    <% if (locals.error) { %>
-      <div class="error">
-        (!!) <%= error %>
-      </div>
-    <% } %>
+  
 
     <div class="nav">
       <div class="nav-section">
@@ -40,12 +36,19 @@
         <a class="nav-link" href="#">Link</a>
       </div>
     </div>
+    <% if (locals.error) { %>
+      <div class="error hideable" id="error_message">
+          <p>(!!) <%= error %></p>
+          <p id="close">X</p>
+      </div>
+    <% } %>
     <div class="wrapper">
     <%- body %>
     </div>
     <div class="footer">
       <h1>Footer</h1>
     </div>
+    <script src="/js/main.js"></script>
   </body>
 
 </html>

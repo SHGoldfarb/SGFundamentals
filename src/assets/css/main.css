@@ -12,9 +12,27 @@ body{
 }
 
 .error {
-  color: darkred;
+    padding: 15px;
+    margin: 60px 0;
+    position: fixed;
+    align-self: center;
+    background: #F8B6B6;
+    color: #C90101;
+    border-radius: 15px;
+    border: 1.5px solid #C90101;
+    display: flex;
+    flex-flow: row nowrap;
+    max-width: 600px;
+    transition: all .2s ease-out;
 }
-
+.error > *{
+    margin: 0 15px;
+}
+#close{
+    color: black;
+    text-align: right;
+    cursor: pointer;
+}
 /**
 Navigation Bar
 **/
@@ -50,7 +68,7 @@ Navigation Bar
     color: black;
 }
 .nav-link.active:hover{
-
+    color: #626060;
 }
 
 /**
@@ -91,4 +109,17 @@ Containers
     border-radius: 15px;
     padding: 15px;
     margin: 15px;
+}
+
+
+/**
+Varios
+**/
+
+.hideable {    
+    transition: all .5s ease-out;
+}
+
+.hidden{
+    opacity: 0;
 }
