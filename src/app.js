@@ -9,6 +9,8 @@ const override = require('koa-override-method');
 const routes = require('./routes');
 const orm = require('./models');
 
+const serve = require('koa-static');
+
 // App constructor
 const app = new Koa();
 
@@ -49,6 +51,8 @@ app.use((ctx, next) => {
   ctx.request.method = override.call(ctx, ctx.request.body);
   return next();
 });
+
+app.use(serve(__dirname + '/assets'));
 
 // Configure EJS views
 render(app, {
