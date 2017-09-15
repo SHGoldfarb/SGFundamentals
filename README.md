@@ -73,3 +73,12 @@ or directly
 ```
 
 Now go to http://localhost:3000 and start browsing :)
+
+Remember to 
+
+```sh
+./node_modules/.bin/sequelize db:migrate:undo:all
+./node_modules/.bin/sequelize db:migrate
+./node_modules/.bin/sequelize db:seed:all
+```
+each time you pull an updated version!
