@@ -13,8 +13,8 @@ body{
 
 .error {
     padding: 15px;
-    margin: 60px 0;
-    position: fixed;
+    margin: 15px 0;
+/*    position: fixed;*/
     align-self: center;
     background: #F8B6B6;
     color: #C90101;
@@ -86,8 +86,8 @@ Containers
 .wrapper{
     display: flex;
     flex-flow: column nowrap;
-    margin-left: 5%;
-    margin-right: 5%;
+    flex: 1 0 auto;
+    margin: 0 5%;
 }
 .row{
     flex: 1 0 auto;
