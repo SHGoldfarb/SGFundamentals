@@ -1,35 +1,25 @@
 <h1>Preguntas</h1>
 
-<a href="<%= newQuestionPath %>">Hacer Pregunta</a>
-<table>
-    <thead>
-        <tr>
-            <th>#</th>
-            <th></th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% questions.forEach(question =>{ %>
-            <tr>
-                <td><a href="<%= buildQuestionPath(question.id) %>"><%= question.id %></a></td>
-                <td><%= question.content %></td>
-                <td>
-                    <ul>
-                        <li><a href="<%= buildQuestionPath(question.id) %>">Ver</a></li>
-                        <li><a href="<%= buildQuestionEditPath(question.id)%>">Editar</a></li>
-                        <li>
-                            <form action="<%= buildQuestionDeletePath(question.id) %>" method="post">
-                                <input type="hidden" name="_method" value="delete" />
-                                <div>
-                                    <input type="submit" name="delete" value="Eliminar" />
-                                </div>
-                                </form>
+<a href="<%= newQuestionPath %>" class="end">Hacer Pregunta</a>
+<div class="row">
+    <% questions.reverse().forEach(question =>{ %>
+        <div class="col">
+            <div class="panel">
+                <a href="<%= buildQuestionPath(question.id) %>"># <%= question.id %></a>
+                <%= question.content %>
+                <ul>
+                    <li><a href="<%= buildQuestionPath(question.id) %>">Ver</a></li>
+                    <li><a href="<%= buildQuestionEditPath(question.id)%>">Editar</a></li>
+                    <li>
+                        <form action="<%= buildQuestionDeletePath(question.id) %>" method="post">
+                            <input type="hidden" name="_method" value="delete" />
+                            <div>
+                                <input type="submit" name="delete" value="Eliminar" />
                             </div>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        <% })%>
-    </tbody>
-</table>
+                            </form>
+                    </li>
+                </ul>
+            </div>
+        </div>  
+    <% })%>
+</div>

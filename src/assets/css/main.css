@@ -123,3 +123,7 @@ Varios
 .hidden{
     opacity: 0;
 }
+
+.end{
+    align-self: flex-end;
+}
