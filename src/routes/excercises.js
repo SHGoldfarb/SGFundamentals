@@ -18,7 +18,7 @@ router.get('excercisesNew', '/new', async (ctx) => {
   await ctx.render('excercises/new', {
     excercise,
     submitExcercisePath: ctx.router.url('excercisesCreate'),
-    backToList: ctx.router.url('excercises'),
+    backToListPath: ctx.router.url('excercises'),
   });
 });
 
@@ -30,7 +30,7 @@ router.post('excercisesCreate', '/', async (ctx) => {
     await ctx.render('excercises/new', {
       excercise: ctx.orm.excercise.build(ctx.request.body),
       submitExcercisePath: ctx.router.url('excercisesCreate'),
-      backToList: ctx.router.url('excercises'),
+      backToListPath: ctx.router.url('excercises'),
       error: validationError,
     });
   }
@@ -43,7 +43,7 @@ router.get('excercise', '/:id', async (ctx) => {
     excercise,
     editExcercisePath: ctx.router.url('excercisesEdit', { id: ctx.params.id }),
     deleteExcercisePath: ctx.router.url('excercisesDelete', { id: ctx.params.id }),
-    backToList: ctx.router.url('excercises'),
+    backToListPath: ctx.router.url('excercises'),
     comments,
   });
 });
@@ -54,7 +54,7 @@ router.get('excercisesEdit', '/:id/edit', async (ctx) => {
     excercise,
     submitExcercisePath: ctx.router.url('excercisesUpdate', { id: ctx.params.id }),
     deleteExcercisePath: ctx.router.url('excercisesDelete', { id: ctx.params.id }),
-    backToList: ctx.router.url('excercises'),
+    backToListPath: ctx.router.url('excercises'),
   });
 });
 
@@ -70,7 +70,7 @@ router.patch('excercisesUpdate', '/:id', async (ctx) => {
       excercise,
       submitExcercisePath: ctx.router.url('excercisesUpdate', { id: ctx.params.id }),
       deleteExcercisePath: ctx.router.url('excercisesDelete', { id: ctx.params.id }),
-      backToList: ctx.router.url('excercises'),
+      backToListPath: ctx.router.url('excercises'),
       error: validationError,
     });
   }

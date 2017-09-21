@@ -18,7 +18,7 @@ router.get('questionsNew', '/new', async (ctx) => {
   await ctx.render('questions/new', {
     question,
     submitQuestionPath: ctx.router.url('questionsCreate'),
-    backToList: ctx.router.url('questions'),
+    backToListPath: ctx.router.url('questions'),
   });
 });
 
@@ -30,7 +30,7 @@ router.post('questionsCreate', '/', async (ctx) => {
     await ctx.render('questions/new', {
       question: ctx.orm.question.build(ctx.request.body),
       submitQuestionPath: ctx.router.url('questionsCreate'),
-      backToList: ctx.router.url('questions'),
+      backToListPath: ctx.router.url('questions'),
       error: validationError,
     });
   }
@@ -43,7 +43,7 @@ router.get('question', '/:id', async (ctx) => {
     question,
     editQuestionPath: ctx.router.url('questionsEdit', { id: ctx.params.id }),
     deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
-    backToList: ctx.router.url('questions'),
+    backToListPath: ctx.router.url('questions'),
     comments,
   });
 });
@@ -54,7 +54,7 @@ router.get('questionsEdit', '/:id/edit', async (ctx) => {
     question,
     submitQuestionPath: ctx.router.url('questionsUpdate', { id: ctx.params.id }),
     deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
-    backToList: ctx.router.url('questions'),
+    backToListPath: ctx.router.url('questions'),
   });
 });
 
@@ -70,7 +70,7 @@ router.patch('questionsUpdate', '/:id', async (ctx) => {
       question,
       submitQuestionPath: ctx.router.url('questionsUpdate', { id: ctx.params.id }),
       deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
-      backToList: ctx.router.url('questions'),
+      backToListPath: ctx.router.url('questions'),
       error: validationError,
     });
   }

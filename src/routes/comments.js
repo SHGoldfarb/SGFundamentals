@@ -18,7 +18,7 @@ router.get('commentsNew', '/new', async (ctx) => {
   await ctx.render('comments/new', {
     comment,
     submitCommentPath: ctx.router.url('commentsCreate'),
-    backToList: ctx.router.url('comments'),
+    backToListPath: ctx.router.url('comments'),
   });
 });
 
@@ -33,7 +33,7 @@ router.post('commentsCreate', '/', async (ctx) => {
     await ctx.render('comments/new', {
       comment: ctx.orm.comment.build(ctx.request.body),
       submitCommentPath: ctx.router.url('commentsCreate'),
-      backToList: ctx.router.url('comments'),
+      backToListPath: ctx.router.url('comments'),
       error: validationError,
     });
   }
@@ -46,7 +46,7 @@ router.get('comment', '/:id', async (ctx) => {
     comment,
     editCommentPath: ctx.router.url('commentsEdit', { id: ctx.params.id }),
     deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
-    backToList: ctx.router.url('comments'),
+    backToListPath: ctx.router.url('comments'),
     comments,
   });
 });
@@ -57,7 +57,7 @@ router.get('commentsEdit', '/:id/edit', async (ctx) => {
     comment,
     submitCommentPath: ctx.router.url('commentsUpdate', { id: ctx.params.id }),
     deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
-    backToList: ctx.router.url('comments'),
+    backToListPath: ctx.router.url('comments'),
   });
 });
 
@@ -76,7 +76,7 @@ router.patch('commentsUpdate', '/:id', async (ctx) => {
       comment,
       submitCommentPath: ctx.router.url('commentsUpdate', { id: ctx.params.id }),
       deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
-      backToList: ctx.router.url('comments'),
+      backToListPath: ctx.router.url('comments'),
       error: validationError,
     });
   }
