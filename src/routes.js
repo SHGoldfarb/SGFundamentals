@@ -8,14 +8,14 @@ const questions = require('./routes/questions');
 const comments = require('./routes/comments');
 
 const router = new KoaRouter();
-router.use('/', async (ctx,next) => {
+router.use('/', async (ctx, next) => {
   ctx.state.excercisesPath = router.url('excercises');
   ctx.state.questionsPath = router.url('questions');
   ctx.state.commentsPath = router.url('comments');
   ctx.state.usersPath = router.url('users');
   ctx.state.currentUrl = ctx.url;
-  await next()
-})
+  await next();
+});
 
 
 router.use('/', index.routes());
