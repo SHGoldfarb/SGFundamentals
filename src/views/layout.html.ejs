@@ -13,24 +13,27 @@
 
   <body>
 
-  
+
 
     <div class="nav">
       <div class="nav-section">
-        <a class="nav-link <%= currentUrl == "/" ? "active" : "" %>" 
+        <a class="nav-link <%= currentUrl == "/" ? "active" : "" %>"
           href="/">Inicio
         </a>
-        <a class="nav-link <%= currentUrl.substr(0,excercisesPath.length) == excercisesPath ? "active" : "" %>" 
+        <a class="nav-link <%= currentUrl.substr(0,excercisesPath.length) == excercisesPath ? "active" : "" %>"
           href="<%= excercisesPath %>">Ejercicios
         </a>
-        <a class="nav-link <%= currentUrl.substr(0,questionsPath.length) == questionsPath ? "active" : "" %>" 
+        <a class="nav-link <%= currentUrl.substr(0,questionsPath.length) == questionsPath ? "active" : "" %>"
           href="<%= questionsPath %>">Preguntas
         </a>
-        <a class="nav-link <%= currentUrl.substr(0,commentsPath.length) == commentsPath ? "active" : "" %>" 
+        <a class="nav-link <%= currentUrl.substr(0,commentsPath.length) == commentsPath ? "active" : "" %>"
           href="<%= commentsPath %>">Comentarios
         </a>
-        <a class="nav-link <%= currentUrl.substr(0,usersPath.length) == usersPath ? "active" : "" %>" 
+        <a class="nav-link <%= currentUrl.substr(0,usersPath.length) == usersPath ? "active" : "" %>"
           href="<%= usersPath %>">Usuarios
+        </a>
+        <a class="nav-link <%= currentUrl.substr(0,filesPath.length) == filesPath ? "active" : "" %>"
+          href="<%= filesPath %>">Archivos
         </a>
       </div>
       <div class="nav-section">

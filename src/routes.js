@@ -6,6 +6,7 @@ const users = require('./routes/users');
 const excercises = require('./routes/excercises');
 const questions = require('./routes/questions');
 const comments = require('./routes/comments');
+const files = require('./routes/files');
 
 function redirectIfNotLogged(url) {
   if (!this.isLogged) {
@@ -43,13 +44,14 @@ router.use('/', async (ctx, next) => {
   ctx.state.questionsPath = router.url('questions');
   ctx.state.commentsPath = router.url('comments');
   ctx.state.usersPath = router.url('users');
+  ctx.state.filesPath = router.url('files');
   ctx.state.currentUrl = ctx.url;
   ctx.redirectIfNotLogged = redirectIfNotLogged;
   ctx.redirectIfNotAdmin = redirectIfNotAdmin;
   ctx.redirectIfNotOwnerOrAdmin = redirectIfNotOwnerOrAdmin;
   // Por mientras:
-  ctx.isLogged = false;
-  ctx.isAdmin = false;
+  ctx.isLogged = true;
+  ctx.isAdmin = true;
   ctx.userId = 5;
   await next();
 });
@@ -61,6 +63,7 @@ router.use('/users', users.routes());
 router.use('/excercises', excercises.routes());
 router.use('/questions', questions.routes());
 router.use('/comments', comments.routes());
+router.use('/files', files.routes());
 
 
 module.exports = router;

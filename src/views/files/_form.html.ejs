@@ -1,0 +1,22 @@
+<form method="POST" action="<%= submitFilePath %>">
+  <%if (!file.isNewRecord) { %>
+    <input type="hidden" name="_method" value="patch" />
+  <% }%>
+  <div>
+    <label for="userId">Id del usuario</label>
+    <textarea name="userId" id="userId"><%= file.userId %></textarea>
+  </div>
+  <div>
+    <label for="path">Ruta</label>
+    <textarea name="path" id="path"><%= file.path %></textarea>
+  </div>
+  <div>
+    <button type="submit">
+      <%if (file.isNewRecord) { %>
+        Crear
+      <% } else { %>
+        Actualizar
+      <% } %>
+    </button>
+  </div>
+</form>

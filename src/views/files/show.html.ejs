@@ -1,0 +1,18 @@
+<h1>Archivo #<%= file.id %></h1>
+
+<p>
+    <%= file.path %>
+</p>
+
+<ul>
+    <li><a href="<%= editFilePath %>">Editar</a></li>
+    <li><form action="<%= deleteFilePath %>" method="post">
+            <input type="hidden" name="_method" value="delete" />
+            <div>
+                <input type="submit" name="delete" value="Eliminar" />
+            </div>
+            </form>
+        </div>
+            </li>
+    <li><a href="<%= backToListPath %>">Volver</a></li>
+</ul>
