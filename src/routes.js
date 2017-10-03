@@ -7,6 +7,32 @@ const excercises = require('./routes/excercises');
 const questions = require('./routes/questions');
 const comments = require('./routes/comments');
 
+function redirectIfNotLogged(url) {
+  if (!this.isLogged) {
+    this.redirect(url);
+    return true;
+  }
+  return false;
+}
+
+function redirectIfNotAdmin(url) {
+  if (!this.isAdmin && !this.redirectIfNotLogged(url)) {
+    this.redirect(url);
+    return true;
+  }
+  return false;
+}
+
+function redirectIfNotOwnerOrAdmin(url, userId) {
+  if (!this.redirectIfNotLogged(url)) {
+    if (!(userId === this.userId) && !this.isAdmin) {
+      this.redirect(url);
+      return true;
+    }
+  }
+  return false;
+}
+
 const router = new KoaRouter();
 router.use('/', async (ctx, next) => {
   ctx.state.excercisesPath = router.url('excercises');
@@ -14,6 +40,12 @@ router.use('/', async (ctx, next) => {
   ctx.state.commentsPath = router.url('comments');
   ctx.state.usersPath = router.url('users');
   ctx.state.currentUrl = ctx.url;
+  ctx.redirectIfNotLogged = redirectIfNotLogged;
+  ctx.redirectIfNotAdmin = redirectIfNotAdmin;
+  ctx.redirectIfNotOwnerOrAdmin = redirectIfNotOwnerOrAdmin;
+  ctx.isLogged = true;
+  ctx.isAdmin = false;
+  ctx.userId = 6;
   await next();
 });
 

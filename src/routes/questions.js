@@ -14,25 +14,29 @@ router.get('questions', '/', async (ctx) => {
 });
 
 router.get('questionsNew', '/new', async (ctx) => {
-  const question = await ctx.orm.question.build();
-  await ctx.render('questions/new', {
-    question,
-    submitQuestionPath: ctx.router.url('questionsCreate'),
-    backToListPath: ctx.router.url('questions'),
-  });
+  if (!ctx.redirectIfNotLogged(router.url('questions'))) {
+    const question = await ctx.orm.question.build();
+    await ctx.render('questions/new', {
+      question,
+      submitQuestionPath: ctx.router.url('questionsCreate'),
+      backToListPath: ctx.router.url('questions'),
+    });
+  }
 });
 
 router.post('questionsCreate', '/', async (ctx) => {
-  try {
-    const question = await ctx.orm.question.create(ctx.request.body);
-    ctx.redirect(ctx.router.url('question', { id: question.id }));
-  } catch (validationError) {
-    await ctx.render('questions/new', {
-      question: ctx.orm.question.build(ctx.request.body),
-      submitQuestionPath: ctx.router.url('questionsCreate'),
-      backToListPath: ctx.router.url('questions'),
-      error: validationError,
-    });
+  if (!ctx.redirectIfNotLogged(router.url('questions'))) {
+    try {
+      const question = await ctx.orm.question.create(ctx.request.body);
+      ctx.redirect(ctx.router.url('question', { id: question.id }));
+    } catch (validationError) {
+      await ctx.render('questions/new', {
+        question: ctx.orm.question.build(ctx.request.body),
+        submitQuestionPath: ctx.router.url('questionsCreate'),
+        backToListPath: ctx.router.url('questions'),
+        error: validationError,
+      });
+    }
   }
 });
 
@@ -50,37 +54,42 @@ router.get('question', '/:id', async (ctx) => {
 
 router.get('questionsEdit', '/:id/edit', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
-  await ctx.render('questions/edit', {
-    question,
-    submitQuestionPath: ctx.router.url('questionsUpdate', { id: ctx.params.id }),
-    deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
-    backToListPath: ctx.router.url('questions'),
-  });
-});
-
-router.patch('questionsUpdate', '/:id', async (ctx) => {
-  try {
-    const question = await ctx.orm.question.findById(ctx.params.id);
-    await question.update(ctx.request.body);
-    ctx.redirect(ctx.router.url('question', { id: ctx.params.id }));
-  } catch (validationError) {
-    const question = await ctx.orm.question.findById(ctx.params.id);
-    await question.set(ctx.request.body);
+  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId)) {
     await ctx.render('questions/edit', {
       question,
       submitQuestionPath: ctx.router.url('questionsUpdate', { id: ctx.params.id }),
       deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
       backToListPath: ctx.router.url('questions'),
-      error: validationError,
     });
+  }
+});
+
+router.patch('questionsUpdate', '/:id', async (ctx) => {
+  const question = await ctx.orm.question.findById(ctx.params.id);
+  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId)) {
+    try {
+      await question.update(ctx.request.body);
+      ctx.redirect(ctx.router.url('question', { id: ctx.params.id }));
+    } catch (validationError) {
+      await question.set(ctx.request.body);
+      await ctx.render('questions/edit', {
+        question,
+        submitQuestionPath: ctx.router.url('questionsUpdate', { id: ctx.params.id }),
+        deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
+        backToListPath: ctx.router.url('questions'),
+        error: validationError,
+      });
+    }
   }
 });
 
 router.delete('questionsDelete', '/:id', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
-  await question.setComments([]);
-  await question.destroy();
-  ctx.redirect(ctx.router.url('questions'));
+  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId)) {
+    await question.setComments([]);
+    await question.destroy();
+    ctx.redirect(ctx.router.url('questions'));
+  }
 });
 
 module.exports = router;
