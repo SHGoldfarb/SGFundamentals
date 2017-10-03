@@ -51,6 +51,8 @@ if (developmentMode) {
 }
 
 
+app.use(koaStatic(path.join(__dirname, '..', 'build'), {}));
+
 // expose a session hash to store information across requests from same client
 app.use(session({
   maxAge: 14 * 24 * 60 * 60 * 1000, // 2 weeks

@@ -46,6 +46,7 @@ router.use('/', async (ctx, next) => {
   ctx.state.usersPath = router.url('users');
   ctx.state.signInPath = router.url('sessionNew');
   ctx.state.signOutPath = router.url('sessionDestroy');
+  ctx.state.signUpPath = router.url('usersNew');
   ctx.state.currentUrl = ctx.url;
   ctx.redirectIfNotLogged = redirectIfNotLogged;
   ctx.redirectIfNotAdmin = redirectIfNotAdmin;
@@ -55,6 +56,7 @@ router.use('/', async (ctx, next) => {
   ctx.isAdmin = false;
   ctx.userId = 5;
   ctx.state.currentUser = ctx.session.userId && await ctx.orm.user.findById(ctx.session.userId);
+  ctx.state.currentUrl = ctx.url;
   await next();
 });
 
