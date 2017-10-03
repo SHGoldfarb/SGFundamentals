@@ -16,7 +16,7 @@ function redirectIfNotLogged(url) {
 }
 
 function redirectIfNotAdmin(url) {
-  if (!this.isAdmin && !this.redirectIfNotLogged(url)) {
+  if (!this.redirectIfNotLogged(url) && !this.isAdmin) {
     this.redirect(url);
     return true;
   }
@@ -24,11 +24,12 @@ function redirectIfNotAdmin(url) {
 }
 
 function redirectIfNotOwnerOrAdmin(url, userId) {
-  if (!this.redirectIfNotLogged(url)) {
-    if (!(userId === this.userId) && !this.isAdmin) {
-      this.redirect(url);
-      return true;
-    }
+  if (this.redirectIfNotLogged(url)) {
+    return true;
+  }
+  if (!(userId === this.userId) && !this.isAdmin) {
+    this.redirect(url);
+    return true;
   }
   return false;
 }
@@ -43,9 +44,10 @@ router.use('/', async (ctx, next) => {
   ctx.redirectIfNotLogged = redirectIfNotLogged;
   ctx.redirectIfNotAdmin = redirectIfNotAdmin;
   ctx.redirectIfNotOwnerOrAdmin = redirectIfNotOwnerOrAdmin;
-  ctx.isLogged = true;
+  // Por mientras:
+  ctx.isLogged = false;
   ctx.isAdmin = false;
-  ctx.userId = 6;
+  ctx.userId = 5;
   await next();
 });
 

@@ -14,28 +14,34 @@ router.get('comments', '/', async (ctx) => {
 });
 
 router.get('commentsNew', '/new', async (ctx) => {
-  const comment = await ctx.orm.comment.build();
-  await ctx.render('comments/new', {
-    comment,
-    submitCommentPath: ctx.router.url('commentsCreate'),
-    backToListPath: ctx.router.url('comments'),
-  });
+  if (!ctx.redirectIfNotLogged(router.url('comments'))) {
+    const comment = await ctx.orm.comment.build();
+    await ctx.render('comments/new', {
+      comment,
+      submitCommentPath: ctx.router.url('commentsCreate'),
+      backToListPath: ctx.router.url('comments'),
+    });
+  }
 });
 
 router.post('commentsCreate', '/', async (ctx) => {
-  ctx.request.body.commentId = ctx.request.body.commentId === '' ? null : ctx.request.body.commentId;
-  ctx.request.body.questionId = ctx.request.body.questionId === '' ? null : ctx.request.body.questionId;
-  ctx.request.body.excerciseId = ctx.request.body.excerciseId === '' ? null : ctx.request.body.excerciseId;
-  try {
-    const comment = await ctx.orm.comment.create(ctx.request.body);
-    ctx.redirect(ctx.router.url('comment', { id: comment.id }));
-  } catch (validationError) {
-    await ctx.render('comments/new', {
-      comment: ctx.orm.comment.build(ctx.request.body),
-      submitCommentPath: ctx.router.url('commentsCreate'),
-      backToListPath: ctx.router.url('comments'),
-      error: validationError,
-    });
+  if (!ctx.redirectIfNotLogged(router.url('comments'))) {
+    // Temporal!----
+    ctx.request.body.commentId = ctx.request.body.commentId === '' ? null : ctx.request.body.commentId;
+    ctx.request.body.questionId = ctx.request.body.questionId === '' ? null : ctx.request.body.questionId;
+    ctx.request.body.excerciseId = ctx.request.body.excerciseId === '' ? null : ctx.request.body.excerciseId;
+    //  ---Temporal
+    try {
+      const comment = await ctx.orm.comment.create(ctx.request.body);
+      ctx.redirect(ctx.router.url('comment', { id: comment.id }));
+    } catch (validationError) {
+      await ctx.render('comments/new', {
+        comment: ctx.orm.comment.build(ctx.request.body),
+        submitCommentPath: ctx.router.url('commentsCreate'),
+        backToListPath: ctx.router.url('comments'),
+        error: validationError,
+      });
+    }
   }
 });
 
@@ -53,40 +59,47 @@ router.get('comment', '/:id', async (ctx) => {
 
 router.get('commentsEdit', '/:id/edit', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
-  await ctx.render('comments/edit', {
-    comment,
-    submitCommentPath: ctx.router.url('commentsUpdate', { id: ctx.params.id }),
-    deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
-    backToListPath: ctx.router.url('comments'),
-  });
-});
-
-router.patch('commentsUpdate', '/:id', async (ctx) => {
-  ctx.request.body.commentId = ctx.request.body.commentId === '' ? null : ctx.request.body.commentId;
-  ctx.request.body.questionId = ctx.request.body.questionId === '' ? null : ctx.request.body.questionId;
-  ctx.request.body.excerciseId = ctx.request.body.excerciseId === '' ? null : ctx.request.body.excerciseId;
-  try {
-    const comment = await ctx.orm.comment.findById(ctx.params.id);
-    await comment.update(ctx.request.body);
-    ctx.redirect(ctx.router.url('comment', { id: ctx.params.id }));
-  } catch (validationError) {
-    const comment = await ctx.orm.comment.findById(ctx.params.id);
-    await comment.set(ctx.request.body);
+  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId)) {
     await ctx.render('comments/edit', {
       comment,
       submitCommentPath: ctx.router.url('commentsUpdate', { id: ctx.params.id }),
       deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
       backToListPath: ctx.router.url('comments'),
-      error: validationError,
     });
+  }
+});
+
+router.patch('commentsUpdate', '/:id', async (ctx) => {
+  // Temporal! ----
+  ctx.request.body.commentId = ctx.request.body.commentId === '' ? null : ctx.request.body.commentId;
+  ctx.request.body.questionId = ctx.request.body.questionId === '' ? null : ctx.request.body.questionId;
+  ctx.request.body.excerciseId = ctx.request.body.excerciseId === '' ? null : ctx.request.body.excerciseId;
+  //  ---- Temporal
+  const comment = await ctx.orm.comment.findById(ctx.params.id);
+  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId)) {
+    try {
+      await comment.update(ctx.request.body);
+      ctx.redirect(ctx.router.url('comment', { id: ctx.params.id }));
+    } catch (validationError) {
+      await comment.set(ctx.request.body);
+      await ctx.render('comments/edit', {
+        comment,
+        submitCommentPath: ctx.router.url('commentsUpdate', { id: ctx.params.id }),
+        deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
+        backToListPath: ctx.router.url('comments'),
+        error: validationError,
+      });
+    }
   }
 });
 
 router.delete('commentsDelete', '/:id', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
-  await comment.setComments([]);
-  await comment.destroy();
-  ctx.redirect(ctx.router.url('comments'));
+  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId)) {
+    await comment.setComments([]);
+    await comment.destroy();
+    ctx.redirect(ctx.router.url('comments'));
+  }
 });
 
 module.exports = router;
