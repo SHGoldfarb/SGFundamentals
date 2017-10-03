@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var Vote = sequelize.define('Vote', {
-    type: DataTypes.BOOL
+  var Vote = sequelize.define('vote', {
+    type: DataTypes.BOOLEAN
   }, {
     classMethods: {
       associate: function(models) {

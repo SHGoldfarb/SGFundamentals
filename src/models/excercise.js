@@ -3,7 +3,7 @@
 module.exports = function defineexcercise(sequelize, DataTypes) {
   const excercise = sequelize.define('excercise', {
     content: DataTypes.STRING,
-    guide_id: DataTypes.INTEGER,
+    guideId: DataTypes.INTEGER,
   });
   excercise.associate = function associate(models) {
     excercise.hasMany(models.comment);

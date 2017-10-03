@@ -29,6 +29,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Guides');
+    return queryInterface.dropTable('guides');
   }
 };

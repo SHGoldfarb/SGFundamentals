@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var File = sequelize.define('File', {
+  var File = sequelize.define('file', {
     path: DataTypes.STRING
   }, {
     classMethods: {

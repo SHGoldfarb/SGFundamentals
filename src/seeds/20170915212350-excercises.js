@@ -7,7 +7,7 @@ module.exports = {
     for(let i = 0; i < quantity; i++){
       data.push({
         content: faker.lorem.sentence(),
-        guide_id: faker.random.number({min: 1,max:5}),
+        // guideId: faker.random.number({min: 1,max:5}),
         userId: faker.random.number({min: 1,max:10}),
         createdAt: new Date(),
         updatedAt: new Date(),
