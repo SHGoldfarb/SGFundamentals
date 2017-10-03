@@ -1,0 +1,30 @@
+<h1>Comentario #<%= comment.id %></h1>
+
+<p>
+    <%= comment.content %>
+</p>
+
+<ul>
+    <li><a href="<%= editCommentPath %>">Editar</a></li>
+    <li><form action="<%= deleteCommentPath %>" method="post">
+            <input type="hidden" name="_method" value="delete" />
+            <div>
+                <input type="submit" name="delete" value="Eliminar" />
+            </div>
+            </form>
+        </div>
+            </li>
+    <li><a href="<%= backToListPath %>">Volver</a></li>
+</ul>
+
+<% if (comments.length > 0) { %>
+  Respuestas:
+  <ul>
+    <% comments.forEach(comment => { %>
+      <li>
+        <%=  'id: ' + comment.id + ' => ' + comment.content %>
+        <br />
+      </li>
+    <% }) %>
+  </ul>
+<% } %>

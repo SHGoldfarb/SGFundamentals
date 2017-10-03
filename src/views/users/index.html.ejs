@@ -1,0 +1,7 @@
+<h1>Usuarios registrados:</h1>
+<h4><a href="<%= newUserPath %>">Crear nuevo usuario</a></h2>
+<ul>
+  <% users.forEach((user) => { %>
+    <li><a href="<%= buildUserPath(user) %>"><%= user.username %></a></li>
+  <% }) %>
+</ul>

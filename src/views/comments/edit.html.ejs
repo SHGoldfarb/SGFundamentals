@@ -1,0 +1,12 @@
+<h1>Editar Comentario #<%= comment.id %></h1>
+
+<%- include('_form') %>
+
+<form action="<%= deleteCommentPath %>" method="post">
+    <input type="hidden" name="_method" value="delete" />
+    <div>
+        <input type="submit" name="delete" value="Eliminar" />
+    </div>
+</form>
+
+<a href="<%= backToListPath %>">Volver</a>

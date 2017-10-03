@@ -1,0 +1,22 @@
+<h2> <%= user.username %> </h2>
+
+<h4><a href="<%= editUserPath %>">Editar</a></h4>
+<ul>
+  <li>
+      Id: <%= user.id %>
+  </li>
+  <li>
+      Usuario: <%= user.username %>
+  </li>
+  <li>
+      Contraseña: <%= user.password %>
+  </li>
+  <li>
+      Mail: <%= user.email %>
+  </li>
+  <li>
+    Rol: <% roles.forEach((role) => { %>
+      <%= role.tag + ' ' %>
+    <% }) %>
+  </li>
+</ul>

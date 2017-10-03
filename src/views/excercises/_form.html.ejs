@@ -1,0 +1,22 @@
+<form method="POST" action="<%= submitExcercisePath %>">
+  <%if (!excercise.isNewRecord) { %>
+    <input type="hidden" name="_method" value="patch" />
+  <% }%>
+  <div>
+    <label for="userId">Id del usuario</label>
+    <textarea name="userId" id="userId"><%= excercise.userId %></textarea>
+  </div>
+  <div>
+    <label for="content">Contenido</label>
+    <textarea name="content" id="content"><%= excercise.content %></textarea>
+  </div>
+  <div>
+    <button type="submit">
+      <%if (excercise.isNewRecord) { %>
+        Crear
+      <% } else { %>
+        Actualizar
+      <% } %>
+    </button>
+  </div>
+</form>

@@ -1,3 +1,7 @@
+// const url = require('url');
+//
+// const dbUrl = process.env.DATABASE_URL ? url.parse(process.env.DATABASE_URL) : false;
+
 const config = {
   default: {
     username: process.env.DB_USERNAME,
@@ -27,4 +31,5 @@ Object.keys(config).forEach((configKey) => {
   }
 });
 
+// module.exports = dbUrl ? config.production : config.development;
 module.exports = config;

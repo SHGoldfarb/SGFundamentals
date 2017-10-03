@@ -1,0 +1,12 @@
+<h1>Editar Pregunta #<%= question.id %></h1>
+
+<%- include('_form') %>
+
+<form action="<%= deleteQuestionPath %>" method="post">
+    <input type="hidden" name="_method" value="delete" />
+    <div>
+        <input type="submit" name="delete" value="Eliminar" />
+    </div>
+</form>
+
+<a href="<%= backToListPath %>">Volver</a>
