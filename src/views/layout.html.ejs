@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <title>SG Fundamentals</title>
     <link href="/css/main.css" type="text/css" rel="stylesheet">
+    <% if (env !== 'development') { %>
+      <link rel="stylesheet" href="/assets/styles.css">
+    <% } %>
     <link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
   </head>
 
@@ -48,7 +51,7 @@
     <div class="footer">
       <h1>Footer</h1>
     </div>
-    <script src="/js/main.js"></script>
+    <script src="/assets/app.js"></script>
   </body>
 
 </html>
