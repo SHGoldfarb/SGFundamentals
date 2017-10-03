@@ -59,7 +59,7 @@ router.get('comment', '/:id', async (ctx) => {
 
 router.get('commentsEdit', '/:id/edit', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
-  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId)) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId))) {
     await ctx.render('comments/edit', {
       comment,
       submitCommentPath: ctx.router.url('commentsUpdate', { id: ctx.params.id }),
@@ -76,7 +76,7 @@ router.patch('commentsUpdate', '/:id', async (ctx) => {
   ctx.request.body.excerciseId = ctx.request.body.excerciseId === '' ? null : ctx.request.body.excerciseId;
   //  ---- Temporal
   const comment = await ctx.orm.comment.findById(ctx.params.id);
-  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId)) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId))) {
     try {
       await comment.update(ctx.request.body);
       ctx.redirect(ctx.router.url('comment', { id: ctx.params.id }));
@@ -95,7 +95,7 @@ router.patch('commentsUpdate', '/:id', async (ctx) => {
 
 router.delete('commentsDelete', '/:id', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
-  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId)) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId))) {
     await comment.setComments([]);
     await comment.destroy();
     ctx.redirect(ctx.router.url('comments'));

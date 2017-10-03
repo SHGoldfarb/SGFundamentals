@@ -54,7 +54,7 @@ router.get('excercise', '/:id', async (ctx) => {
 
 router.get('excercisesEdit', '/:id/edit', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id);
-  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('excercises'), excercise.userId)) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('excercises'), excercise.userId))) {
     await ctx.render('excercises/edit', {
       excercise,
       submitExcercisePath: ctx.router.url('excercisesUpdate', { id: ctx.params.id }),
@@ -66,7 +66,7 @@ router.get('excercisesEdit', '/:id/edit', async (ctx) => {
 
 router.patch('excercisesUpdate', '/:id', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id);
-  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('excercises'), excercise.userId)) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('excercises'), excercise.userId))) {
     try {
       await excercise.update(ctx.request.body);
       ctx.redirect(ctx.router.url('excercise', { id: ctx.params.id }));
@@ -85,7 +85,7 @@ router.patch('excercisesUpdate', '/:id', async (ctx) => {
 
 router.delete('excercisesDelete', '/:id', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id);
-  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('excercises'), excercise.userId)) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('excercises'), excercise.userId))) {
     await excercise.setComments([]);
     await excercise.destroy();
     ctx.redirect(ctx.router.url('excercises'));

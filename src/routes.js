@@ -7,31 +7,32 @@ const excercises = require('./routes/excercises');
 const questions = require('./routes/questions');
 const comments = require('./routes/comments');
 const files = require('./routes/files');
+const sessions = require('./routes/session');
 
 function redirectIfNotLogged(url) {
-  if (!this.isLogged) {
+  if (!this.state.currentUser) {
     this.redirect(url);
     return true;
   }
   return false;
 }
 
-function redirectIfNotAdmin(url) {
+async function redirectIfNotAdmin(url) {
   if (this.redirectIfNotLogged(url)) {
     return true;
   }
-  if (!this.isAdmin) {
+  if (!(await this.state.currentUser.isAdmin())) {
     this.redirect(url);
     return true;
   }
   return false;
 }
 
-function redirectIfNotOwnerOrAdmin(url, userId) {
+async function redirectIfNotOwnerOrAdmin(url, userId) {
   if (this.redirectIfNotLogged(url)) {
     return true;
   }
-  if (!(userId === this.userId) && !this.isAdmin) {
+  if (!(userId === this.state.currentUser.id) && !(await this.state.currentUser.isAdmin())) {
     this.redirect(url);
     return true;
   }
@@ -45,6 +46,9 @@ router.use('/', async (ctx, next) => {
   ctx.state.commentsPath = router.url('comments');
   ctx.state.usersPath = router.url('users');
   ctx.state.filesPath = router.url('files');
+  ctx.state.signInPath = router.url('sessionNew');
+  ctx.state.signOutPath = router.url('sessionDestroy');
+  ctx.state.signUpPath = router.url('usersNew');
   ctx.state.currentUrl = ctx.url;
   ctx.redirectIfNotLogged = redirectIfNotLogged;
   ctx.redirectIfNotAdmin = redirectIfNotAdmin;
@@ -53,6 +57,8 @@ router.use('/', async (ctx, next) => {
   ctx.isLogged = true;
   ctx.isAdmin = true;
   ctx.userId = 5;
+  ctx.state.currentUser = ctx.session.userId && await ctx.orm.user.findById(ctx.session.userId);
+  ctx.state.currentUrl = ctx.url;
   await next();
 });
 
@@ -64,6 +70,7 @@ router.use('/excercises', excercises.routes());
 router.use('/questions', questions.routes());
 router.use('/comments', comments.routes());
 router.use('/files', files.routes());
+router.use('/', sessions.routes());
 
 
 module.exports = router;
