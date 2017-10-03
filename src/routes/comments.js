@@ -3,26 +3,27 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 router.get('comments', '/', async (ctx) => {
-  const comments = await ctx.orm.comment.findAll();
-  await ctx.render('comments/index', {
-    comments,
-    newCommentPath: ctx.router.url('commentsNew'),
-    buildCommentPath: id => ctx.router.url('comment', { id }),
-    buildCommentEditPath: id => ctx.router.url('commentsEdit', { id }),
-    buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
-  });
+  ctx.redirect('/');
+  // const comments = await ctx.orm.comment.findAll();
+  // await ctx.render('comments/index', {
+  //   comments,
+  //   newCommentPath: ctx.router.url('commentsNew'),
+  //   buildCommentPath: id => ctx.router.url('comment', { id }),
+  //   buildCommentEditPath: id => ctx.router.url('commentsEdit', { id }),
+  //   buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
+  // });
 });
 
-router.get('commentsNew', '/new', async (ctx) => {
-  if (!ctx.redirectIfNotLogged(router.url('comments'))) {
-    const comment = await ctx.orm.comment.build();
-    await ctx.render('comments/new', {
-      comment,
-      submitCommentPath: ctx.router.url('commentsCreate'),
-      backToListPath: ctx.router.url('comments'),
-    });
-  }
-});
+// router.get('commentsNew', '/new', async (ctx) => {
+//   if (!ctx.redirectIfNotLogged(router.url('comments'))) {
+//     const comment = await ctx.orm.comment.build();
+//     await ctx.render('comments/new', {
+//       comment,
+//       submitCommentPath: ctx.router.url('commentsCreate'),
+//       backToListPath: ctx.router.url('comments'),
+//     });
+//   }
+// });
 
 router.post('commentsCreate', '/', async (ctx) => {
   if (!ctx.redirectIfNotLogged(router.url('comments'))) {
@@ -33,7 +34,10 @@ router.post('commentsCreate', '/', async (ctx) => {
     //  ---Temporal
     try {
       const comment = await ctx.orm.comment.create(ctx.request.body);
-      ctx.redirect(ctx.router.url('comment', { id: comment.id }));
+      if (!ctx.request.body.returnPath) {
+        ctx.request.body.returnPath = ctx.router.url('comment', { id: comment.id });
+      }
+      ctx.redirect(ctx.request.body.returnPath);
     } catch (validationError) {
       await ctx.render('comments/new', {
         comment: ctx.orm.comment.build(ctx.request.body),
@@ -47,13 +51,16 @@ router.post('commentsCreate', '/', async (ctx) => {
 
 router.get('comment', '/:id', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
-  const comments = await comment.getComments();
+  const comments = await comment.getComments({ include: [ctx.orm.user] });
   await ctx.render('comments/show', {
     comment,
     editCommentPath: ctx.router.url('commentsEdit', { id: ctx.params.id }),
     deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('comments'),
     comments,
+    user: ctx.state.currentUser,
+    createCommentPath: ctx.router.url('commentsCreate'),
+    returnPath: ctx.router.url('comment', { id: ctx.params.id }),
   });
 });
 
