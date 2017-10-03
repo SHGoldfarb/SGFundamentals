@@ -16,7 +16,10 @@ function redirectIfNotLogged(url) {
 }
 
 function redirectIfNotAdmin(url) {
-  if (!this.redirectIfNotLogged(url) && !this.isAdmin) {
+  if (this.redirectIfNotLogged(url)) {
+    return true;
+  }
+  if (!this.isAdmin) {
     this.redirect(url);
     return true;
   }
