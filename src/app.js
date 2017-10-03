@@ -3,15 +3,11 @@ const Koa = require('koa');
 const koaBody = require('koa-body');
 const koaLogger = require('koa-logger');
 const koaFlashMessage = require('koa-flash-message').default;
-const koaStatic = require('koa-static');
 const render = require('koa-ejs');
 const session = require('koa-session');
 const override = require('koa-override-method');
 const routes = require('./routes');
 const orm = require('./models');
-
-const serve = require('koa-static');
-
 // App constructor
 const app = new Koa();
 
@@ -54,7 +50,6 @@ if (developmentMode) {
   }));
 }
 
-app.use(koaStatic(path.join(__dirname, '..', 'build'), {}));
 
 // expose a session hash to store information across requests from same client
 app.use(session({
@@ -75,7 +70,6 @@ app.use((ctx, next) => {
   return next();
 });
 
-app.use(serve(__dirname + '/assets'));
 
 // Configure EJS views
 render(app, {
