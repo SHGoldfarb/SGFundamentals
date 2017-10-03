@@ -6,6 +6,7 @@ module.exports = function definequestion(sequelize, DataTypes) {
   question.associate = function associate(models) {
     question.belongsTo(models.user);
     question.hasMany(models.comment);
+    question.hasMany(models.question);
   };
   return question;
 };

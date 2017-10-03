@@ -1,35 +1,50 @@
+'use strict';
 module.exports = {
-  up(queryInterface, Sequelize) {
-    return queryInterface.createTable('comments', {
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.createTable('votes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
-      content: {
-        type: Sequelize.TEXT,
+      type: {
+        type: Sequelize.BOOLEAN
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id'
+        }
+      },
+      guideId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'guides',
+          key: 'id'
+        }
       },
       commentId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'comments',
-          key: 'id',
-        },
+          key: 'id'
+        }
       },
       questionId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'questions',
-          key: 'id',
-        },
+          key: 'id'
+        }
       },
       excerciseId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'excercises',
-          key: 'id',
-        },
+          key: 'id'
+        }
       },
       solutionId: {
         type: Sequelize.INTEGER,
@@ -38,24 +53,17 @@ module.exports = {
           key: 'id'
         }
       },
-      userId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'users',
-          key: 'id',
-        },
-      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
+        type: Sequelize.DATE
+      }
     });
   },
-  down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('comments');
-  },
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('Votes');
+  }
 };

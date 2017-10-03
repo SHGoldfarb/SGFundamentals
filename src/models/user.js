@@ -10,6 +10,10 @@ module.exports = function defineuser(sequelize, DataTypes) {
     user.hasMany(models.question);
     user.hasMany(models.excercise);
     user.hasMany(models.comment);
+    user.hasMany(models.guide);
+    user.hasMany(models.file);
+    user.hasMany(models.vote);
+    user.hasMany(models.solution);
   };
   return user;
 };

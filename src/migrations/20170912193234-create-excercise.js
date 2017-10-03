@@ -19,8 +19,12 @@ module.exports = {
           key: 'id',
         },
       },
-      guide_id: {
+      guideId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'guides',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,

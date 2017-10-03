@@ -6,8 +6,11 @@ module.exports = function defineexcercise(sequelize, DataTypes) {
     guide_id: DataTypes.INTEGER,
   });
   excercise.associate = function associate(models) {
-    excercise.belongsTo(models.user);
     excercise.hasMany(models.comment);
+    excercise.hasMany(models.vote);
+    excercise.hasMany(models.solution);
+    excercise.belongsTo(models.guide);
+    excercise.belongsTo(models.user);
   };
   return excercise;
 };
