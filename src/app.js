@@ -1,6 +1,7 @@
 const path = require('path');
 const Koa = require('koa');
 const koaBody = require('koa-body');
+const koaStatic = require('koa-static');
 const koaLogger = require('koa-logger');
 const koaFlashMessage = require('koa-flash-message').default;
 const render = require('koa-ejs');
