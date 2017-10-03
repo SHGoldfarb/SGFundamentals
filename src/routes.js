@@ -15,6 +15,14 @@ function redirectIfNotLogged(url) {
   }
   return false;
 }
+function redirectIfLogged(url) {
+  if (this.state.currentUser) {
+    this.redirect(url);
+    return true;
+  }
+  return false;
+}
+
 
 async function redirectIfNotAdmin(url) {
   if (this.redirectIfNotLogged(url)) {
@@ -49,12 +57,9 @@ router.use('/', async (ctx, next) => {
   ctx.state.signUpPath = router.url('usersNew');
   ctx.state.currentUrl = ctx.url;
   ctx.redirectIfNotLogged = redirectIfNotLogged;
+  ctx.redirectIfLogged = redirectIfLogged;
   ctx.redirectIfNotAdmin = redirectIfNotAdmin;
   ctx.redirectIfNotOwnerOrAdmin = redirectIfNotOwnerOrAdmin;
-  // Por mientras:
-  ctx.isLogged = false;
-  ctx.isAdmin = false;
-  ctx.userId = 5;
   ctx.state.currentUser = ctx.session.userId && await ctx.orm.user.findById(ctx.session.userId);
   ctx.state.currentUrl = ctx.url;
   await next();
