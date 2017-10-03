@@ -24,9 +24,9 @@ body{
   flex-flow: row nowrap;
   max-width: 600px;
   transition: all .2s ease-out;
-}
-.error > *{
-  margin: 0 15px;
+  * {
+    margin: 15px;
+  }
 }
 #close{
   color: black;
@@ -58,17 +58,16 @@ Navigation Bar
   margin: 0 15px;
   text-decoration: none;
   font-size: 18px;
-  font-family: 'Allerta'
-}
-.nav-link:hover{
-  color: rgb(202, 210, 201);
-}
-
-.nav-link.active{
-  color: black;
-}
-.nav-link.active:hover{
-  color: #626060;
+  font-family: 'Allerta';
+  &:hover{
+    color: rgb(202, 210, 201);
+  }
+  &.active{
+    color: black;
+  }
+  &.active:hover{
+    color: #626060;
+  }
 }
 
 /**
