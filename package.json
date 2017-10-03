@@ -11,7 +11,7 @@
     "lint-fix": "eslint --fix ./src index.js",
     "build-assets": "yarn run clean-assets && NODE_ENV=production webpack -p",
     "clean-assets": "rm -f build/assets/*",
-    "heroku-postbuild": "webpack -p --config ./webpack.prod.config.js --progress && yarn run build-assets && sequelize db:migrate"
+    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress && yarn run build-assets && sequelize db:migrate"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
