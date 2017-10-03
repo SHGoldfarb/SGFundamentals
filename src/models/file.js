@@ -1,13 +1,9 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var File = sequelize.define('file', {
-    path: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate: function(models) {
-        file.belongsTo(models.user)
-      }
-    }
+  const file = sequelize.define('file', {
+    path: DataTypes.STRING,
   });
-  return File;
+  file.associate = function associate(models) {
+    file.belongsTo(models.user);
+  };
+  return file;
 };
