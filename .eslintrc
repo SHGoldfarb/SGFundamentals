@@ -3,7 +3,7 @@
   "rules": {
     "no-unused-vars": "off",
     "no-console": "off",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
     },
   "env": {
     "browser": true,

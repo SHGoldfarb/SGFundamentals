@@ -42,12 +42,15 @@ router.post('questionsCreate', '/', async (ctx) => {
 
 router.get('question', '/:id', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
-  const comments = await question.getComments();
+  const comments = await question.getComments({ include: [ctx.orm.user] });
   await ctx.render('questions/show', {
     question,
     editQuestionPath: ctx.router.url('questionsEdit', { id: ctx.params.id }),
     deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('questions'),
+    createCommentPath: ctx.router.url('commentsCreate'),
+    returnPath: ctx.router.url('question', { id: ctx.params.id }),
+    user: ctx.state.currentUser,
     comments,
   });
 });

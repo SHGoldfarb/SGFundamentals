@@ -6,23 +6,38 @@
 
 <ul>
     <li><a href="<%= editQuestionPath %>">Editar</a></li>
-    <li><form action="<%= deleteQuestionPath %>" method="post">
-            <input type="hidden" name="_method" value="delete" />
-            <div>
-                <input type="submit" name="delete" value="Eliminar" />
-            </div>
-            </form>
+    <li>
+      <form action="<%= deleteQuestionPath %>" method="post">
+        <input type="hidden" name="_method" value="delete" />
+        <div>
+          <input type="submit" name="delete" value="Eliminar" />
         </div>
-            </li>
+      </form>
+    </li>
     <li><a href="<%= backToListPath %>">Volver</a></li>
 </ul>
+
+<% if (user) { %>
+  <form action="<%= createCommentPath %>" method="post">
+    <input type="hidden" name="questionId" value="<%= question.id %>" />
+    <input type="hidden" name="userId" value="<%= user.id %>" />
+    <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+    <div>
+      <label for="content">Tu respuesta:</label>
+      <textarea name="content" id="content"></textarea>
+    </div>
+    <div>
+      <input type="submit" name="answer" value="Responder" />
+    </div>
+  </form>
+<% } %>
 
 <% if (comments.length > 0) { %>
   Respuestas:
   <ul>
     <% comments.forEach(comment => { %>
       <li>
-        <%=  'id: ' + comment.id + ' => ' + comment.content %>
+        <%=  comment.user.username + ' => ' + comment.content %>
         <br />
       </li>
     <% }) %>
