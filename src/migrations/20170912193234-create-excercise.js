@@ -23,8 +23,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: 'guides',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,

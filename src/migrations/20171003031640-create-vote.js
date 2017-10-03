@@ -1,69 +1,65 @@
-'use strict';
+
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('votes', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
+  up: (queryInterface, Sequelize) => queryInterface.createTable('votes', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER,
+    },
+    type: {
+      type: Sequelize.BOOLEAN,
+    },
+    userId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'users',
+        key: 'id',
       },
-      type: {
-        type: Sequelize.BOOLEAN
+    },
+    guideId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'guides',
+        key: 'id',
       },
-      userId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'users',
-          key: 'id'
-        }
+    },
+    commentId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'comments',
+        key: 'id',
       },
-      guideId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'guides',
-          key: 'id'
-        }
+    },
+    questionId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'questions',
+        key: 'id',
       },
-      commentId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'comments',
-          key: 'id'
-        }
+    },
+    excerciseId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'excercises',
+        key: 'id',
       },
-      questionId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'questions',
-          key: 'id'
-        }
+    },
+    solutionId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'solutions',
+        key: 'id',
       },
-      excerciseId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'excercises',
-          key: 'id'
-        }
-      },
-      solutionId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'solutions',
-          key: 'id'
-        }
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
-  },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('votes');
-  }
+    },
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+    },
+  }),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('votes'),
 };

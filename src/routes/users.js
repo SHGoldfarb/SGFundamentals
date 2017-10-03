@@ -26,11 +26,11 @@ router.get('usersNew', '/new', async (ctx) => {
 // POST /users
 router.post('usersCreate', '/', async (ctx) => {
   const user = await ctx.orm.user.build(ctx.request.body);
-  if(ctx.request.body.password !== ctx.request.body._password){
-    return await ctx.render('users/new', {
+  if (ctx.request.body.password !== ctx.request.body.passwordR) {
+    return ctx.render('users/new', {
       user,
       submitUserPath: ctx.router.url('usersCreate'),
-      error: "Las contraseñas no coinciden."
+      error: 'Las contraseñas no coinciden.',
     });
   }
   const roles = await ctx.orm.role.findAll({
@@ -44,7 +44,7 @@ router.post('usersCreate', '/', async (ctx) => {
   await user.save();
   await user.addRole(role);
   ctx.session.userId = user.id;
-  ctx.redirect("/");
+  return ctx.redirect('/');
 });
 
 // GET /user/1
