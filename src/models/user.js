@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt');
 
-async function buildPasswordHash(instance){
-  if(instance.changed('password')){
+async function buildPasswordHash(instance) {
+  if (instance.changed('password')) {
     const hash = await bcrypt.hash(instance.password, 13);
-    instance.set('password',hash);
+    instance.set('password', hash);
   }
 }
 
@@ -27,9 +27,19 @@ module.exports = function defineuser(sequelize, DataTypes) {
   user.beforeUpdate(buildPasswordHash);
   user.beforeCreate(buildPasswordHash);
 
-  user.prototype.checkPassword = (password) => {
-    return bcrypt.compare(password,this.password)
-  }
+  user.prototype.checkPassword = function checkpassword(password) {
+    return bcrypt.compare(password, this.password);
+  };
+
+  user.prototype.isAdmin = async function isAdmin() {
+    const roles = await this.getRoles();
+    for (const i in roles) {
+      if (roles[i].tag === 'admin') {
+        return true;
+      }
+    }
+    return false;
+  };
 
   return user;
 };

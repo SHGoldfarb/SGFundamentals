@@ -54,7 +54,7 @@ router.get('question', '/:id', async (ctx) => {
 
 router.get('questionsEdit', '/:id/edit', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
-  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId)) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId))) {
     await ctx.render('questions/edit', {
       question,
       submitQuestionPath: ctx.router.url('questionsUpdate', { id: ctx.params.id }),
@@ -66,7 +66,7 @@ router.get('questionsEdit', '/:id/edit', async (ctx) => {
 
 router.patch('questionsUpdate', '/:id', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
-  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId)) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId))) {
     try {
       await question.update(ctx.request.body);
       ctx.redirect(ctx.router.url('question', { id: ctx.params.id }));
@@ -85,7 +85,7 @@ router.patch('questionsUpdate', '/:id', async (ctx) => {
 
 router.delete('questionsDelete', '/:id', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
-  if (!ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId)) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId))) {
     await question.setComments([]);
     await question.destroy();
     ctx.redirect(ctx.router.url('questions'));

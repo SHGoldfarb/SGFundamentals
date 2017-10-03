@@ -9,29 +9,29 @@ const comments = require('./routes/comments');
 const sessions = require('./routes/session');
 
 function redirectIfNotLogged(url) {
-  if (!this.isLogged) {
+  if (!this.state.currentUser) {
     this.redirect(url);
     return true;
   }
   return false;
 }
 
-function redirectIfNotAdmin(url) {
+async function redirectIfNotAdmin(url) {
   if (this.redirectIfNotLogged(url)) {
     return true;
   }
-  if (!this.isAdmin) {
+  if (!(await this.state.currentUser.isAdmin())) {
     this.redirect(url);
     return true;
   }
   return false;
 }
 
-function redirectIfNotOwnerOrAdmin(url, userId) {
+async function redirectIfNotOwnerOrAdmin(url, userId) {
   if (this.redirectIfNotLogged(url)) {
     return true;
   }
-  if (!(userId === this.userId) && !this.isAdmin) {
+  if (!(userId === this.state.currentUser.id) && !(await this.state.currentUser.isAdmin())) {
     this.redirect(url);
     return true;
   }
