@@ -16,6 +16,7 @@ router.use('/', async (ctx, next) => {
   ctx.state.usersPath = router.url('users');
   ctx.state.signInPath = router.url('sessionNew');
   ctx.state.signOutPath = router.url('sessionDestroy');
+  ctx.state.signUpPath = router.url('usersNew');
   ctx.state.currentUrl = ctx.url;
   ctx.state.currentUser = ctx.session.userId && await ctx.orm.user.findById(ctx.session.userId)
   await next();
