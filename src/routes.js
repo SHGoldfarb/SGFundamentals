@@ -9,30 +9,40 @@ const comments = require('./routes/comments');
 const files = require('./routes/files');
 const sessions = require('./routes/session');
 
+function isLogged() {
+  return !!this.state.currentUser;
+}
+
 function redirectIfNotLogged() {
-  if (!this.state.currentUser) {
+  if (!this.isLogged()) {
     this.redirect(this.router.url('/'));
     return true;
   }
   return false;
+}
+
+async function isAdmin() {
+  return this.isLogged() && this.state.currentUser.isAdmin();
 }
 
 async function redirectIfNotAdmin() {
-  if (this.redirectIfNotLogged()) {
-    return true;
-  }
-  if (!(await this.state.currentUser.isAdmin())) {
+  if (!(await this.isAdmin())) {
     this.redirect(this.router.url('/'));
     return true;
   }
   return false;
 }
 
+function isOwner(id) {
+  return this.isLogged() && this.state.currentUser.id === id;
+}
+
+async function isOwnerOrAdmin(id) {
+  return this.isOwner() || this.isAdmin();
+}
+
 async function redirectIfNotOwnerOrAdmin(userId) {
-  if (this.redirectIfNotLogged()) {
-    return true;
-  }
-  if (!(userId === this.state.currentUser.id) && !(await this.state.currentUser.isAdmin())) {
+  if (!await this.isOwnerOrAdmin(userId)) {
     this.redirect(this.router.url('/'));
     return true;
   }
@@ -53,10 +63,10 @@ router.use('/', async (ctx, next) => {
   ctx.redirectIfNotLogged = redirectIfNotLogged;
   ctx.redirectIfNotAdmin = redirectIfNotAdmin;
   ctx.redirectIfNotOwnerOrAdmin = redirectIfNotOwnerOrAdmin;
-  // Por mientras:
-  ctx.isLogged = true;
-  ctx.isAdmin = true;
-  ctx.userId = 5;
+  ctx.isLogged = isLogged;
+  ctx.isAdmin = isAdmin;
+  ctx.isOwner = isOwner;
+  ctx.isOwnerOrAdmin = isOwnerOrAdmin;
   ctx.state.currentUser = ctx.session.userId && await ctx.orm.user.findById(ctx.session.userId);
   ctx.state.currentUrl = ctx.url;
   await next();
