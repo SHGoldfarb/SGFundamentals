@@ -83,7 +83,7 @@ router.use('/', async (ctx, next) => {
   ctx.isOwnerOrAdmin = isOwnerOrAdmin;
   ctx.state.isLogged = ctx.isLogged();
   ctx.state.isAdmin = await ctx.isAdmin();
-  ctx.state.isOwner = function isOwner2(id) {
+  ctx.state.isOwner = function _isOwner(id) {
     return ctx.isOwner(id);
   };
   await next();

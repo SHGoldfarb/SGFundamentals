@@ -53,6 +53,10 @@ router.get('guide', '/:id', async (ctx) => {
     tags: await guide.getTags(),
     createTagPath: ctx.router.url('tagsCreate'),
     buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
+    excercise: await ctx.orm.excercise.build(),
+    submitExcercisePath: ctx.router.url('excercisesCreate'),
+    excercises: await guide.getExcercises(),
+    buildExcerciseDeletePath: id => ctx.router.url('excercisesDelete', { id }),
   });
 });
 

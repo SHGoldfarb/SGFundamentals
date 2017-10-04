@@ -2,6 +2,12 @@
   <%if (!excercise.isNewRecord) { %>
     <input type="hidden" name="_method" value="patch" />
   <% }%>
+  <% if (returnPath) { %>
+    <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+  <% } %>
+  <% if (guide) { %>
+    <input type="hidden" name="guideId" value="<%= guide.id %>" />
+  <% } %>
   <input type="hidden" name=userId value="<%= currentUser.id %>" />
   <div>
     <label for="content">Contenido</label>

@@ -53,3 +53,31 @@
     <% }) %>
   </ul>
 <% } %>
+
+<% if (isOwnerOrAdmin) { %>
+  Añadir ejercicio:
+  <%- include('../excercises/_form') %>
+<% } %>
+
+<% if (excercises.length > 0) { %>
+  Ejercicios:
+  <ul>
+    <% excercises.forEach(excercise2 => { %>
+      <li class="in-line">
+        <%= excercise2.content %>
+        <% if (isAdmin) { %>
+          <span style="display: inline">
+            <form action="<%= buildExcerciseDeletePath(excercise2.id) %>" method="post">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+              <div>
+                <input type="submit" name="delete" value="Eliminar" />
+              </div>
+            </form>
+          </span>
+        <% } %>
+        <br />
+      </li>
+    <% }) %>
+  </ul>
+<% } %>

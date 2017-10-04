@@ -15,9 +15,8 @@ router.get('excercises', '/', async (ctx) => {
 
 router.get('excercisesNew', '/new', async (ctx) => {
   if (!ctx.redirectIfNotLogged()) {
-    const excercise = await ctx.orm.excercise.build();
     await ctx.render('excercises/new', {
-      excercise,
+      excercise: await ctx.orm.excercise.build(),
       submitExcercisePath: ctx.router.url('excercisesCreate'),
       backToListPath: ctx.router.url('excercises'),
     });
@@ -28,14 +27,19 @@ router.post('excercisesCreate', '/', async (ctx) => {
   if (!ctx.redirectIfNotLogged()) {
     try {
       const excercise = await ctx.orm.excercise.create(ctx.request.body);
-      ctx.redirect(ctx.router.url('excercise', { id: excercise.id }));
+      if (!ctx.request.body.returnPath) {
+        ctx.request.body.returnPath = ctx.router.url('excercise', { id: excercise.id });
+      }
+      ctx.redirect(ctx.request.body.returnPath);
     } catch (validationError) {
-      await ctx.render('excercises/new', {
-        excercise: ctx.orm.excercise.build(ctx.request.body),
-        submitExcercisePath: ctx.router.url('excercisesCreate'),
-        backToListPath: ctx.router.url('excercises'),
-        error: validationError,
-      });
+      ctx.state.error = validationError; // needs fixing
+      ctx.redirect(ctx.router.url('excercises'));
+      // await ctx.render('excercises/new', {
+      //   excercise: ctx.orm.excercise.build(ctx.request.body),
+      //   submitExcercisePath: ctx.router.url('excercisesCreate'),
+      //   backToListPath: ctx.router.url('excercises'),
+      //   error: validationError,
+      // });
     }
   }
 });
@@ -95,7 +99,10 @@ router.delete('excercisesDelete', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(excercise.userId))) {
     await excercise.setComments([]);
     await excercise.destroy();
-    ctx.redirect(ctx.router.url('excercises'));
+    if (!ctx.request.body.returnPath) {
+      ctx.request.body.returnPath = ctx.router.url('excercises');
+    }
+    ctx.redirect(ctx.request.body.returnPath);
   }
 });
 
