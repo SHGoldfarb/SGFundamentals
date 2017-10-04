@@ -49,6 +49,10 @@ router.get('file', '/:id', async (ctx) => {
     deleteFilePath: ctx.router.url('filesDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('files'),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
+    returnPath: ctx.router.url('file', { id: ctx.params.id }),
+    tags: await file.getTags(),
+    createTagPath: ctx.router.url('tagsCreate'),
+    buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
   });
 });
 
