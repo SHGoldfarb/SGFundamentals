@@ -3502,6 +3502,10 @@ node-sass@^4.5.3:
     sass-graph "^2.1.1"
     stdout-stream "^1.4.0"
 
+nodemailer@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-4.1.2.tgz#82e1fb61ddc7272fe4f34c5ba6adaa99faa8b635"
+
 nodemon@^1.11.0:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.12.1.tgz#996a56dc49d9f16bbf1b78a4de08f13634b3878d"
