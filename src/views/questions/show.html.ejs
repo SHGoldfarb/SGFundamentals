@@ -19,6 +19,41 @@
     <li><a href="<%= backToListPath %>">Volver</a></li>
 </ul>
 
+<% if (isAdmin) { %>
+  <form action="<%= createTagPath %>" method="post">
+    <input type="hidden" name="questionId" value="<%= question.id %>" />
+    <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+    <div>
+      <label for="name">Nuevo Tag:</label>
+      <textarea name="name" id="name"></textarea>
+      <input type="submit" name="answer" value="Crear Tag" />
+    </div>
+  </form>
+<% } %>
+
+<% if (tags.length > 0) { %>
+  Tags:
+  <ul>
+    <% tags.forEach(tag => { %>
+      <li class="in-line">
+        <%= '  ' + tag.name %>
+        <% if (isAdmin) { %>
+          <span style="display: inline">
+            <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+              <div>
+                <input type="submit" name="delete" value="Eliminar" />
+              </div>
+            </form>
+          </span>
+        <% } %>
+        <br />
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
 <% if (currentUser) { %>
   <form action="<%= createCommentPath %>" method="post">
     <input type="hidden" name="questionId" value="<%= question.id %>" />

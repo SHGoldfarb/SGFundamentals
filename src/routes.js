@@ -8,6 +8,7 @@ const questions = require('./routes/questions');
 const comments = require('./routes/comments');
 const files = require('./routes/files');
 const sessions = require('./routes/session');
+const tags = require('./routes/tags');
 
 function isLogged() {
   return !!this.state.currentUser;
@@ -35,7 +36,6 @@ async function isAdmin() {
 
 async function redirectIfNotAdmin() {
   if (!(await this.isAdmin())) {
-    console.log('SAAAAAAAAAAAAAAAAAAAAAAM');
     this.redirect(this.router.url('/'));
     return true;
   }
@@ -65,6 +65,7 @@ router.use('/', async (ctx, next) => {
   ctx.state.commentsPath = router.url('comments');
   ctx.state.usersPath = router.url('users');
   ctx.state.filesPath = router.url('files');
+  ctx.state.tagsPath = router.url('tags');
   ctx.state.signInPath = router.url('sessionNew');
   ctx.state.signOutPath = router.url('sessionDestroy');
   ctx.state.signUpPath = router.url('usersNew');
@@ -91,6 +92,7 @@ router.use('/excercises', excercises.routes());
 router.use('/questions', questions.routes());
 router.use('/comments', comments.routes());
 router.use('/files', files.routes());
+router.use('/tags', tags.routes());
 router.use('/', sessions.routes());
 
 

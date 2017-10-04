@@ -43,7 +43,6 @@ router.post('questionsCreate', '/', async (ctx) => {
 router.get('question', '/:id', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
   const owner = await question.getUser();
-  const comments = await question.getComments({ include: [ctx.orm.user] });
   await ctx.render('questions/show', {
     question,
     editQuestionPath: ctx.router.url('questionsEdit', { id: ctx.params.id }),
@@ -51,8 +50,11 @@ router.get('question', '/:id', async (ctx) => {
     backToListPath: ctx.router.url('questions'),
     createCommentPath: ctx.router.url('commentsCreate'),
     returnPath: ctx.router.url('question', { id: ctx.params.id }),
-    comments,
+    comments: await question.getComments({ include: [ctx.orm.user] }),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
+    tags: await question.getTags(),
+    createTagPath: ctx.router.url('tagsCreate'),
+    buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
   });
 });
 

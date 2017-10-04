@@ -43,7 +43,7 @@ Navigation Bar
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-  
+
   box-shadow: 0 5px 5px #888888
 }
 
@@ -115,7 +115,7 @@ Containers
 Varios
 **/
 
-.hideable {    
+.hideable {
   transition: all .5s ease-out;
 }
 
@@ -125,4 +125,9 @@ Varios
 
 .end{
   align-self: flex-end;
+}
+
+.in-line{
+  display: flex;
+  flex-flow: row nowrap;
 }
