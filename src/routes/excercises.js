@@ -42,17 +42,19 @@ router.post('excercisesCreate', '/', async (ctx) => {
 
 router.get('excercise', '/:id', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id);
-  const comments = await excercise.getComments({ include: [ctx.orm.user] });
   const owner = await excercise.getUser();
   await ctx.render('excercises/show', {
     excercise,
     editExcercisePath: ctx.router.url('excercisesEdit', { id: ctx.params.id }),
     deleteExcercisePath: ctx.router.url('excercisesDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('excercises'),
-    comments,
+    comments: await excercise.getComments({ include: [ctx.orm.user] }),
     createCommentPath: ctx.router.url('commentsCreate'),
     returnPath: ctx.router.url('excercise', { id: ctx.params.id }),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
+    tags: await excercise.getTags(),
+    createTagPath: ctx.router.url('tagsCreate'),
+    buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
   });
 });
 
