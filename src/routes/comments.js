@@ -15,7 +15,7 @@ router.get('comments', '/', async (ctx) => {
 });
 
 // router.get('commentsNew', '/new', async (ctx) => {
-//   if (!ctx.redirectIfNotLogged(router.url('comments'))) {
+//   if (!ctx.redirectIfNotLogged()) {
 //     const comment = await ctx.orm.comment.build();
 //     await ctx.render('comments/new', {
 //       comment,
@@ -26,7 +26,7 @@ router.get('comments', '/', async (ctx) => {
 // });
 
 router.post('commentsCreate', '/', async (ctx) => {
-  if (!ctx.redirectIfNotLogged(router.url('comments'))) {
+  if (!ctx.redirectIfNotLogged()) {
     // Temporal!----
     ctx.request.body.commentId = ctx.request.body.commentId === '' ? null : ctx.request.body.commentId;
     ctx.request.body.questionId = ctx.request.body.questionId === '' ? null : ctx.request.body.questionId;
@@ -66,7 +66,7 @@ router.get('comment', '/:id', async (ctx) => {
 
 router.get('commentsEdit', '/:id/edit', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(comment.userId))) {
     await ctx.render('comments/edit', {
       comment,
       submitCommentPath: ctx.router.url('commentsUpdate', { id: ctx.params.id }),
@@ -83,7 +83,7 @@ router.patch('commentsUpdate', '/:id', async (ctx) => {
   ctx.request.body.excerciseId = ctx.request.body.excerciseId === '' ? null : ctx.request.body.excerciseId;
   //  ---- Temporal
   const comment = await ctx.orm.comment.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(comment.userId))) {
     try {
       await comment.update(ctx.request.body);
       ctx.redirect(ctx.router.url('comment', { id: ctx.params.id }));
@@ -102,7 +102,7 @@ router.patch('commentsUpdate', '/:id', async (ctx) => {
 
 router.delete('commentsDelete', '/:id', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('comments'), comment.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(comment.userId))) {
     await comment.setComments([]);
     await comment.destroy();
     ctx.redirect(ctx.router.url('comments'));

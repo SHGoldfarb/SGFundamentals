@@ -14,7 +14,7 @@ router.get('questions', '/', async (ctx) => {
 });
 
 router.get('questionsNew', '/new', async (ctx) => {
-  if (!ctx.redirectIfNotLogged(router.url('questions'))) {
+  if (!ctx.redirectIfNotLogged()) {
     const question = await ctx.orm.question.build();
     await ctx.render('questions/new', {
       question,
@@ -25,7 +25,7 @@ router.get('questionsNew', '/new', async (ctx) => {
 });
 
 router.post('questionsCreate', '/', async (ctx) => {
-  if (!ctx.redirectIfNotLogged(router.url('questions'))) {
+  if (!ctx.redirectIfNotLogged()) {
     try {
       const question = await ctx.orm.question.create(ctx.request.body);
       ctx.redirect(ctx.router.url('question', { id: question.id }));
@@ -57,7 +57,7 @@ router.get('question', '/:id', async (ctx) => {
 
 router.get('questionsEdit', '/:id/edit', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(question.userId))) {
     await ctx.render('questions/edit', {
       question,
       submitQuestionPath: ctx.router.url('questionsUpdate', { id: ctx.params.id }),
@@ -69,7 +69,7 @@ router.get('questionsEdit', '/:id/edit', async (ctx) => {
 
 router.patch('questionsUpdate', '/:id', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(question.userId))) {
     try {
       await question.update(ctx.request.body);
       ctx.redirect(ctx.router.url('question', { id: ctx.params.id }));
@@ -88,7 +88,7 @@ router.patch('questionsUpdate', '/:id', async (ctx) => {
 
 router.delete('questionsDelete', '/:id', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('questions'), question.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(question.userId))) {
     await question.setComments([]);
     await question.destroy();
     ctx.redirect(ctx.router.url('questions'));

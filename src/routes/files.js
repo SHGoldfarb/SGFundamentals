@@ -14,7 +14,7 @@ router.get('files', '/', async (ctx) => {
 });
 
 router.get('filesNew', '/new', async (ctx) => {
-  if (!ctx.redirectIfNotLogged(router.url('files'))) {
+  if (!ctx.redirectIfNotLogged()) {
     const file = await ctx.orm.file.build();
     await ctx.render('files/new', {
       file,
@@ -25,7 +25,7 @@ router.get('filesNew', '/new', async (ctx) => {
 });
 
 router.post('filesCreate', '/', async (ctx) => {
-  if (!ctx.redirectIfNotLogged(router.url('files'))) {
+  if (!ctx.redirectIfNotLogged()) {
     try {
       const file = await ctx.orm.file.create(ctx.request.body);
       ctx.redirect(ctx.router.url('file', { id: file.id }));

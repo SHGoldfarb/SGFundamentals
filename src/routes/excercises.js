@@ -14,7 +14,7 @@ router.get('excercises', '/', async (ctx) => {
 });
 
 router.get('excercisesNew', '/new', async (ctx) => {
-  if (!ctx.redirectIfNotLogged(router.url('excercises'))) {
+  if (!ctx.redirectIfNotLogged()) {
     const excercise = await ctx.orm.excercise.build();
     await ctx.render('excercises/new', {
       excercise,
@@ -25,7 +25,7 @@ router.get('excercisesNew', '/new', async (ctx) => {
 });
 
 router.post('excercisesCreate', '/', async (ctx) => {
-  if (!ctx.redirectIfNotLogged(router.url('excercises'))) {
+  if (!ctx.redirectIfNotLogged()) {
     try {
       const excercise = await ctx.orm.excercise.create(ctx.request.body);
       ctx.redirect(ctx.router.url('excercise', { id: excercise.id }));
@@ -57,7 +57,7 @@ router.get('excercise', '/:id', async (ctx) => {
 
 router.get('excercisesEdit', '/:id/edit', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('excercises'), excercise.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(excercise.userId))) {
     await ctx.render('excercises/edit', {
       excercise,
       submitExcercisePath: ctx.router.url('excercisesUpdate', { id: ctx.params.id }),
@@ -69,7 +69,7 @@ router.get('excercisesEdit', '/:id/edit', async (ctx) => {
 
 router.patch('excercisesUpdate', '/:id', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('excercises'), excercise.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(excercise.userId))) {
     try {
       await excercise.update(ctx.request.body);
       ctx.redirect(ctx.router.url('excercise', { id: ctx.params.id }));
@@ -88,7 +88,7 @@ router.patch('excercisesUpdate', '/:id', async (ctx) => {
 
 router.delete('excercisesDelete', '/:id', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('excercises'), excercise.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(excercise.userId))) {
     await excercise.setComments([]);
     await excercise.destroy();
     ctx.redirect(ctx.router.url('excercises'));

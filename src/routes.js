@@ -9,31 +9,31 @@ const comments = require('./routes/comments');
 const files = require('./routes/files');
 const sessions = require('./routes/session');
 
-function redirectIfNotLogged(url) {
+function redirectIfNotLogged() {
   if (!this.state.currentUser) {
-    this.redirect(url);
+    this.redirect(this.router.url('/'));
     return true;
   }
   return false;
 }
 
-async function redirectIfNotAdmin(url) {
-  if (this.redirectIfNotLogged(url)) {
+async function redirectIfNotAdmin() {
+  if (this.redirectIfNotLogged()) {
     return true;
   }
   if (!(await this.state.currentUser.isAdmin())) {
-    this.redirect(url);
+    this.redirect(this.router.url('/'));
     return true;
   }
   return false;
 }
 
-async function redirectIfNotOwnerOrAdmin(url, userId) {
-  if (this.redirectIfNotLogged(url)) {
+async function redirectIfNotOwnerOrAdmin(userId) {
+  if (this.redirectIfNotLogged()) {
     return true;
   }
   if (!(userId === this.state.currentUser.id) && !(await this.state.currentUser.isAdmin())) {
-    this.redirect(url);
+    this.redirect(this.router.url('/'));
     return true;
   }
   return false;
