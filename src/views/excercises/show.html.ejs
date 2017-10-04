@@ -74,8 +74,17 @@
   Respuestas:
   <ul>
     <% comments.forEach(comment => { %>
-      <li>
+      <li class="in-line">
         <%=  comment.user.username + ' => ' + comment.content %>
+        <% if (isOwner(comment.user.id) || isAdmin) { %>
+          <form action="<%= buildCommentDeletePath(comment.id) %>" method="post">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+            <div>
+              <input type="submit" name="delete" value="Eliminar" />
+            </div>
+          </form>
+        <% } %>
         <br />
       </li>
     <% }) %>

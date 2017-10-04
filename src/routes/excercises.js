@@ -55,6 +55,7 @@ router.get('excercise', '/:id', async (ctx) => {
     tags: await excercise.getTags(),
     createTagPath: ctx.router.url('tagsCreate'),
     buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
+    buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
   });
 });
 

@@ -63,6 +63,7 @@ router.get('comment', '/:id', async (ctx) => {
     createCommentPath: ctx.router.url('commentsCreate'),
     returnPath: ctx.router.url('comment', { id: ctx.params.id }),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
+    buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
   });
 });
 
@@ -107,7 +108,10 @@ router.delete('commentsDelete', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(comment.userId))) {
     await comment.setComments([]);
     await comment.destroy();
-    ctx.redirect(ctx.router.url('comments'));
+    if (!ctx.request.body.returnPath) {
+      ctx.request.body.returnPath = ctx.router.url('comments');
+    }
+    ctx.redirect(ctx.request.body.returnPath);
   }
 });
 
