@@ -9,6 +9,7 @@ const comments = require('./routes/comments');
 const files = require('./routes/files');
 const sessions = require('./routes/session');
 const tags = require('./routes/tags');
+const guides = require('./routes/guides');
 
 function isLogged() {
   return !!this.state.currentUser;
@@ -66,6 +67,7 @@ router.use('/', async (ctx, next) => {
   ctx.state.usersPath = router.url('users');
   ctx.state.filesPath = router.url('files');
   ctx.state.tagsPath = router.url('tags');
+  ctx.state.guidesPath = router.url('guides');
   ctx.state.signInPath = router.url('sessionNew');
   ctx.state.signOutPath = router.url('sessionDestroy');
   ctx.state.signUpPath = router.url('usersNew');
@@ -96,6 +98,7 @@ router.use('/questions', questions.routes());
 router.use('/comments', comments.routes());
 router.use('/files', files.routes());
 router.use('/tags', tags.routes());
+router.use('/guides', guides.routes());
 router.use('/', sessions.routes());
 
 

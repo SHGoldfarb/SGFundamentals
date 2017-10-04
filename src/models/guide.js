@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     guide.hasMany(models.excercise);
     guide.belongsTo(models.user);
     guide.hasMany(models.vote);
+    guide.belongsToMany(models.tag, { through: 'guidetags' });
   };
   return guide;
 };

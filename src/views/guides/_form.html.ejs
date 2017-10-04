@@ -1,0 +1,19 @@
+<form method="POST" action="<%= submitGuidePath %>">
+  <%if (!guide.isNewRecord) { %>
+    <input type="hidden" name="_method" value="patch" />
+  <% }%>
+  <input type="hidden" name=userId value="<%= currentUser.id %>" />
+  <div>
+    <label for="title">Titulo</label>
+    <textarea name="title" id="title"><%= guide.title %></textarea>
+  </div>
+  <div>
+    <button type="submit">
+      <%if (guide.isNewRecord) { %>
+        Crear
+      <% } else { %>
+        Actualizar
+      <% } %>
+    </button>
+  </div>
+</form>

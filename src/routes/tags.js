@@ -14,6 +14,9 @@ router.post('tagsCreate', '/', async (ctx) => {
     if (ctx.request.body.fileId) {
       tag.addFile(await ctx.orm.file.findById(ctx.request.body.fileId));
     }
+    if (ctx.request.body.guideId) {
+      tag.addGuide(await ctx.orm.guide.findById(ctx.request.body.guideId));
+    }
     ctx.redirect(ctx.request.body.returnPath);
   }
 });
@@ -24,6 +27,7 @@ router.delete('tagsDelete', '/:id', async (ctx) => {
     await tag.setQuestions([]);
     await tag.setExcercises([]);
     await tag.setFiles([]);
+    await tag.setGuides([]);
     await tag.destroy();
     ctx.redirect(ctx.request.body.returnPath);
   }
