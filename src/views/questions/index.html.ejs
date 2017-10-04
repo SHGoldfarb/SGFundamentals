@@ -7,6 +7,8 @@
         <div class="col">
             <div class="panel">
                 <a href="<%= buildQuestionPath(question.id) %>"># <%= question.id %></a>
+                <h4><%= question.title %></h4>
+                <br />
                 <%= question.content %>
                 <ul>
                     <li><a href="<%= buildQuestionPath(question.id) %>">Ver</a></li>

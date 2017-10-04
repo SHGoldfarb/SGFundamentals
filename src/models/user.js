@@ -15,9 +15,24 @@ async function buildActivationToken(instance) {
 
 module.exports = function defineuser(sequelize, DataTypes) {
   const user = sequelize.define('user', {
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    email: DataTypes.STRING,
+    username: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+    },
     activeToken: DataTypes.STRING,
     actived: DataTypes.BOOLEAN,
   });

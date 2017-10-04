@@ -1,6 +1,12 @@
 module.exports = function definecomment(sequelize, DataTypes) {
   const comment = sequelize.define('comment', {
-    content: DataTypes.TEXT,
+    content: {
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: true,
+      },
+    },
+
   });
   comment.associate = function associate(models) {
     comment.belongsTo(models.user);

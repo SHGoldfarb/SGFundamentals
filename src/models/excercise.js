@@ -2,7 +2,12 @@
 
 module.exports = function defineexcercise(sequelize, DataTypes) {
   const excercise = sequelize.define('excercise', {
-    content: DataTypes.STRING,
+    content: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+    },
     guideId: DataTypes.INTEGER,
   });
   excercise.associate = function associate(models) {

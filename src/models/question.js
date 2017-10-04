@@ -1,6 +1,11 @@
 module.exports = function definequestion(sequelize, DataTypes) {
   const question = sequelize.define('question', {
-    title: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+    },
     content: DataTypes.TEXT,
   });
   question.associate = function associate(models) {

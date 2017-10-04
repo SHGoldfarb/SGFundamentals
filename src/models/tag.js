@@ -1,6 +1,11 @@
 module.exports = function definetag(sequelize, DataTypes) {
   const tag = sequelize.define('tag', {
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+    },
   });
   tag.associate = function associate(models) {
     // associations can be defined here
