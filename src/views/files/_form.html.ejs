@@ -2,10 +2,7 @@
   <%if (!file.isNewRecord) { %>
     <input type="hidden" name="_method" value="patch" />
   <% }%>
-  <div>
-    <label for="userId">Id del usuario</label>
-    <textarea name="userId" id="userId"><%= file.userId %></textarea>
-  </div>
+  <input type="hidden" name=userId value="<%= currentUser.id %>" />
   <div>
     <label for="path">Ruta</label>
     <textarea name="path" id="path"><%= file.path %></textarea>

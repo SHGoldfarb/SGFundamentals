@@ -3,29 +3,28 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 router.get('comments', '/', async (ctx) => {
-  ctx.redirect('/');
-  // const comments = await ctx.orm.comment.findAll();
-  // await ctx.render('comments/index', {
-  //   comments,
-  //   newCommentPath: ctx.router.url('commentsNew'),
-  //   buildCommentPath: id => ctx.router.url('comment', { id }),
-  //   buildCommentEditPath: id => ctx.router.url('commentsEdit', { id }),
-  //   buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
-  //   isAdmin: await ctx.isAdmin(),
-  //   isLogged: ctx.isLogged(),
-  // });
+  if (!await ctx.redirectIfNotAdmin()) {
+    const comments = await ctx.orm.comment.findAll();
+    await ctx.render('comments/index', {
+      comments,
+      newCommentPath: ctx.router.url('commentsNew'),
+      buildCommentPath: id => ctx.router.url('comment', { id }),
+      buildCommentEditPath: id => ctx.router.url('commentsEdit', { id }),
+      buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
+    });
+  }
 });
 
-// router.get('commentsNew', '/new', async (ctx) => {
-//   if (!ctx.redirectIfNotLogged()) {
-//     const comment = await ctx.orm.comment.build();
-//     await ctx.render('comments/new', {
-//       comment,
-//       submitCommentPath: ctx.router.url('commentsCreate'),
-//       backToListPath: ctx.router.url('comments'),
-//     });
-//   }
-// });
+router.get('commentsNew', '/new', async (ctx) => {
+  if (!ctx.redirectIfNotAdmin()) {
+    const comment = await ctx.orm.comment.build();
+    await ctx.render('comments/new', {
+      comment,
+      submitCommentPath: ctx.router.url('commentsCreate'),
+      backToListPath: ctx.router.url('comments'),
+    });
+  }
+});
 
 router.post('commentsCreate', '/', async (ctx) => {
   if (!ctx.redirectIfNotLogged()) {
@@ -61,7 +60,6 @@ router.get('comment', '/:id', async (ctx) => {
     deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('comments'),
     comments,
-    user: ctx.state.currentUser,
     createCommentPath: ctx.router.url('commentsCreate'),
     returnPath: ctx.router.url('comment', { id: ctx.params.id }),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),

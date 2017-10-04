@@ -10,8 +10,6 @@ router.get('files', '/', async (ctx) => {
     buildFilePath: id => ctx.router.url('file', id),
     buildFileEditPath: id => ctx.router.url('filesEdit', id),
     buildFileDeletePath: id => ctx.router.url('filesDelete', id),
-    isAdmin: await ctx.isAdmin(),
-    isLogged: ctx.isLogged(),
   });
 });
 
@@ -56,7 +54,7 @@ router.get('file', '/:id', async (ctx) => {
 
 router.get('filesEdit', '/:id/edit', async (ctx) => {
   const file = await ctx.orm.file.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('files'), file.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(file.userId))) {
     await ctx.render('files/edit', {
       file,
       submitFilePath: ctx.router.url('filesUpdate', { id: ctx.params.id }),
@@ -68,7 +66,7 @@ router.get('filesEdit', '/:id/edit', async (ctx) => {
 
 router.patch('filesUpdate', '/:id', async (ctx) => {
   const file = await ctx.orm.file.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('files'), file.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(file.userId))) {
     try {
       await file.update(ctx.request.body);
       ctx.redirect(ctx.router.url('file', { id: ctx.params.id }));
@@ -87,7 +85,7 @@ router.patch('filesUpdate', '/:id', async (ctx) => {
 
 router.delete('filesDelete', '/:id', async (ctx) => {
   const file = await ctx.orm.file.findById(ctx.params.id);
-  if (!(await ctx.redirectIfNotOwnerOrAdmin(router.url('files'), file.userId))) {
+  if (!(await ctx.redirectIfNotOwnerOrAdmin(file.userId))) {
     await file.destroy();
     ctx.redirect(ctx.router.url('files'));
   }

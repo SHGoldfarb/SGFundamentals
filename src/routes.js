@@ -20,14 +20,14 @@ function redirectIfNotLogged() {
   }
   return false;
 }
+
 function redirectIfLogged(url) {
-  if (this.state.currentUser) {
+  if (this.isLogged()) {
     this.redirect(url);
     return true;
   }
   return false;
 }
-
 
 async function isAdmin() {
   return this.isLogged() && this.state.currentUser.isAdmin();
@@ -35,6 +35,7 @@ async function isAdmin() {
 
 async function redirectIfNotAdmin() {
   if (!(await this.isAdmin())) {
+    console.log('SAAAAAAAAAAAAAAAAAAAAAAM');
     this.redirect(this.router.url('/'));
     return true;
   }
@@ -42,8 +43,6 @@ async function redirectIfNotAdmin() {
 }
 
 function isOwner(id) {
-  console.log('SAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM');
-  console.log(id);
   return this.isLogged() && this.state.currentUser.id === id;
 }
 
@@ -70,6 +69,7 @@ router.use('/', async (ctx, next) => {
   ctx.state.signOutPath = router.url('sessionDestroy');
   ctx.state.signUpPath = router.url('usersNew');
   ctx.state.currentUrl = ctx.url;
+  ctx.state.currentUser = ctx.session.userId && await ctx.orm.user.findById(ctx.session.userId);
   ctx.redirectIfNotLogged = redirectIfNotLogged;
   ctx.redirectIfLogged = redirectIfLogged;
   ctx.redirectIfNotAdmin = redirectIfNotAdmin;
@@ -78,8 +78,8 @@ router.use('/', async (ctx, next) => {
   ctx.isAdmin = isAdmin;
   ctx.isOwner = isOwner;
   ctx.isOwnerOrAdmin = isOwnerOrAdmin;
-  ctx.state.currentUser = ctx.session.userId && await ctx.orm.user.findById(ctx.session.userId);
-  ctx.state.currentUrl = ctx.url;
+  ctx.state.isLogged = ctx.isLogged();
+  ctx.state.isAdmin = await ctx.isAdmin();
   await next();
 });
 

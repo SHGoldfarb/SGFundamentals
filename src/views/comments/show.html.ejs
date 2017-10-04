@@ -19,10 +19,10 @@
     <li><a href="<%= backToListPath %>">Volver</a></li>
 </ul>
 
-<% if (user) { %>
+<% if (currentUser) { %>
   <form action="<%= createCommentPath %>" method="post">
     <input type="hidden" name="commentId" value="<%= comment.id %>" />
-    <input type="hidden" name="userId" value="<%= user.id %>" />
+    <input type="hidden" name="userId" value="<%= currentUser.id %>" />
     <input type="hidden" name="returnPath" value="<%= returnPath %>" />
     <div>
       <label for="content">Tu respuesta:</label>

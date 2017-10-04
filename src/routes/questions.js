@@ -10,8 +10,6 @@ router.get('questions', '/', async (ctx) => {
     buildQuestionPath: id => ctx.router.url('question', { id }),
     buildQuestionEditPath: id => ctx.router.url('questionsEdit', { id }),
     buildQuestionDeletePath: id => ctx.router.url('questionsDelete', { id }),
-    isAdmin: await ctx.isAdmin(),
-    isLogged: ctx.isLogged(),
   });
 });
 
@@ -53,7 +51,6 @@ router.get('question', '/:id', async (ctx) => {
     backToListPath: ctx.router.url('questions'),
     createCommentPath: ctx.router.url('commentsCreate'),
     returnPath: ctx.router.url('question', { id: ctx.params.id }),
-    user: ctx.state.currentUser,
     comments,
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
   });

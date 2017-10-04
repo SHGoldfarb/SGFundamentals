@@ -7,20 +7,22 @@ const router = new KoaRouter();
 
 // GET /users
 router.get('users', '/', async (ctx) => {
-  const users = await ctx.orm.user.findAll({ include: [ctx.orm.role] });
-  const roles = await ctx.orm.role.findAll();
-  console.log(users);
-  await ctx.render('users/index', {
-    users,
-    roles,
-    newUserPath: ctx.router.url('usersNew'),
-    buildUserPath: user =>
-      ctx.router.url('user', { id: user.id }),
-    buildEditUserPath: user =>
-      ctx.router.url('usersEdit', { id: user.id }),
-    buildChangeRolesPath: user =>
-      ctx.router.url('usersChangeRole', { id: user.id }),
-  });
+  if (!await ctx.redirectIfNotAdmin()) {
+    const users = await ctx.orm.user.findAll({ include: [ctx.orm.role] });
+    const roles = await ctx.orm.role.findAll();
+    console.log(users);
+    await ctx.render('users/index', {
+      users,
+      roles,
+      newUserPath: ctx.router.url('usersNew'),
+      buildUserPath: user =>
+        ctx.router.url('user', { id: user.id }),
+      buildEditUserPath: user =>
+        ctx.router.url('usersEdit', { id: user.id }),
+      buildChangeRolesPath: user =>
+        ctx.router.url('usersChangeRole', { id: user.id }),
+    });
+  }
 });
 
 // GET /users/new

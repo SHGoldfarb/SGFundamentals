@@ -10,8 +10,6 @@ router.get('excercises', '/', async (ctx) => {
     buildExcercisePath: id => ctx.router.url('excercise', id),
     buildExcerciseEditPath: id => ctx.router.url('excercisesEdit', id),
     buildExcerciseDeletePath: id => ctx.router.url('excercisesDelete', id),
-    isAdmin: await ctx.isAdmin(),
-    isLogged: ctx.isLogged(),
   });
 });
 
@@ -52,7 +50,6 @@ router.get('excercise', '/:id', async (ctx) => {
     deleteExcercisePath: ctx.router.url('excercisesDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('excercises'),
     comments,
-    user: ctx.state.currentUser,
     createCommentPath: ctx.router.url('commentsCreate'),
     returnPath: ctx.router.url('excercise', { id: ctx.params.id }),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),

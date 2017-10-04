@@ -2,10 +2,7 @@
   <%if (!excercise.isNewRecord) { %>
     <input type="hidden" name="_method" value="patch" />
   <% }%>
-  <div>
-    <label for="userId">Id del usuario</label>
-    <textarea name="userId" id="userId"><%= excercise.userId %></textarea>
-  </div>
+  <input type="hidden" name=userId value="<%= currentUser.id %>" />
   <div>
     <label for="content">Contenido</label>
     <textarea name="content" id="content"><%= excercise.content %></textarea>
