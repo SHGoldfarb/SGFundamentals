@@ -25,15 +25,17 @@
         <a class="nav-link <%= currentUrl.substr(0,questionsPath.length) == questionsPath ? "active" : "" %>"
           href="<%= questionsPath %>">Preguntas
         </a>
-        <a class="nav-link <%= currentUrl.substr(0,commentsPath.length) == commentsPath ? "active" : "" %>"
-          href="<%= commentsPath %>">Comentarios
-        </a>
-        <a class="nav-link <%= currentUrl.substr(0,usersPath.length) == usersPath ? "active" : "" %>"
-          href="<%= usersPath %>">Usuarios
-        </a>
         <a class="nav-link <%= currentUrl.substr(0,filesPath.length) == filesPath ? "active" : "" %>"
           href="<%= filesPath %>">Archivos
         </a>
+        <% if (isAdmin) { %>
+          <a class="nav-link <%= currentUrl.substr(0,commentsPath.length) == commentsPath ? "active" : "" %>"
+            href="<%= commentsPath %>">Comentarios
+          </a>
+          <a class="nav-link <%= currentUrl.substr(0,usersPath.length) == usersPath ? "active" : "" %>"
+            href="<%= usersPath %>">Usuarios
+          </a>
+          <% } %>
       </div>
       <div class="nav-section">
         <% if(currentUser){ %>
