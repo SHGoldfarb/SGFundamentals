@@ -7,7 +7,7 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-    return queryInterface.createTable('userRoles', {
+    return queryInterface.createTable('userroles', {
       userId: {
         allowNull: false,
         primaryKey: true,
@@ -45,6 +45,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-    return queryInterface.dropTable('userRoles');
+    return queryInterface.dropTable('userroles');
   },
 };

@@ -23,7 +23,7 @@ module.exports = function defineuser(sequelize, DataTypes) {
   });
   user.associate = function associate(models) {
     // associations can be defined here
-    user.belongsToMany(models.role, { through: 'userRoles' });
+    user.belongsToMany(models.role, { through: 'userroles' });
     user.hasMany(models.question);
     user.hasMany(models.excercise);
     user.hasMany(models.comment);

@@ -11,6 +11,7 @@ module.exports = function defineexcercise(sequelize, DataTypes) {
     excercise.hasMany(models.solution);
     excercise.belongsTo(models.guide);
     excercise.belongsTo(models.user);
+    excercise.belongsToMany(models.tag, { through: 'excercisetags' });
   };
   return excercise;
 };

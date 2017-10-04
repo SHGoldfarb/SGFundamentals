@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   file.associate = function associate(models) {
     file.belongsTo(models.user);
+    file.belongsToMany(models.tag, { through: 'filetags' });
   };
   return file;
 };
