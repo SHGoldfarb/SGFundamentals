@@ -28,7 +28,7 @@ router.post('sessionCreate', 'sign_in', async (ctx) => {
     if (!user) {
       user = await ctx.orm.user.find({ where: { email: username } });
     }
-    const validPassword = user.checkPassword(password);
+    const validPassword = await user.checkPassword(password);
     if (validPassword) {
       ctx.session.userId = user.id;
       ctx.redirect('/');

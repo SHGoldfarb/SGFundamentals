@@ -51,7 +51,7 @@ module.exports = function defineuser(sequelize, DataTypes) {
   user.beforeCreate(buildPasswordHash);
   user.beforeCreate(buildActivationToken);
 
-  user.prototype.checkPassword = function checkpassword(password) {
+  user.prototype.checkPassword = async function checkpassword(password) {
     return bcrypt.compare(password, this.password);
   };
 

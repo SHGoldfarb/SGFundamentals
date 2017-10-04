@@ -10,6 +10,14 @@ module.exports = {
       actived: true,
       createdAt: new Date(),
       updatedAt: new Date(),
+    }, {
+      email: 'user@user',
+      username: 'user',
+      password: '$2a$13$Gt1AxSg3kTE2Um4TgEGexOaLgiFR4MJ3vLU6UQnxlDXvFUm0KlI5m',
+      activeToken: null,
+      actived: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }]);
   },
 
