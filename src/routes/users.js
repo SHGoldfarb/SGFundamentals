@@ -1,16 +1,25 @@
+const _ = require('lodash');
 const KoaRouter = require('koa-router');
+const sendWelcomeEmail = require('../mailers/welcome');
 
 const router = new KoaRouter();
 
 
 // GET /users
 router.get('users', '/', async (ctx) => {
-  const users = await ctx.orm.user.findAll();
+  const users = await ctx.orm.user.findAll({ include: [ctx.orm.role] });
+  const roles = await ctx.orm.role.findAll();
+  console.log(users);
   await ctx.render('users/index', {
     users,
+    roles,
     newUserPath: ctx.router.url('usersNew'),
     buildUserPath: user =>
       ctx.router.url('user', { id: user.id }),
+    buildEditUserPath: user =>
+      ctx.router.url('usersEdit', { id: user.id }),
+    buildChangeRolesPath: user =>
+      ctx.router.url('usersChangeRole', { id: user.id }),
   });
 });
 
@@ -44,10 +53,11 @@ router.post('usersCreate', '/', async (ctx) => {
     });
 
     const role = roles[0];
-
     await user.save();
     await user.addRole(role);
     ctx.session.userId = user.id;
+    console.log(process.env.SENDGRID_USER);
+    sendWelcomeEmail(ctx, user);
     return ctx.redirect('/');
   }
   return null;
@@ -89,6 +99,25 @@ router.delete('usersDelete', '/:id', async (ctx) => {
   await user.setComments([]);
   await user.setRoles([]);
   await user.destroy();
+  ctx.redirect(ctx.router.url('users'));
+});
+
+
+router.patch('usersChangeRole', '/:id/role', async (ctx) => {
+  console.log(ctx.request.body);
+  const user = await ctx.orm.user.findById(ctx.params.id);
+  const currentRoles = await user.getRoles();
+  const role = await ctx.orm.role.findById(ctx.request.body.roleId);
+  switch (ctx.request.body.type) {
+    case 'add':
+      await user.setRoles(_.concat(currentRoles, role));
+      break;
+    case 'remove':
+      await user.setRoles(_.remove(currentRoles, e => e.id !== role.id));
+      break;
+    default:
+      break;
+  }
   ctx.redirect(ctx.router.url('users'));
 });
 

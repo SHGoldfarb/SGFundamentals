@@ -5,7 +5,9 @@ module.exports = {
     queryInterface.bulkInsert('users', [{
       email: 'admin@admin',
       username: 'admin',
-      password: 'admin',
+      password: '$2a$13$fDSlLxQUc.7lof75citqbO.9x48dtnXWJvhkXWCCJ81j2nANV5Brq',
+      activeToken: null,
+      actived: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     }]);

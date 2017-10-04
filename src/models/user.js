@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const faker = require('faker');
 
 async function buildPasswordHash(instance) {
   if (instance.changed('password')) {
@@ -6,12 +7,19 @@ async function buildPasswordHash(instance) {
     instance.set('password', hash);
   }
 }
+async function buildActivationToken(instance) {
+  const token = faker.random.alphaNumeric(50);
+  instance.set('activeToken', token);
+  instance.set('actived', false);
+}
 
 module.exports = function defineuser(sequelize, DataTypes) {
   const user = sequelize.define('user', {
     username: DataTypes.STRING,
     password: DataTypes.STRING,
     email: DataTypes.STRING,
+    activeToken: DataTypes.STRING,
+    actived: DataTypes.BOOLEAN,
   });
   user.associate = function associate(models) {
     // associations can be defined here
@@ -26,6 +34,7 @@ module.exports = function defineuser(sequelize, DataTypes) {
   };
   user.beforeUpdate(buildPasswordHash);
   user.beforeCreate(buildPasswordHash);
+  user.beforeCreate(buildActivationToken);
 
   user.prototype.checkPassword = function checkpassword(password) {
     return bcrypt.compare(password, this.password);

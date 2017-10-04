@@ -1,7 +1,47 @@
 <h1>Usuarios registrados:</h1>
 <h4><a href="<%= newUserPath %>">Crear nuevo usuario</a></h2>
-<ul>
-  <% users.forEach((user) => { %>
-    <li><a href="<%= buildUserPath(user) %>"><%= user.username %></a></li>
-  <% }) %>
-</ul>
+<table>
+  <thead>
+    <th>#</th>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Tipo</th>
+    <th>Acciones</th>
+  </thead>
+  <tbody>
+      <% users.forEach((user, i) => { %>
+        <tr>
+          <td><%= i+1 %></td>
+          <td><a href="<%= buildUserPath(user) %>"><%= user.username %></a></td>
+          <td><%= user.email %></td>
+          <td>
+            <table>
+              <tbody>
+              <% roles.forEach( role => { %>
+                <% activeRole = user.roles.find( e => e.id === role.id) %>
+                <tr>
+                  <th><%= role.tag %></th>
+                  <td><%= activeRole ? "Si" : "No" %></td>
+                  <td>
+                    <form method="post" action="<%= buildChangeRolesPath(user) %>">
+                      <input type="hidden" name="_method" value="patch">
+                      <input type="hidden" name="type" value="<%= activeRole ? "remove" : "add" %>">
+                      <input type="hidden" name="roleId" value="<%= role.id %>">
+                      <button type="submit"><%= activeRole ? "Quitar" : "Agregar" %></button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+              </tbody>
+            </table>
+          </td>
+          <td>
+            <ul>
+              <li><a href="<%= buildUserPath(user) %>">Ver</a></li>
+              <li><a href="<%= buildEditUserPath(user) %>">Editar</a></li>
+            </ul>
+          </td>
+        </tr>
+      <% }) %>
+  </tbody>
+</table>
