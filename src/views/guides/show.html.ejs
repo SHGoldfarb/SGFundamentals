@@ -65,7 +65,7 @@
     <% excercises.forEach(excercise2 => { %>
       <li class="in-line">
         <%= excercise2.content %>
-        <% if (isAdmin) { %>
+        <% if (isOwnerOrAdmin) { %>
           <span style="display: inline">
             <form action="<%= buildExcerciseDeletePath(excercise2.id) %>" method="post">
               <input type="hidden" name="_method" value="delete" />
