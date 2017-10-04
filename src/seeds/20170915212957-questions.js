@@ -8,7 +8,7 @@ module.exports = {
       data.push({
         title: faker.lorem.words(faker.random.number({ min: 10, max: 15 })),
         content: faker.lorem.paragraph(),
-        userId: 1,
+        userId: faker.random.number({ min: 1, max: 10 }),
         createdAt: new Date(),
         updatedAt: new Date(),
       });
