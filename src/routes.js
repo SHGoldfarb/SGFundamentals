@@ -34,11 +34,13 @@ async function redirectIfNotAdmin() {
 }
 
 function isOwner(id) {
+  console.log('SAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM');
+  console.log(id);
   return this.isLogged() && this.state.currentUser.id === id;
 }
 
 async function isOwnerOrAdmin(id) {
-  return this.isOwner() || this.isAdmin();
+  return this.isOwner(id) || this.isAdmin();
 }
 
 async function redirectIfNotOwnerOrAdmin(userId) {

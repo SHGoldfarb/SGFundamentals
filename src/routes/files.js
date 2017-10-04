@@ -10,6 +10,8 @@ router.get('files', '/', async (ctx) => {
     buildFilePath: id => ctx.router.url('file', id),
     buildFileEditPath: id => ctx.router.url('filesEdit', id),
     buildFileDeletePath: id => ctx.router.url('filesDelete', id),
+    isAdmin: await ctx.isAdmin(),
+    isLogged: ctx.isLogged(),
   });
 });
 
@@ -42,11 +44,13 @@ router.post('filesCreate', '/', async (ctx) => {
 
 router.get('file', '/:id', async (ctx) => {
   const file = await ctx.orm.file.findById(ctx.params.id);
+  const owner = await file.getUser();
   await ctx.render('files/show', {
     file,
     editFilePath: ctx.router.url('filesEdit', { id: ctx.params.id }),
     deleteFilePath: ctx.router.url('filesDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('files'),
+    isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
   });
 });
 

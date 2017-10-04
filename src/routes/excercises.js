@@ -10,6 +10,8 @@ router.get('excercises', '/', async (ctx) => {
     buildExcercisePath: id => ctx.router.url('excercise', id),
     buildExcerciseEditPath: id => ctx.router.url('excercisesEdit', id),
     buildExcerciseDeletePath: id => ctx.router.url('excercisesDelete', id),
+    isAdmin: await ctx.isAdmin(),
+    isLogged: ctx.isLogged(),
   });
 });
 
@@ -43,6 +45,7 @@ router.post('excercisesCreate', '/', async (ctx) => {
 router.get('excercise', '/:id', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id);
   const comments = await excercise.getComments({ include: [ctx.orm.user] });
+  const owner = await excercise.getUser();
   await ctx.render('excercises/show', {
     excercise,
     editExcercisePath: ctx.router.url('excercisesEdit', { id: ctx.params.id }),
@@ -52,6 +55,7 @@ router.get('excercise', '/:id', async (ctx) => {
     user: ctx.state.currentUser,
     createCommentPath: ctx.router.url('commentsCreate'),
     returnPath: ctx.router.url('excercise', { id: ctx.params.id }),
+    isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
   });
 });
 

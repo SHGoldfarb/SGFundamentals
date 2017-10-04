@@ -10,6 +10,8 @@ router.get('questions', '/', async (ctx) => {
     buildQuestionPath: id => ctx.router.url('question', { id }),
     buildQuestionEditPath: id => ctx.router.url('questionsEdit', { id }),
     buildQuestionDeletePath: id => ctx.router.url('questionsDelete', { id }),
+    isAdmin: await ctx.isAdmin(),
+    isLogged: ctx.isLogged(),
   });
 });
 
@@ -42,6 +44,7 @@ router.post('questionsCreate', '/', async (ctx) => {
 
 router.get('question', '/:id', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
+  const owner = await question.getUser();
   const comments = await question.getComments({ include: [ctx.orm.user] });
   await ctx.render('questions/show', {
     question,
@@ -52,6 +55,7 @@ router.get('question', '/:id', async (ctx) => {
     returnPath: ctx.router.url('question', { id: ctx.params.id }),
     user: ctx.state.currentUser,
     comments,
+    isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
   });
 });
 

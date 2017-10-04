@@ -5,14 +5,16 @@
 </p>
 
 <ul>
+  <% if (isOwnerOrAdmin) { %>
     <li><a href="<%= editFilePath %>">Editar</a></li>
-    <li><form action="<%= deleteFilePath %>" method="post">
-            <input type="hidden" name="_method" value="delete" />
-            <div>
-                <input type="submit" name="delete" value="Eliminar" />
-            </div>
-            </form>
+    <li>
+      <form action="<%= deleteFilePath %>" method="post">
+        <input type="hidden" name="_method" value="delete" />
+        <div>
+          <input type="submit" name="delete" value="Eliminar" />
         </div>
-            </li>
+      </form>
+    </li>
+  <% } %>
     <li><a href="<%= backToListPath %>">Volver</a></li>
 </ul>

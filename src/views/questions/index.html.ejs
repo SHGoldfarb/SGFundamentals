@@ -1,6 +1,7 @@
 <h1>Preguntas</h1>
-
-<a href="<%= newQuestionPath %>" class="end">Hacer Pregunta</a>
+<% if (isLogged) { %>
+  <a href="<%= newQuestionPath %>" class="end">Hacer Pregunta</a>
+<% } %>
 <div class="row">
     <% questions.reverse().forEach(question =>{ %>
         <div class="col">
@@ -9,17 +10,19 @@
                 <%= question.content %>
                 <ul>
                     <li><a href="<%= buildQuestionPath(question.id) %>">Ver</a></li>
-                    <li><a href="<%= buildQuestionEditPath(question.id)%>">Editar</a></li>
-                    <li>
+                    <% if (isAdmin) { %>
+                      <li><a href="<%= buildQuestionEditPath(question.id)%>">Editar</a></li>
+                      <li>
                         <form action="<%= buildQuestionDeletePath(question.id) %>" method="post">
-                            <input type="hidden" name="_method" value="delete" />
-                            <div>
-                                <input type="submit" name="delete" value="Eliminar" />
-                            </div>
-                            </form>
-                    </li>
+                          <input type="hidden" name="_method" value="delete" />
+                          <div>
+                            <input type="submit" name="delete" value="Eliminar" />
+                          </div>
+                        </form>
+                      </li>
+                    <% } %>
                 </ul>
             </div>
-        </div>  
+        </div>
     <% })%>
 </div>

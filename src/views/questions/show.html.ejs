@@ -5,15 +5,17 @@
 </p>
 
 <ul>
-    <li><a href="<%= editQuestionPath %>">Editar</a></li>
-    <li>
-      <form action="<%= deleteQuestionPath %>" method="post">
-        <input type="hidden" name="_method" value="delete" />
-        <div>
-          <input type="submit" name="delete" value="Eliminar" />
-        </div>
-      </form>
-    </li>
+    <% if (isOwnerOrAdmin) { %>
+      <li><a href="<%= editQuestionPath %>">Editar</a></li>
+      <li>
+        <form action="<%= deleteQuestionPath %>" method="post">
+          <input type="hidden" name="_method" value="delete" />
+          <div>
+            <input type="submit" name="delete" value="Eliminar" />
+          </div>
+        </form>
+      </li>
+    <% } %>
     <li><a href="<%= backToListPath %>">Volver</a></li>
 </ul>
 

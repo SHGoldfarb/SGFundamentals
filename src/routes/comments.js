@@ -11,6 +11,8 @@ router.get('comments', '/', async (ctx) => {
   //   buildCommentPath: id => ctx.router.url('comment', { id }),
   //   buildCommentEditPath: id => ctx.router.url('commentsEdit', { id }),
   //   buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
+  //   isAdmin: await ctx.isAdmin(),
+  //   isLogged: ctx.isLogged(),
   // });
 });
 
@@ -52,6 +54,7 @@ router.post('commentsCreate', '/', async (ctx) => {
 router.get('comment', '/:id', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
   const comments = await comment.getComments({ include: [ctx.orm.user] });
+  const owner = await comment.getUser();
   await ctx.render('comments/show', {
     comment,
     editCommentPath: ctx.router.url('commentsEdit', { id: ctx.params.id }),
@@ -61,6 +64,7 @@ router.get('comment', '/:id', async (ctx) => {
     user: ctx.state.currentUser,
     createCommentPath: ctx.router.url('commentsCreate'),
     returnPath: ctx.router.url('comment', { id: ctx.params.id }),
+    isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
   });
 });
 

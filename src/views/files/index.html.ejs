@@ -1,6 +1,8 @@
 <h1>Archivos</h1>
 
-<a class="end" href="<%= newFilePath %>">Crear Archivo</a>
+<% if (isLogged) { %>
+  <a class="end" href="<%= newFilePath %>">Crear Archivo</a>
+<% } %>
 <div class="row">
     <% files.reverse().forEach(e =>{ %>
         <div class="col-fill">
@@ -9,15 +11,17 @@
                 <%= e.path %>
                 <ul>
                     <li><a href="<%= buildFilePath(e.id) %>">Ver</a></li>
-                    <li><a href="<%= buildFileEditPath(e.id)%>">Editar</a></li>
-                    <li>
+                    <% if (isAdmin) { %>
+                      <li><a href="<%= buildFileEditPath(e.id)%>">Editar</a></li>
+                      <li>
                         <form action="<%= buildFileDeletePath(e.id) %>" method="post">
-                            <input type="hidden" name="_method" value="delete" />
-                            <div>
-                                <input type="submit" name="delete" value="Eliminar" />
-                            </div>
+                          <input type="hidden" name="_method" value="delete" />
+                          <div>
+                            <input type="submit" name="delete" value="Eliminar" />
+                          </div>
                         </form>
-                    </li>
+                      </li>
+                    <% } %>
                 </ul>
             </div>
         </div>
