@@ -30,9 +30,14 @@ router.post('filesCreate', '/', async (ctx) => {
   if (!ctx.redirectIfNotLogged()) {
     try {
       const uploads = ctx.request.body.files.file;
-      uploads.name = _.camelCase(_.deburr(uploads.name));
+      const filename = uploads.name.substr(0, uploads.name.length - 4);
+      const ext = uploads.name.substr(uploads.name.length - 4);
+      uploads.name = _.camelCase(_.deburr(filename)) + ext;
       await fileStorage.upload(uploads);
-      const file = await ctx.orm.file.create({ ...ctx.request.body.fields, filename: uploads.name });
+      const file = await ctx.orm.file.create({
+        ...ctx.request.body.fields,
+        filename: uploads.name,
+      });
       console.log(ctx.request.body);
       file.setUser(ctx.state.currentUser);
       ctx.redirect(ctx.router.url('file', { id: file.id }));
