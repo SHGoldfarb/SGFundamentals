@@ -1,6 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const file = sequelize.define('file', {
-    path: DataTypes.STRING,
+    title: DataTypes.STRING,
+    filename: DataTypes.STRING,
   });
   file.associate = function associate(models) {
     file.belongsTo(models.user);

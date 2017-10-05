@@ -10,9 +10,6 @@ module.exports = {
     path: {
       type: Sequelize.STRING,
     },
-    filename: {
-      type: Sequelize.STRING,
-    },
     title: {
       type: Sequelize.STRING,
     },

@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const fileStorage = require('../services/file-storage');
 
 const router = new KoaRouter();
 
@@ -27,7 +28,10 @@ router.get('filesNew', '/new', async (ctx) => {
 router.post('filesCreate', '/', async (ctx) => {
   if (!ctx.redirectIfNotLogged()) {
     try {
+      const uploads = ctx.request.body.files.file;
+      await fileStorage.upload(uploads);
       const file = await ctx.orm.file.create(ctx.request.body);
+      file.path = uploads.path;
       ctx.redirect(ctx.router.url('file', { id: file.id }));
     } catch (validationError) {
       await ctx.render('files/new', {
