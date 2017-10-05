@@ -62,6 +62,7 @@ router.get('excercise', '/:id', async (ctx) => {
     buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
     buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
     backToGuidePath: ctx.router.url('guide', excercise.guideId),
+    buildCommentPath: id => ctx.router.url('comment', { id }),
   });
 });
 

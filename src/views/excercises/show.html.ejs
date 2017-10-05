@@ -79,6 +79,7 @@
   <ul>
     <% comments.forEach(comment => { %>
       <li class="in-line">
+        <a href="<%= buildCommentPath(comment.id) %>">#<%= comment.id %>-</a>
         <%=  comment.user.username + ' => ' + comment.content %>
         <% if (isOwner(comment.user.id) || isAdmin) { %>
           <form action="<%= buildCommentDeletePath(comment.id) %>" method="post">
