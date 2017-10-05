@@ -56,6 +56,7 @@ router.get('question', '/:id', async (ctx) => {
     createTagPath: ctx.router.url('tagsCreate'),
     buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
     buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
+    buildCommentPath: id => ctx.router.url('comment', { id }),
   });
 });
 
