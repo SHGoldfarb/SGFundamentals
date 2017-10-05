@@ -1,6 +1,6 @@
 <h1>Usuarios registrados:</h1>
 <h4><a href="<%= newUserPath %>">Crear nuevo usuario</a></h2>
-<table>
+<table class="table striped">
   <thead>
     <th>#</th>
     <th>Username</th>
@@ -15,7 +15,7 @@
           <td><a href="<%= buildUserPath(user) %>"><%= user.username %></a></td>
           <td><%= user.email %></td>
           <td>
-            <table>
+            <table class="table">
               <tbody>
               <% roles.forEach( role => { %>
                 <% activeRole = user.roles.find( e => e.id === role.id) %>
@@ -36,7 +36,7 @@
             </table>
           </td>
           <td>
-            <ul>
+            <ul class="unstyled">
               <li><a href="<%= buildUserPath(user) %>">Ver</a></li>
               <li><a href="<%= buildEditUserPath(user) %>">Editar</a></li>
             </ul>

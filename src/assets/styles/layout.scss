@@ -125,6 +125,58 @@ Containers
   margin: 15px;
 }
 
+/**
+Tables
+**/
+
+table{
+  &.table{
+    width: 100%;
+    border-collapse: collapse;
+    thead{
+      tr{
+        th{
+          border-bottom: 1px groove #635E5E;
+        }
+      }
+    }
+    tbody{
+      tr{
+        td{
+          text-align: center;
+        }
+      }
+    }
+  }
+  &.hover{
+    tbody{
+      tr:hover{
+        background: #d8d5d5;
+      }
+    }
+  }
+  &.striped{
+    tbody{
+      tr:nth-child(even){
+        background: #C7C7C7
+      }
+      tr:nth-child(odd){
+
+      }
+    }
+  }
+}
+
+/**
+Lists
+**/
+
+ul{
+  &.unstyled{
+    list-style: none;
+    padding: 0;
+  }
+}
 
 /**
 Varios

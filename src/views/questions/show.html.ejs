@@ -6,7 +6,7 @@
   <%= question.content %>
 </p>
 
-<ul>
+<ul class="unstyled">
     <% if (isOwnerOrAdmin) { %>
       <li><a href="<%= editQuestionPath %>">Editar</a></li>
       <li>
@@ -27,7 +27,7 @@
     <input type="hidden" name="returnPath" value="<%= returnPath %>" />
     <div>
       <label for="name">Nuevo Tag:</label>
-      <textarea name="name" id="name"></textarea>
+      <input name="name" id="name">
       <input type="submit" name="answer" value="Crear Tag" />
     </div>
   </form>
