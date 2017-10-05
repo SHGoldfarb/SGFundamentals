@@ -3,7 +3,7 @@
 <% if (isLogged) { %>
   <a href="<%= newCommentPath %>">Hacer Comentario</a>
 <% } %>
-<table>
+<table class="table hover striped">
     <thead>
         <tr>
             <th>#</th>
@@ -17,7 +17,7 @@
                 <td><a href="<%= buildCommentPath(comment.id) %>"><%= comment.id %></a></td>
                 <td><%= comment.content %></td>
                 <td>
-                    <ul>
+                    <ul class="unstyled">
                         <li><a href="<%= buildCommentPath(comment.id) %>">Ver</a></li>
                         <% if (isAdmin) { %>
                           <li><a href="<%= buildCommentEditPath(comment.id)%>">Editar</a></li>

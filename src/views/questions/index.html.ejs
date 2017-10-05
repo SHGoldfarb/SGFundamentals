@@ -10,7 +10,7 @@
                 <h4><%= question.title %></h4>
                 <br />
                 <%= question.content %>
-                <ul>
+                <ul class="unstyled">
                     <li><a href="<%= buildQuestionPath(question.id) %>">Ver</a></li>
                     <% if (isAdmin) { %>
                       <li><a href="<%= buildQuestionEditPath(question.id)%>">Editar</a></li>
