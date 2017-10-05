@@ -1,5 +1,6 @@
 const KoaRouter = require('koa-router');
 const fileStorage = require('../services/file-storage');
+const _ = require('lodash');
 
 const router = new KoaRouter();
 
@@ -29,9 +30,11 @@ router.post('filesCreate', '/', async (ctx) => {
   if (!ctx.redirectIfNotLogged()) {
     try {
       const uploads = ctx.request.body.files.file;
+      uploads.name = _.camelCase(_.deburr(uploads.name));
       await fileStorage.upload(uploads);
-      const file = await ctx.orm.file.create(ctx.request.body);
-      file.path = uploads.path;
+      const file = await ctx.orm.file.create({ ...ctx.request.body.fields, filename: uploads.name });
+      console.log(ctx.request.body);
+      file.setUser(ctx.state.currentUser);
       ctx.redirect(ctx.router.url('file', { id: file.id }));
     } catch (validationError) {
       await ctx.render('files/new', {
@@ -57,6 +60,7 @@ router.get('file', '/:id', async (ctx) => {
     tags: await file.getTags(),
     createTagPath: ctx.router.url('tagsCreate'),
     buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
+    downloadPath: ctx.router.url('fileDownload', { filename: file.filename }),
   });
 });
 
@@ -97,6 +101,11 @@ router.delete('filesDelete', '/:id', async (ctx) => {
     await file.destroy();
     ctx.redirect(ctx.router.url('files'));
   }
+});
+
+router.get('fileDownload', '/download/:filename', async (ctx) => {
+  ctx.body = await fileStorage.download(ctx.params.filename);
+  ctx.response.type = 'application/pdf';
 });
 
 module.exports = router;

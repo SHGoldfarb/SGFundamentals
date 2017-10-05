@@ -4,7 +4,6 @@ const { storage } = require('pkgcloud');
 const googleConfig = require('../config/google');
 
 const CONTAINER_NAME = process.env.CONTAINER_NAME;
-
 class FileStorage {
   constructor() {
     this.client = storage.createClient({

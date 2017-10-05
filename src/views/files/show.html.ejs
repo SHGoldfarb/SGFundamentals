@@ -1,8 +1,9 @@
-<h1>Archivo #<%= file.id %></h1>
+<h1>Archivo #<%= file.id %>: <%= file.title %></h1>
 
-<p>
-    <%= file.path %>
-</p>
+<ul>
+    <li><%= file.filename %></li>
+    <li><a href="<%= downloadPath %>">Download</a></li>
+</ul>
 
 <ul>
   <% if (isOwnerOrAdmin) { %>
