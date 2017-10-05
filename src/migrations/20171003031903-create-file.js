@@ -7,7 +7,7 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    path: {
+    filename: {
       type: Sequelize.STRING,
     },
     title: {
