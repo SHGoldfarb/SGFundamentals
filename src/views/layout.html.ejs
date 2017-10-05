@@ -42,9 +42,7 @@
       </div>
       <div class="nav-section">
         <% if(currentUser){ %>
-          <div>
-            <p> Hola <%= currentUser.username %></p>
-          </div>
+          <p class="nav-text"> Hola <%= currentUser.username %></p>
           <form action="<%= signOutPath %>" method="post">
             <input type="hidden" name="_method" value="delete">
             <button type="submit" class="nav-link">Logout</button>

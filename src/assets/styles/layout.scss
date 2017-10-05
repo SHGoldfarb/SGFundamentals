@@ -51,22 +51,37 @@ Navigation Bar
   flex: 0 1 auto;
   display: flex;
   flex-flow: row nowrap;
+  form, div{
+    display: flex;
+  }
 }
-.nav-link{
-  color: rgb(255, 255, 255);
-  align-self: center;
-  margin: 0 15px;
-  text-decoration: none;
-  font-size: 18px;
-  font-family: 'Allerta';
-  &:hover{
-    color: rgb(202, 210, 201);
+a, button{
+  &.nav-link{
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    align-self: center;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 18px;
+    font-family: 'Allerta';
+    &:hover{
+      color: rgb(202, 210, 201);
+    }
+    &.active{
+      color: black;
+    }
+    &.active:hover{
+      color: #626060;
+    }
   }
-  &.active{
-    color: black;
-  }
-  &.active:hover{
-    color: #626060;
+}
+p {
+  &.nav-text{
+    margin: auto;
+    font-size: 18px;
+    font-weight: 800;
   }
 }
 
