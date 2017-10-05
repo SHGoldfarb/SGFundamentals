@@ -64,17 +64,17 @@
   <ul>
     <% excercises.forEach(excercise2 => { %>
       <li class="in-line">
-        <%= excercise2.content %>
+        <a href="<%= buildExcercisePath(excercise2.id) %>">#<%= excercise2.id %></a>
+        -<%= excercise2.content %>
         <% if (isOwnerOrAdmin) { %>
-          <span style="display: inline">
-            <form action="<%= buildExcerciseDeletePath(excercise2.id) %>" method="post">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-              <div>
-                <input type="submit" name="delete" value="Eliminar" />
-              </div>
-            </form>
-          </span>
+          <a href="<%= buildExcerciseEditPath(excercise2.id) %>">Editar</a>
+          <form action="<%= buildExcerciseDeletePath(excercise2.id) %>" method="post">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+            <div>
+              <input type="submit" name="delete" value="Eliminar" />
+            </div>
+          </form>
         <% } %>
         <br />
       </li>

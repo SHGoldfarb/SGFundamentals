@@ -57,6 +57,8 @@ router.get('guide', '/:id', async (ctx) => {
     submitExcercisePath: ctx.router.url('excercisesCreate'),
     excercises: await guide.getExcercises(),
     buildExcerciseDeletePath: id => ctx.router.url('excercisesDelete', { id }),
+    buildExcercisePath: id => ctx.router.url('excercise', { id }),
+    buildExcerciseEditPath: id => ctx.router.url('excercisesEdit', { id }),
   });
 });
 

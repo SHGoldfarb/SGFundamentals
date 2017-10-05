@@ -7,8 +7,7 @@
     <% guides.reverse().forEach(guide =>{ %>
         <div class="col-fill">
             <div class="panel">
-                <a href="<%= buildGuidePath(guide.id) %>">#<%= guide.id %></a>
-                <%= guide.path %>
+                <a href="<%= buildGuidePath(guide.id) %>">#<%= guide.id + ' ' + guide.title%></a>
                 <ul>
                     <li><a href="<%= buildGuidePath(guide.id) %>">Ver</a></li>
                     <% if (isAdmin) { %>

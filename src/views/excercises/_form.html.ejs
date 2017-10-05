@@ -2,10 +2,10 @@
   <%if (!excercise.isNewRecord) { %>
     <input type="hidden" name="_method" value="patch" />
   <% }%>
-  <% if (returnPath) { %>
+  <% if (locals.returnPath) { %>
     <input type="hidden" name="returnPath" value="<%= returnPath %>" />
   <% } %>
-  <% if (guide) { %>
+  <% if (locals.guide) { %>
     <input type="hidden" name="guideId" value="<%= guide.id %>" />
   <% } %>
   <input type="hidden" name=userId value="<%= currentUser.id %>" />

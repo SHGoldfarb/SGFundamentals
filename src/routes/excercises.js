@@ -15,8 +15,9 @@ router.get('excercises', '/', async (ctx) => {
 
 router.get('excercisesNew', '/new', async (ctx) => {
   if (!ctx.redirectIfNotLogged()) {
+    const excercise = await ctx.orm.excercise.build();
     await ctx.render('excercises/new', {
-      excercise: await ctx.orm.excercise.build(),
+      excercise,
       submitExcercisePath: ctx.router.url('excercisesCreate'),
       backToListPath: ctx.router.url('excercises'),
     });
@@ -60,6 +61,7 @@ router.get('excercise', '/:id', async (ctx) => {
     createTagPath: ctx.router.url('tagsCreate'),
     buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
     buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
+    backToGuidePath: ctx.router.url('guide', excercise.guideId),
   });
 });
 

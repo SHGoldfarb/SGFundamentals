@@ -1,3 +1,8 @@
+<h1></h1>
+<a href="<%= backToListPath %>">Volver</a>
+<% if (excercise.guideId) { %>
+  <a href="<%= backToGuidePath %>">Ir a guia</a>
+<% } %>
 <h1>Ejercicio #<%= excercise.id %></h1>
 
 <p>
@@ -16,7 +21,6 @@
       </form>
     </li>
   <% } %>
-    <li><a href="<%= backToListPath %>">Volver</a></li>
 </ul>
 
 <% if (isAdmin) { %>
