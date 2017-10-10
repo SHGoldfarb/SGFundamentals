@@ -7,10 +7,9 @@ const koaStatic = require('koa-static');
 const render = require('koa-ejs');
 const session = require('koa-session');
 const override = require('koa-override-method');
+const mailer = require('./mailers');
 const routes = require('./routes');
 const orm = require('./models');
-
-const serve = require('koa-static');
 
 // App constructor
 const app = new Koa();
@@ -75,14 +74,14 @@ app.use((ctx, next) => {
   return next();
 });
 
-app.use(serve(__dirname + '/assets'));
-
 // Configure EJS views
 render(app, {
   root: path.join(__dirname, 'views'),
   viewExt: 'html.ejs',
   cache: !developmentMode,
 });
+
+mailer(app);
 
 // Routing middleware
 app.use(routes.routes());

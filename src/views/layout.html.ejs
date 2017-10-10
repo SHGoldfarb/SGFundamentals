@@ -3,54 +3,19 @@
 
   <head>
     <meta charset="utf-8">
-    <title>SG Fundamentals</title>
-    <link href="/css/main.css" type="text/css" rel="stylesheet">
+    <title>IIC2513 - CHANGE-ME</title>
     <% if (env !== 'development') { %>
       <link rel="stylesheet" href="/assets/styles.css">
     <% } %>
-    <link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
   </head>
 
   <body>
-
-  
-
-    <div class="nav">
-      <div class="nav-section">
-        <a class="nav-link <%= currentUrl == "/" ? "active" : "" %>" 
-          href="/">Inicio
-        </a>
-        <a class="nav-link <%= currentUrl.substr(0,excercisesPath.length) == excercisesPath ? "active" : "" %>" 
-          href="<%= excercisesPath %>">Ejercicios
-        </a>
-        <a class="nav-link <%= currentUrl.substr(0,questionsPath.length) == questionsPath ? "active" : "" %>" 
-          href="<%= questionsPath %>">Preguntas
-        </a>
-        <a class="nav-link <%= currentUrl.substr(0,commentsPath.length) == commentsPath ? "active" : "" %>" 
-          href="<%= commentsPath %>">Comentarios
-        </a>
-        <a class="nav-link <%= currentUrl.substr(0,usersPath.length) == usersPath ? "active" : "" %>" 
-          href="<%= usersPath %>">Usuarios
-        </a>
+    <header>
+      <div id="logo">
+        <img src="/assets/logo.png" alt="Logo" />
       </div>
-      <div class="nav-section">
-        <a class="nav-link" href="#">Link</a>
-        <a class="nav-link" href="#">Link</a>
-        <a class="nav-link" href="#">Link</a>
-      </div>
-    </div>
-    <% if (locals.error) { %>
-      <div class="error hideable" id="error_message">
-          <p>(!!) <%= error %></p>
-          <p id="close">X</p>
-      </div>
-    <% } %>
-    <div class="wrapper">
+    </header>
     <%- body %>
-    </div>
-    <div class="footer">
-      <h1>Footer</h1>
-    </div>
     <script src="/assets/app.js"></script>
   </body>
 
