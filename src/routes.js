@@ -17,8 +17,8 @@ function isLogged() {
 
 function redirectIfNotLogged() {
   if (!this.isLogged()) {
-    this.redirect(this.router.url('/'));
-    return true;
+    this.status = 401;
+    throw new Error('Unauthorized');
   }
   return false;
 }
@@ -37,8 +37,9 @@ async function isAdmin() {
 
 async function redirectIfNotAdmin() {
   if (!(await this.isAdmin())) {
-    this.redirect(this.router.url('/'));
-    return true;
+    this.status = 401;
+    throw new Error('Unauthorized');
+    // return true;
   }
   return false;
 }
@@ -53,14 +54,15 @@ async function isOwnerOrAdmin(id) {
 
 async function redirectIfNotOwnerOrAdmin(userId) {
   if (!await this.isOwnerOrAdmin(userId)) {
-    this.redirect(this.router.url('/'));
-    return true;
+    this.status = 401;
+    throw new Error('Unauthorized');
   }
   return false;
 }
 
 const router = new KoaRouter();
 router.use('/', async (ctx, next) => {
+  console.log('Using router...');
   ctx.state.excercisesPath = router.url('excercises');
   ctx.state.questionsPath = router.url('questions');
   ctx.state.commentsPath = router.url('comments');
@@ -86,7 +88,13 @@ router.use('/', async (ctx, next) => {
   ctx.state.isOwner = function _isOwner(id) {
     return ctx.isOwner(id);
   };
-  await next();
+  try {
+    await next();
+  } catch (err) {
+    if ([401, 404].indexOf(ctx.status) >= 0) {
+      await ctx.render(`errors/${ctx.status}`);
+    }
+  }
 });
 
 
@@ -101,5 +109,10 @@ router.use('/tags', tags.routes());
 router.use('/guides', guides.routes());
 router.use('/', sessions.routes());
 
+router.all(/^\/(.*)(?:\/|$)/, async (ctx, next) => {
+  // Necessary to load router middleware even if url doesnt exist
+  ctx.status = 404;
+  throw new Error('Not Found');
+});
 
 module.exports = router;

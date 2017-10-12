@@ -16,7 +16,7 @@ router.get('comments', '/', async (ctx) => {
 });
 
 router.get('commentsNew', '/new', async (ctx) => {
-  if (!ctx.redirectIfNotAdmin()) {
+  if (!await ctx.redirectIfNotAdmin()) {
     const comment = await ctx.orm.comment.build();
     await ctx.render('comments/new', {
       comment,
@@ -52,6 +52,10 @@ router.post('commentsCreate', '/', async (ctx) => {
 
 router.get('comment', '/:id', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
+  if (!comment) {
+    ctx.status = 404;
+    // throw new Error('Not Found');
+  }
   const comments = await comment.getComments({ include: [ctx.orm.user] });
   const owner = await comment.getUser();
   let parent;
