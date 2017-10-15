@@ -42,6 +42,10 @@ router.post('questionsCreate', '/', async (ctx) => {
 
 router.get('question', '/:id', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id);
+  if (!question) {
+    ctx.status = 404;
+    throw new Error('Not Found');
+  }
   const owner = await question.getUser();
   await ctx.render('questions/show', {
     question,

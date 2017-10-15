@@ -68,6 +68,10 @@ router.post('usersCreate', '/', async (ctx) => {
 // GET /user/1
 router.get('user', '/:id', async (ctx) => {
   const user = await ctx.orm.user.findById(ctx.params.id);
+  if (!user) {
+    ctx.status = 404;
+    throw new Error('Not Found');
+  }
   const roles = await user.getRoles();
   await ctx.render('users/show', {
     user,

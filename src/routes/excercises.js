@@ -47,6 +47,10 @@ router.post('excercisesCreate', '/', async (ctx) => {
 
 router.get('excercise', '/:id', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id);
+  if (!excercise) {
+    ctx.status = 404;
+    throw new Error('Not Found');
+  }
   const owner = await excercise.getUser();
   await ctx.render('excercises/show', {
     excercise,

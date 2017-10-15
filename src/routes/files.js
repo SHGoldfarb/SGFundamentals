@@ -54,6 +54,10 @@ router.post('filesCreate', '/', async (ctx) => {
 
 router.get('file', '/:id', async (ctx) => {
   const file = await ctx.orm.file.findById(ctx.params.id);
+  if (!file) {
+    ctx.status = 404;
+    throw new Error('Not Found');
+  }
   const owner = await file.getUser();
   await ctx.render('files/show', {
     file,

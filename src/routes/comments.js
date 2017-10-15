@@ -54,7 +54,7 @@ router.get('comment', '/:id', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
   if (!comment) {
     ctx.status = 404;
-    // throw new Error('Not Found');
+    throw new Error('Not Found');
   }
   const comments = await comment.getComments({ include: [ctx.orm.user] });
   const owner = await comment.getUser();

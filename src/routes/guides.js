@@ -42,6 +42,10 @@ router.post('guidesCreate', '/', async (ctx) => {
 
 router.get('guide', '/:id', async (ctx) => {
   const guide = await ctx.orm.guide.findById(ctx.params.id);
+  if (!guide) {
+    ctx.status = 404;
+    throw new Error('Not Found');
+  }
   const owner = await guide.getUser();
   await ctx.render('guides/show', {
     guide,
