@@ -1,5 +1,9 @@
 body{
-  background: white;
+  // background: white;
+  background-image: url("https://static.pexels.com/photos/46274/pexels-photo-46274.jpeg");
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
@@ -37,13 +41,16 @@ body{
 Navigation Bar
 **/
 
+$navbar_height: 70px;
+
 .nav{
-  height: 70px;
+  height: $navbar_height;
+  width: 100%;
   background: rgba(35, 189, 10, 0.80);
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-
+  position: fixed;
   box-shadow: 0 5px 5px #888888
 }
 
@@ -102,6 +109,9 @@ Containers
   flex-flow: column nowrap;
   flex: 1 0 auto;
   margin: 0 5%;
+  margin-top: $navbar_height + 40px;
+  padding: 0 2%;
+  background: rgba(255, 255, 255, 0.60);
 }
 .row{
   flex: 1 0 auto;
@@ -123,6 +133,13 @@ Containers
   border-radius: 15px;
   padding: 15px;
   margin: 15px;
+}
+
+.landing.section {
+  font-size: 20px;
+  a {
+    text-decoration: none;
+  }
 }
 
 /**
@@ -167,6 +184,7 @@ table{
   }
 }
 
+
 /**
 Lists
 **/
@@ -175,6 +193,18 @@ ul{
   &.unstyled{
     list-style: none;
     padding: 0;
+    &.in-line {
+      li {
+        margin-right: 6px;
+        padding: 2px 2px;
+      }
+    }
+  }
+  &.tags {
+    font-size:13px;
+    li {
+      background: rgba(255, 200, 255, 0.50);
+    }
   }
 }
 

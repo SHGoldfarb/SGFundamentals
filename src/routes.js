@@ -62,7 +62,6 @@ async function redirectIfNotOwnerOrAdmin(userId) {
 
 const router = new KoaRouter();
 router.use('/', async (ctx, next) => {
-  console.log('Using router...');
   ctx.state.excercisesPath = router.url('excercises');
   ctx.state.questionsPath = router.url('questions');
   ctx.state.commentsPath = router.url('comments');
@@ -91,8 +90,14 @@ router.use('/', async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    if ([401, 404].indexOf(ctx.status) >= 0) {
-      await ctx.render(`errors/${ctx.status}`);
+    console.log('Catched error:');
+    console.log(err.stack);
+    if (err.message.indexOf('Not Found') !== -1) {
+      await ctx.render('errors/404');
+    } else if (err.message.indexOf('Unauthorized') !== -1) {
+      await ctx.render('errors/401');
+    } else {
+      throw err;
     }
   }
 });
@@ -110,7 +115,7 @@ router.use('/guides', guides.routes());
 router.use('/', sessions.routes());
 
 router.all(/^\/(.*)(?:\/|$)/, async (ctx, next) => {
-  // Necessary to load router middleware even if url doesnt exist
+  // So router middleware is loaded even if url doesnt exist
   ctx.status = 404;
   throw new Error('Not Found');
 });
