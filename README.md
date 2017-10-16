@@ -2,6 +2,8 @@
 
 A web app that lets you share your study material, along with answers and comments for everyone to see and contribute. You can see it working on [sgfundamentals.herokuapp.com](https://sgfundamentals.herokuapp.com/).
 
+To test as a normal user, log in as `user: user1; password: user`, or if you want to log as admin `user: admin; password: admin`. 
+
 ## Template
 
 Template built with [koa](http://koajs.com/) for IIC2513 - Tecnologías y Aplicaciones Web, Pontificia Universidad Católica de Chile.
