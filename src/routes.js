@@ -92,9 +92,9 @@ router.use('/', async (ctx, next) => {
   } catch (err) {
     console.log('Catched error:');
     console.log(err.stack);
-    if (err.message.indexOf('Not Found') !== -1) {
+    if (err.message === 'Not Found') {
       await ctx.render('errors/404');
-    } else if (err.message.indexOf('Unauthorized') !== -1) {
+    } else if (err.message === 'Unauthorized') {
       await ctx.render('errors/401');
     } else {
       throw err;
