@@ -116,6 +116,7 @@ router.use('/', sessions.routes());
 
 router.all(/^\/(.*)(?:\/|$)/, async (ctx, next) => {
   // So router middleware is loaded even if url doesnt exist
+  // This is necesary to render the not found page
   ctx.status = 404;
   throw new Error('Not Found');
 });

@@ -3,9 +3,19 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 router.get('questions', '/', async (ctx) => {
-  const questions = await ctx.orm.question.findAll();
+  console.log(ctx.request.query);
+  let questions;
+  if (ctx.request.query.tagFilter) {
+    const tag = await ctx.orm.tag.findById(ctx.request.query.tagFilter);
+    questions = await tag.getQuestions();
+  } else {
+    questions = await ctx.orm.question.findAll();
+  }
+  const tags = await ctx.orm.tag.findAll();
   await ctx.render('questions/index', {
     questions,
+    tags,
+    tagFilterURL: id => `${ctx.router.url('questions')}?tagFilter=${id}`,
     newQuestionPath: ctx.router.url('questionsNew'),
     buildQuestionPath: id => ctx.router.url('question', { id }),
     buildQuestionEditPath: id => ctx.router.url('questionsEdit', { id }),

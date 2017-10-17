@@ -1,4 +1,13 @@
 <h1>Preguntas</h1>
+<div class="dropdown">
+  <input type="text" id="tagFilterInput" onkeyup="tagFilterFunction(0)" placeholder="Filtrar por etiqueta..">
+  <ul id="tagFilterUL">
+    <% tags.forEach(tag => { %>
+      <li><a href="<%= tagFilterURL(tag.id) %>"><%= tag.name %></a></li>
+      <% }) %>
+    </ul>
+</div>
+
 <% if (isLogged) { %>
   <a href="<%= newQuestionPath %>" class="end">Hacer Pregunta</a>
 <% } %>
