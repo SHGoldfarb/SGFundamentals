@@ -6,8 +6,11 @@ router.get('questions', '/', async (ctx) => {
   let questions;
   if (ctx.request.query.tagFilter) {
     const tag = await ctx.orm.tag.find({ where: { name: ctx.request.query.tagFilter } });
-    questions = await tag.getQuestions({ include: [ctx.orm.user, ctx.orm.tag] });
-  } else {
+    if (tag) {
+      questions = await tag.getQuestions({ include: [ctx.orm.user, ctx.orm.tag] });
+    }
+  }
+  if (!questions) {
     questions = await ctx.orm.question.findAll({ include: [ctx.orm.user, ctx.orm.tag] });
   }
   const tags = await ctx.orm.tag.findAll();

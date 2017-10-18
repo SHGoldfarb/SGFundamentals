@@ -1,6 +1,6 @@
 <h1>Guias</h1>
 <form action="<%= currentUrl %>" method="get">
-  <input list="tags" type="text" id="tagFilterInput" name="tagFilter" placeholder="Filtrar por etiqueta..">
+  <input autocomplete="off" list="tags" type="text" id="tagFilterInput" name="tagFilter" placeholder="Filtrar por etiqueta..">
   <datalist id="tags">
     <% tags.forEach(tag => { %>
       <option value="<%= tag.name %>">

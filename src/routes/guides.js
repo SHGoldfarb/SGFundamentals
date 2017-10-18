@@ -6,8 +6,11 @@ router.get('guides', '/', async (ctx) => {
   let guides;
   if (ctx.request.query.tagFilter) {
     const tag = await ctx.orm.tag.find({ where: { name: ctx.request.query.tagFilter } });
-    guides = await tag.getGuides({ include: [ctx.orm.user, ctx.orm.tag] });
-  } else {
+    if (tag) {
+      guides = await tag.getGuides({ include: [ctx.orm.user, ctx.orm.tag] });
+    }
+  }
+  if (!guides) {
     guides = await ctx.orm.guide.findAll({ include: [ctx.orm.user, ctx.orm.tag] });
   }
   await ctx.render('guides/index', {
