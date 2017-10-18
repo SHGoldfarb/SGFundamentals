@@ -34,30 +34,3 @@
     </ul>
   <% }) %>
 </div>
-<!--
-<div class="row">
-    <% questions.reverse().forEach(question =>{ %>
-        <div class="col">
-            <div class="panel">
-                <a href="<%= buildQuestionPath(question.id) %>"># <%= question.id %></a>
-                <h4><%= question.title %></h4>
-                <br />
-                <%= question.content %>
-                <ul class="unstyled">
-                    <li><a href="<%= buildQuestionPath(question.id) %>">Ver</a></li>
-                    <% if (isAdmin) { %>
-                      <li><a href="<%= buildQuestionEditPath(question.id)%>">Editar</a></li>
-                      <li>
-                        <form action="<%= buildQuestionDeletePath(question.id) %>" method="post">
-                          <input type="hidden" name="_method" value="delete" />
-                          <div>
-                            <input type="submit" name="delete" value="Eliminar" />
-                          </div>
-                        </form>
-                      </li>
-                    <% } %>
-                </ul>
-            </div>
-        </div>
-    <% })%>
-</div> -->

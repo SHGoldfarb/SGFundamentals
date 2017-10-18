@@ -3,13 +3,22 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 router.get('excercises', '/', async (ctx) => {
-  const excercises = await ctx.orm.excercise.findAll();
+  let excercises;
+  if (ctx.request.query.tagFilter) {
+    const tag = await ctx.orm.tag.find({ where: { name: ctx.request.query.tagFilter } });
+    excercises = await tag.getExcercises({ include: [ctx.orm.user, ctx.orm.tag, ctx.orm.guide] });
+  } else {
+    excercises = await ctx.orm.excercise.findAll({ include: [ctx.orm.user, ctx.orm.tag, ctx.orm.guide] });
+  }
   await ctx.render('excercises/index', {
     excercises,
+    tags: await ctx.orm.tag.findAll(),
     newExcercisePath: ctx.router.url('excercisesNew'),
     buildExcercisePath: id => ctx.router.url('excercise', id),
     buildExcerciseEditPath: id => ctx.router.url('excercisesEdit', id),
     buildExcerciseDeletePath: id => ctx.router.url('excercisesDelete', id),
+    buildUserPath: id => ctx.router.url('user', id),
+    buildGuidePath: id => ctx.router.url('guide', id),
   });
 });
 

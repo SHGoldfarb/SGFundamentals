@@ -136,12 +136,18 @@ Containers
 }
 
 .landing.section {
-  font-size: 20px;
   a {
+    font-size: 20px;
     text-decoration: none;
+  }
+  p {
+    font-size: 14px;
+    margin: 0px;
+    margin-bottom: 5px;
   }
   div a {
     padding-right: 10px;
+    font-size: inherit;
   }
 }
 
