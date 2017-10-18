@@ -45,6 +45,7 @@ async function redirectIfNotAdmin() {
 }
 
 function isOwner(id) {
+  console.log(this.state.currentUser.id === id);
   return this.isLogged() && this.state.currentUser.id === id;
 }
 

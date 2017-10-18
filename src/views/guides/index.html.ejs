@@ -1,4 +1,38 @@
 <h1>Guias</h1>
+<div class="dropdown">
+  <input type="text" id="tagFilterInput" onkeyup="tagFilterFunction(0)" placeholder="Filtrar por etiqueta..">
+  <ul id="tagFilterUL">
+    <% tags.forEach(tag => { %>
+      <li><a href="<%= tagFilterURL(tag.id) %>"><%= tag.name %></a></li>
+      <% }) %>
+    </ul>
+</div>
+<% if (isLogged) { %>
+  <a href="<%= newGuidePath %>" class="end">Nueva Guía</a>
+<% } else { %>
+  <div style="height: 15px"></div>
+<% }%>
+<div class="landing section">
+  <% guides.reverse().forEach (guide => { %>
+    <a href="<%= buildGuidePath(guide.id) %>"><%= guide.title %></a>
+    <div class="in-line" style="font-size: 15px;">
+      By:&nbsp <a href="<%= buildUserPath(guide.user.id) %>"><%= guide.user.username %></a>
+      <%= guide.createdAt %>
+      <% if (isAdmin || isOwner(guide.user.id)) { %>
+        <a href="<%= buildGuideEditPath(guide.id)%>" style="padding-left: 15px">Editar</a>
+      <% } %>
+    </div>
+    <ul class="unstyled in-line tags">
+      <% guide.tags.forEach (tag => { %>
+        <li>
+          <%= tag.name %>
+        </li>
+      <% }) %>
+    </ul>
+  <% }) %>
+</div>
+
+<!-- <h1>Guias</h1>
 
 <% if (isLogged) { %>
   <a class="end" href="<%= newGuidePath %>">Crear Guia</a>
@@ -25,4 +59,4 @@
             </div>
         </div>
     <% })%>
-</div>
+</div> -->

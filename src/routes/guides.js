@@ -3,13 +3,22 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 router.get('guides', '/', async (ctx) => {
-  const guides = await ctx.orm.guide.findAll();
+  let guides;
+  if (ctx.request.query.tagFilter) {
+    const tag = await ctx.orm.tag.findById(ctx.request.query.tagFilter);
+    guides = await tag.getGuides({ include: [ctx.orm.user, ctx.orm.tag] });
+  } else {
+    guides = await ctx.orm.guide.findAll({ include: [ctx.orm.user, ctx.orm.tag] });
+  }
   await ctx.render('guides/index', {
     guides,
+    tags: await ctx.orm.tag.findAll(),
+    tagFilterURL: id => `${ctx.router.url('guides')}?tagFilter=${id}`,
     newGuidePath: ctx.router.url('guidesNew'),
     buildGuidePath: id => ctx.router.url('guide', id),
     buildGuideEditPath: id => ctx.router.url('guidesEdit', id),
     buildGuideDeletePath: id => ctx.router.url('guidesDelete', id),
+    buildUserPath: id => ctx.router.url('user', id),
   });
 });
 
