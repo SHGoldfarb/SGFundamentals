@@ -1,6 +1,6 @@
 body{
   // background: white;
-  background-image: url("https://static.pexels.com/photos/46274/pexels-photo-46274.jpeg");
+  background-image: url("https://s3.envato.com/files/145047564/minimalist%20polygonal%20background011.jpg");
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
@@ -46,7 +46,7 @@ $navbar_height: 70px;
 .nav{
   height: $navbar_height;
   width: 100%;
-  background: rgba(35, 189, 10, 0.80);
+  background: rgba(115, 160, 239, 0.80);
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
@@ -140,6 +140,9 @@ Containers
   a {
     text-decoration: none;
   }
+  div a {
+    padding-right: 10px;
+  }
 }
 
 /**
@@ -203,7 +206,7 @@ ul{
   &.tags {
     font-size:13px;
     li {
-      background: rgba(255, 200, 255, 0.50);
+      background: rgba(115, 160, 239, 0.40);
     }
   }
 }

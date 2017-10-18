@@ -7,9 +7,9 @@ router.get('questions', '/', async (ctx) => {
   let questions;
   if (ctx.request.query.tagFilter) {
     const tag = await ctx.orm.tag.findById(ctx.request.query.tagFilter);
-    questions = await tag.getQuestions();
+    questions = await tag.getQuestions({ include: [ctx.orm.user, ctx.orm.tag] });
   } else {
-    questions = await ctx.orm.question.findAll();
+    questions = await ctx.orm.question.findAll({ include: [ctx.orm.user, ctx.orm.tag] });
   }
   const tags = await ctx.orm.tag.findAll();
   await ctx.render('questions/index', {
@@ -20,6 +20,7 @@ router.get('questions', '/', async (ctx) => {
     buildQuestionPath: id => ctx.router.url('question', { id }),
     buildQuestionEditPath: id => ctx.router.url('questionsEdit', { id }),
     buildQuestionDeletePath: id => ctx.router.url('questionsDelete', { id }),
+    buildUserPath: id => ctx.router.url('user', { id }),
   });
 });
 

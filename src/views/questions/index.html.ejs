@@ -7,10 +7,31 @@
       <% }) %>
     </ul>
 </div>
-
 <% if (isLogged) { %>
   <a href="<%= newQuestionPath %>" class="end">Hacer Pregunta</a>
-<% } %>
+<% } else { %>
+  <div style="height: 15px"></div>
+<% }%>
+<div class="landing section">
+  <% questions.reverse().forEach (question => { %>
+    <a href="<%= buildQuestionPath(question.id) %>"><%= question.title %></a>
+    <div class="in-line" style="font-size: 15px;">
+      By:&nbsp <a href="<%= buildUserPath(question.user.id) %>"><%= question.user.username %></a>
+      <%= question.createdAt %>
+      <% if (isAdmin || isOwner(question.user.id)) { %>
+        <a href="<%= buildQuestionEditPath(question.id)%>" style="padding-left: 15px">Editar</a>
+      <% } %>
+    </div>
+    <ul class="unstyled in-line tags">
+      <% question.tags.forEach (tag => { %>
+        <li>
+          <%= tag.name %>
+        </li>
+      <% }) %>
+    </ul>
+  <% }) %>
+</div>
+<!--
 <div class="row">
     <% questions.reverse().forEach(question =>{ %>
         <div class="col">
@@ -36,4 +57,4 @@
             </div>
         </div>
     <% })%>
-</div>
+</div> -->
