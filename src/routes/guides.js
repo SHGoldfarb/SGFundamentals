@@ -5,7 +5,7 @@ const router = new KoaRouter();
 router.get('guides', '/', async (ctx) => {
   let guides;
   if (ctx.request.query.tagFilter) {
-    const tag = await ctx.orm.tag.findById(ctx.request.query.tagFilter);
+    const tag = await ctx.orm.tag.find({ where: { name: ctx.request.query.tagFilter } });
     guides = await tag.getGuides({ include: [ctx.orm.user, ctx.orm.tag] });
   } else {
     guides = await ctx.orm.guide.findAll({ include: [ctx.orm.user, ctx.orm.tag] });

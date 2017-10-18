@@ -3,10 +3,9 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 router.get('questions', '/', async (ctx) => {
-  console.log(ctx.request.query);
   let questions;
   if (ctx.request.query.tagFilter) {
-    const tag = await ctx.orm.tag.findById(ctx.request.query.tagFilter);
+    const tag = await ctx.orm.tag.find({ where: { name: ctx.request.query.tagFilter } });
     questions = await tag.getQuestions({ include: [ctx.orm.user, ctx.orm.tag] });
   } else {
     questions = await ctx.orm.question.findAll({ include: [ctx.orm.user, ctx.orm.tag] });
