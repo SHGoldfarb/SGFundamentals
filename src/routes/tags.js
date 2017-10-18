@@ -4,7 +4,10 @@ const router = new KoaRouter();
 
 router.post('tagsCreate', '/', async (ctx) => {
   if (!await ctx.redirectIfNotAdmin()) {
-    const tag = await ctx.orm.tag.create(ctx.request.body);
+    let tag = await ctx.orm.tag.find({ where: { name: ctx.request.body.name } });
+    if (!tag) {
+      tag = await ctx.orm.tag.create(ctx.request.body);
+    }
     if (ctx.request.body.questionId) {
       await tag.addQuestion(await ctx.orm.question.findById(ctx.request.body.questionId));
     }

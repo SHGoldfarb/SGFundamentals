@@ -32,32 +32,3 @@
     </ul>
   <% }) %>
 </div>
-
-<!-- <h1>Guias</h1>
-
-<% if (isLogged) { %>
-  <a class="end" href="<%= newGuidePath %>">Crear Guia</a>
-<% } %>
-<div class="row">
-    <% guides.reverse().forEach(guide =>{ %>
-        <div class="col-fill">
-            <div class="panel">
-                <a href="<%= buildGuidePath(guide.id) %>">#<%= guide.id + ' ' + guide.title%></a>
-                <ul>
-                    <li><a href="<%= buildGuidePath(guide.id) %>">Ver</a></li>
-                    <% if (isAdmin) { %>
-                      <li><a href="<%= buildGuideEditPath(guide.id)%>">Editar</a></li>
-                      <li>
-                        <form action="<%= buildGuideDeletePath(guide.id) %>" method="post">
-                          <input type="hidden" name="_method" value="delete" />
-                          <div>
-                            <input type="submit" name="delete" value="Eliminar" />
-                          </div>
-                        </form>
-                      </li>
-                    <% } %>
-                </ul>
-            </div>
-        </div>
-    <% })%>
-</div> -->
