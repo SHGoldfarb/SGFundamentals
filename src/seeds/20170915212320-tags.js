@@ -6,7 +6,7 @@ module.exports = {
     const data = [];
     for (let i = 0; i < quantity; i += 1) {
       data.push({
-        name: faker.lorem.word(),
+        name: `${faker.lorem.word()}tag`,
         createdAt: new Date(),
         updatedAt: new Date(),
       });

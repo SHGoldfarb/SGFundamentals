@@ -15,7 +15,7 @@ module.exports = {
         c = faker.random.number({ min: 1, max: i - 1 });
       }
       data.push({
-        content: faker.lorem.paragraph(),
+        content: `${faker.lorem.sentence(1).slice(0, -1)} comment ${faker.lorem.paragraph()}`,
         userId: faker.random.number({ min: 1, max: 10 }),
         commentId: c,
         questionId: q,

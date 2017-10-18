@@ -6,7 +6,7 @@ module.exports = {
     const data = [];
     for (let i = 0; i < quantity; i += 1) {
       data.push({
-        content: faker.lorem.sentence(),
+        content: `${faker.lorem.sentence(1).slice(0, -1)} excercise ${faker.lorem.sentence()}`,
         guideId: faker.random.number({ min: 1, max: 5 }),
         userId: faker.random.number({ min: 1, max: 10 }),
         createdAt: new Date(),

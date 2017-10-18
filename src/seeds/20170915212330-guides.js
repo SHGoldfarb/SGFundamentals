@@ -6,7 +6,7 @@ module.exports = {
     const data = [];
     for (let i = 0; i < quantity; i += 1) {
       data.push({
-        title: faker.lorem.sentence(),
+        title: `${faker.lorem.sentence(1).slice(0, -1)} guide ${faker.lorem.sentence()}`,
         userId: faker.random.number({ min: 1, max: 10 }),
         createdAt: new Date(),
         updatedAt: new Date(),
