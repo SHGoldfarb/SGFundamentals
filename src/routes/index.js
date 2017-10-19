@@ -16,9 +16,6 @@ router.get('index', '/', async (ctx) => {
       limit: 5,
       include: [ctx.orm.tag, ctx.orm.user],
     }),
-    buildQuestionPath: id => ctx.router.url('question', { id }),
-    buildGuidePath: id => ctx.router.url('guide', { id }),
-    buildUserPath: id => ctx.router.url('user', { id }),
   });
 });
 

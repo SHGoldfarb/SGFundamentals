@@ -2,37 +2,34 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+router.use('/', async (ctx, next) => {
+  ctx.state.submitCommentPath = ctx.router.url('commentsCreate');
+  ctx.state.backToListPath = ctx.router.url('comments');
+  await next();
+});
+
 router.get('comments', '/', async (ctx) => {
   if (!await ctx.redirectIfNotAdmin()) {
     const comments = await ctx.orm.comment.findAll();
     await ctx.render('comments/index', {
       comments,
-      newCommentPath: ctx.router.url('commentsNew'),
-      buildCommentPath: id => ctx.router.url('comment', { id }),
-      buildCommentEditPath: id => ctx.router.url('commentsEdit', { id }),
-      buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
     });
   }
 });
 
 router.get('commentsNew', '/new', async (ctx) => {
-  if (!await ctx.redirectIfNotAdmin()) {
-    const comment = await ctx.orm.comment.build();
-    await ctx.render('comments/new', {
-      comment,
-      submitCommentPath: ctx.router.url('commentsCreate'),
-      backToListPath: ctx.router.url('comments'),
-    });
-  }
+  throw new Error('Not Found');
+  // if (!await ctx.redirectIfNotAdmin()) {
+  //   const comment = await ctx.orm.comment.build();
+  //   await ctx.render('comments/new', {
+  //     comment,
+  //     backToListPath: ctx.router.url('comments'),
+  //   });
+  // }
 });
 
 router.post('commentsCreate', '/', async (ctx) => {
-  if (!ctx.redirectIfNotLogged()) {
-    // Temporal!----
-    ctx.request.body.commentId = ctx.request.body.commentId === '' ? null : ctx.request.body.commentId;
-    ctx.request.body.questionId = ctx.request.body.questionId === '' ? null : ctx.request.body.questionId;
-    ctx.request.body.excerciseId = ctx.request.body.excerciseId === '' ? null : ctx.request.body.excerciseId;
-    //  ---Temporal
+  if (!await ctx.redirectIfNotOwnerOrAdmin(ctx.request.body.userId)) {
     try {
       const comment = await ctx.orm.comment.create(ctx.request.body);
       if (!ctx.request.body.returnPath) {
@@ -40,12 +37,9 @@ router.post('commentsCreate', '/', async (ctx) => {
       }
       ctx.redirect(ctx.request.body.returnPath);
     } catch (validationError) {
-      await ctx.render('comments/new', {
-        comment: ctx.orm.comment.build(ctx.request.body),
-        submitCommentPath: ctx.router.url('commentsCreate'),
-        backToListPath: ctx.router.url('comments'),
-        error: validationError,
-      });
+      console.log('Catched error in router-commentsCreate:');
+      console.log(validationError.message);
+      await ctx.redirect(ctx.state.currentUrl);
     }
   }
 });
@@ -74,14 +68,10 @@ router.get('comment', '/:id', async (ctx) => {
     comment,
     editCommentPath: ctx.router.url('commentsEdit', { id: ctx.params.id }),
     deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
-    backToListPath: ctx.router.url('comments'),
     comments,
-    createCommentPath: ctx.router.url('commentsCreate'),
     returnPath: ctx.router.url('comment', { id: ctx.params.id }),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
-    buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
     parentPath: ctx.router.url(parent, { id: parentId }),
-    buildCommentPath: id => ctx.router.url('comment', { id }),
   });
 });
 
@@ -92,17 +82,11 @@ router.get('commentsEdit', '/:id/edit', async (ctx) => {
       comment,
       submitCommentPath: ctx.router.url('commentsUpdate', { id: ctx.params.id }),
       deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
-      backToListPath: ctx.router.url('comments'),
     });
   }
 });
 
 router.patch('commentsUpdate', '/:id', async (ctx) => {
-  // Temporal! ----
-  ctx.request.body.commentId = ctx.request.body.commentId === '' ? null : ctx.request.body.commentId;
-  ctx.request.body.questionId = ctx.request.body.questionId === '' ? null : ctx.request.body.questionId;
-  ctx.request.body.excerciseId = ctx.request.body.excerciseId === '' ? null : ctx.request.body.excerciseId;
-  //  ---- Temporal
   const comment = await ctx.orm.comment.findById(ctx.params.id);
   if (!(await ctx.redirectIfNotOwnerOrAdmin(comment.userId))) {
     try {
@@ -114,7 +98,6 @@ router.patch('commentsUpdate', '/:id', async (ctx) => {
         comment,
         submitCommentPath: ctx.router.url('commentsUpdate', { id: ctx.params.id }),
         deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
-        backToListPath: ctx.router.url('comments'),
         error: validationError,
       });
     }

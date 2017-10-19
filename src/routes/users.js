@@ -4,6 +4,11 @@ const sendWelcomeEmail = require('../mailers/welcome');
 
 const router = new KoaRouter();
 
+router.use('/', async (ctx, next) => {
+  ctx.state.submitUserPath = ctx.router.url('usersCreate');
+  await next();
+});
+
 
 // GET /users
 router.get('users', '/', async (ctx) => {
@@ -15,12 +20,10 @@ router.get('users', '/', async (ctx) => {
       users,
       roles,
       newUserPath: ctx.router.url('usersNew'),
-      buildUserPath: user =>
-        ctx.router.url('user', { id: user.id }),
-      buildEditUserPath: user =>
-        ctx.router.url('usersEdit', { id: user.id }),
-      buildChangeRolesPath: user =>
-        ctx.router.url('usersChangeRole', { id: user.id }),
+      buildEditUserPath: id =>
+        ctx.router.url('usersEdit', { id }),
+      buildChangeRolesPath: id =>
+        ctx.router.url('usersChangeRole', { id }),
     });
   }
 });
@@ -31,7 +34,6 @@ router.get('usersNew', '/new', async (ctx) => {
     const user = ctx.orm.user.build();
     return ctx.render('users/new', {
       user,
-      submitUserPath: ctx.router.url('usersCreate'),
     });
   }
   return null;
@@ -44,7 +46,6 @@ router.post('usersCreate', '/', async (ctx) => {
     if (ctx.request.body.password !== ctx.request.body.passwordR) {
       return ctx.render('users/new', {
         user,
-        submitUserPath: ctx.router.url('usersCreate'),
         error: 'Las contraseñas no coinciden.',
       });
     }

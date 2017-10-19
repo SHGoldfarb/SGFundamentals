@@ -2,6 +2,11 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+router.use('/', async (ctx, next) => {
+  ctx.state.submitGuidePath = ctx.router.url('guidesCreate');
+  await next();
+});
+
 router.get('guides', '/', async (ctx) => {
   let guides;
   if (ctx.request.query.tagFilter) {
@@ -16,12 +21,8 @@ router.get('guides', '/', async (ctx) => {
   await ctx.render('guides/index', {
     guides,
     tags: await ctx.orm.tag.findAll(),
-    tagFilterURL: id => `${ctx.router.url('guides')}?tagFilter=${id}`,
     newGuidePath: ctx.router.url('guidesNew'),
-    buildGuidePath: id => ctx.router.url('guide', id),
     buildGuideEditPath: id => ctx.router.url('guidesEdit', id),
-    buildGuideDeletePath: id => ctx.router.url('guidesDelete', id),
-    buildUserPath: id => ctx.router.url('user', id),
   });
 });
 
@@ -30,7 +31,6 @@ router.get('guidesNew', '/new', async (ctx) => {
     const guide = await ctx.orm.guide.build();
     await ctx.render('guides/new', {
       guide,
-      submitGuidePath: ctx.router.url('guidesCreate'),
       backToListPath: ctx.router.url('guides'),
     });
   }
@@ -44,7 +44,6 @@ router.post('guidesCreate', '/', async (ctx) => {
     } catch (validationError) {
       await ctx.render('guides/new', {
         guide: ctx.orm.guide.build(ctx.request.body),
-        submitGuidePath: ctx.router.url('guidesCreate'),
         backToListPath: ctx.router.url('guides'),
         error: validationError,
       });
@@ -67,14 +66,8 @@ router.get('guide', '/:id', async (ctx) => {
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
     returnPath: ctx.router.url('guide', { id: ctx.params.id }),
     tags: await guide.getTags(),
-    createTagPath: ctx.router.url('tagsCreate'),
-    buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
     excercise: await ctx.orm.excercise.build(),
-    submitExcercisePath: ctx.router.url('excercisesCreate'),
     excercises: await guide.getExcercises(),
-    buildExcerciseDeletePath: id => ctx.router.url('excercisesDelete', { id }),
-    buildExcercisePath: id => ctx.router.url('excercise', { id }),
-    buildExcerciseEditPath: id => ctx.router.url('excercisesEdit', { id }),
   });
 });
 

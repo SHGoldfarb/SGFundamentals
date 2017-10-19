@@ -12,7 +12,7 @@
       <% users.forEach((user, i) => { %>
         <tr>
           <td><%= i+1 %></td>
-          <td><a href="<%= buildUserPath(user) %>"><%= user.username %></a></td>
+          <td><a href="<%= buildUserPath(user.id) %>"><%= user.username %></a></td>
           <td><%= user.email %></td>
           <td>
             <table class="table">
@@ -23,7 +23,7 @@
                   <th><%= role.tag %></th>
                   <td><%= activeRole ? "Si" : "No" %></td>
                   <td>
-                    <form method="post" action="<%= buildChangeRolesPath(user) %>">
+                    <form method="post" action="<%= buildChangeRolesPath(user.id) %>">
                       <input type="hidden" name="_method" value="patch">
                       <input type="hidden" name="type" value="<%= activeRole ? "remove" : "add" %>">
                       <input type="hidden" name="roleId" value="<%= role.id %>">
@@ -37,8 +37,8 @@
           </td>
           <td>
             <ul class="unstyled">
-              <li><a href="<%= buildUserPath(user) %>">Ver</a></li>
-              <li><a href="<%= buildEditUserPath(user) %>">Editar</a></li>
+              <li><a href="<%= buildUserPath(user.id) %>">Ver</a></li>
+              <li><a href="<%= buildEditUserPath(user.id) %>">Editar</a></li>
             </ul>
           </td>
         </tr>

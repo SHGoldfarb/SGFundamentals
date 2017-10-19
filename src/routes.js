@@ -37,7 +37,6 @@ async function isAdmin() {
 
 async function redirectIfNotAdmin() {
   if (!(await this.isAdmin())) {
-    this.status = 401;
     throw new Error('Unauthorized');
     // return true;
   }
@@ -94,8 +93,10 @@ router.use('/', async (ctx, next) => {
     console.log('Catched error:');
     console.log(err.stack);
     if (err.message === 'Not Found') {
+      ctx.status = 404;
       await ctx.render('errors/404');
     } else if (err.message === 'Unauthorized') {
+      ctx.status = 401;
       await ctx.render('errors/401');
     } else {
       throw err;
@@ -103,6 +104,23 @@ router.use('/', async (ctx, next) => {
   }
 });
 
+router.use('/', async (ctx, next) => {
+  ctx.state.newCommentPath = ctx.router.url('commentsNew');
+  ctx.state.createCommentPath = ctx.router.url('commentsCreate');
+  ctx.state.buildCommentPath = function _(id) { return ctx.router.url('comment', { id }); };
+  ctx.state.buildCommentEditPath = function _(id) { return ctx.router.url('commentsEdit', { id }); };
+  ctx.state.buildCommentDeletePath = function _(id) { return ctx.router.url('commentsDelete', { id }); };
+  ctx.state.buildUserPath = function _(id) { return ctx.router.url('user', { id }); };
+  ctx.state.buildQuestionPath = function _(id) { return ctx.router.url('question', { id }); };
+  ctx.state.submitExcercisePath = ctx.router.url('excercisesCreate');
+  ctx.state.buildExcercisePath = function _(id) { return ctx.router.url('excercise', { id }); };
+  ctx.state.buildExcerciseEditPath = function _(id) { return ctx.router.url('excercisesEdit', { id }); };
+  ctx.state.buildExcerciseDeletePath = function _(id) { return ctx.router.url('excercisesDelete', { id }); };
+  ctx.state.buildGuidePath = function _(id) { return ctx.router.url('guide', { id }); };
+  ctx.state.createTagPath = ctx.router.url('tagsCreate');
+  ctx.state.buildTagDeletePath = function _(id) { return ctx.router.url('tagsDelete', { id }); };
+  await next();
+});
 
 router.use('/', index.routes());
 router.use('/hello', hello.routes());

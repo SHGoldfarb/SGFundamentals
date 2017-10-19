@@ -4,6 +4,12 @@ const _ = require('lodash');
 
 const router = new KoaRouter();
 
+router.use('/', async (ctx, next) => {
+  ctx.state.submitFilePath = ctx.router.url('filesCreate');
+  await next();
+});
+
+
 router.get('files', '/', async (ctx) => {
   const files = await ctx.orm.file.findAll();
   await ctx.render('files/index', {
@@ -20,7 +26,6 @@ router.get('filesNew', '/new', async (ctx) => {
     const file = await ctx.orm.file.build();
     await ctx.render('files/new', {
       file,
-      submitFilePath: ctx.router.url('filesCreate'),
       backToListPath: ctx.router.url('files'),
     });
   }
@@ -44,7 +49,6 @@ router.post('filesCreate', '/', async (ctx) => {
     } catch (validationError) {
       await ctx.render('files/new', {
         file: ctx.orm.file.build(ctx.request.body),
-        submitFilePath: ctx.router.url('filesCreate'),
         backToListPath: ctx.router.url('files'),
         error: validationError,
       });
@@ -67,8 +71,6 @@ router.get('file', '/:id', async (ctx) => {
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
     returnPath: ctx.router.url('file', { id: ctx.params.id }),
     tags: await file.getTags(),
-    createTagPath: ctx.router.url('tagsCreate'),
-    buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
     downloadPath: ctx.router.url('fileDownload', { filename: file.filename }),
   });
 });

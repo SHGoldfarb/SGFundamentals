@@ -2,6 +2,13 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+
+router.use('/', async (ctx, next) => {
+  ctx.state.submitQuestionPath = ctx.router.url('questionsCreate');
+  await next();
+});
+
+
 router.get('questions', '/', async (ctx) => {
   let questions;
   if (ctx.request.query.tagFilter) {
@@ -17,12 +24,8 @@ router.get('questions', '/', async (ctx) => {
   await ctx.render('questions/index', {
     questions,
     tags,
-    tagFilterURL: id => `${ctx.router.url('questions')}?tagFilter=${id}`,
     newQuestionPath: ctx.router.url('questionsNew'),
-    buildQuestionPath: id => ctx.router.url('question', { id }),
     buildQuestionEditPath: id => ctx.router.url('questionsEdit', { id }),
-    buildQuestionDeletePath: id => ctx.router.url('questionsDelete', { id }),
-    buildUserPath: id => ctx.router.url('user', { id }),
   });
 });
 
@@ -31,7 +34,6 @@ router.get('questionsNew', '/new', async (ctx) => {
     const question = await ctx.orm.question.build();
     await ctx.render('questions/new', {
       question,
-      submitQuestionPath: ctx.router.url('questionsCreate'),
       backToListPath: ctx.router.url('questions'),
     });
   }
@@ -45,7 +47,6 @@ router.post('questionsCreate', '/', async (ctx) => {
     } catch (validationError) {
       await ctx.render('questions/new', {
         question: ctx.orm.question.build(ctx.request.body),
-        submitQuestionPath: ctx.router.url('questionsCreate'),
         backToListPath: ctx.router.url('questions'),
         error: validationError,
       });
@@ -65,15 +66,10 @@ router.get('question', '/:id', async (ctx) => {
     editQuestionPath: ctx.router.url('questionsEdit', { id: ctx.params.id }),
     deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('questions'),
-    createCommentPath: ctx.router.url('commentsCreate'),
     returnPath: ctx.router.url('question', { id: ctx.params.id }),
     comments: await question.getComments({ include: [ctx.orm.user] }),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
     tags: await question.getTags(),
-    createTagPath: ctx.router.url('tagsCreate'),
-    buildTagDeletePath: id => ctx.router.url('tagsDelete', { id }),
-    buildCommentDeletePath: id => ctx.router.url('commentsDelete', { id }),
-    buildCommentPath: id => ctx.router.url('comment', { id }),
   });
 });
 
