@@ -55,7 +55,9 @@ router.post('questionsCreate', '/', async (ctx) => {
 });
 
 router.get('question', '/:id', async (ctx) => {
-  const question = await ctx.orm.question.findById(ctx.params.id);
+  const question = await ctx.orm.question.findById(ctx.params.id, {
+    include: [ctx.orm.user, ctx.orm.tag],
+  });
   if (!question) {
     ctx.status = 404;
     throw new Error('Not Found');
@@ -69,7 +71,6 @@ router.get('question', '/:id', async (ctx) => {
     returnPath: ctx.router.url('question', { id: ctx.params.id }),
     comments: await question.getComments({ include: [ctx.orm.user] }),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
-    tags: await question.getTags(),
   });
 });
 

@@ -50,29 +50,34 @@ router.get('comment', '/:id', async (ctx) => {
     ctx.status = 404;
     throw new Error('Not Found');
   }
-  const comments = await comment.getComments({ include: [ctx.orm.user] });
-  const owner = await comment.getUser();
-  let parent;
-  let parentId;
-  if (comment.questionId) {
-    parent = 'question';
-    parentId = comment.questionId;
-  } else if (comment.excerciseId) {
-    parent = 'excercise';
-    parentId = comment.excerciseId;
-  } else {
-    parent = 'comment';
-    parentId = comment.commentId;
-  }
-  await ctx.render('comments/show', {
-    comment,
-    editCommentPath: ctx.router.url('commentsEdit', { id: ctx.params.id }),
-    deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
-    comments,
-    returnPath: ctx.router.url('comment', { id: ctx.params.id }),
-    isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
-    parentPath: ctx.router.url(parent, { id: parentId }),
-  });
+  const parent = await comment.getParent();
+  const parentType = await comment.getParentTypeStr();
+  console.log(parentType + parent.id);
+  ctx.redirect(ctx.router.url(parentType, { id: parent.id }));
+
+  // const comments = await comment.getComments({ include: [ctx.orm.user] });
+  // const owner = await comment.getUser();
+  // let parent;
+  // let parentId;
+  // if (comment.questionId) {
+  //   parent = 'question';
+  //   parentId = comment.questionId;
+  // } else if (comment.excerciseId) {
+  //   parent = 'excercise';
+  //   parentId = comment.excerciseId;
+  // } else {
+  //   parent = 'comment';
+  //   parentId = comment.commentId;
+  // }
+  // await ctx.render('comments/show', {
+  //   comment,
+  //   editCommentPath: ctx.router.url('commentsEdit', { id: ctx.params.id }),
+  //   deleteCommentPath: ctx.router.url('commentsDelete', { id: ctx.params.id }),
+  //   comments,
+  //   returnPath: ctx.router.url('comment', { id: ctx.params.id }),
+  //   isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
+  //   parentPath: ctx.router.url(parent, { id: parentId }),
+  // });
 });
 
 router.get('commentsEdit', '/:id/edit', async (ctx) => {

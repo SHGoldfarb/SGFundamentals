@@ -15,7 +15,6 @@ router.get('users', '/', async (ctx) => {
   if (!await ctx.redirectIfNotAdmin()) {
     const users = await ctx.orm.user.findAll({ include: [ctx.orm.role] });
     const roles = await ctx.orm.role.findAll();
-    console.log(users);
     await ctx.render('users/index', {
       users,
       roles,
@@ -60,7 +59,6 @@ router.post('usersCreate', '/', async (ctx) => {
     await user.save({ fields: ['username', 'email', 'password'] });
     await user.addRole(role);
     ctx.session.userId = user.id;
-    console.log(process.env.SENDGRID_USER);
     sendWelcomeEmail(ctx, user);
     return ctx.redirect('/');
   }
@@ -86,7 +84,6 @@ router.get('user', '/:id', async (ctx) => {
 
 // GET /user/1/edit
 router.get('usersEdit', '/:id/edit', async (ctx) => {
-  console.log(ctx.state.currentUser.id);
   if (!await ctx.redirectIfNotOwnerOrAdmin(Number(ctx.params.id))) {
     const user = await ctx.orm.user.findById(ctx.params.id);
     await ctx.render('users/edit', {

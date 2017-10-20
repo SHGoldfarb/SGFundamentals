@@ -5,7 +5,7 @@ module.exports = {
     const quantity = 180;
     const data = [];
     for (let i = 0; i < quantity; i += 1) {
-      const parentType = faker.random.number({ min: 1, max: 3 });
+      const parentType = faker.random.number({ min: 1, max: 2 });
       let { c, q, e } = { c: null, q: null, e: null };
       if (parentType === 1 || i < 3) {
         e = faker.random.number({ min: 1, max: 25 });

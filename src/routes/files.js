@@ -43,7 +43,6 @@ router.post('filesCreate', '/', async (ctx) => {
         ...ctx.request.body.fields,
         filename: uploads.name,
       });
-      console.log(ctx.request.body);
       file.setUser(ctx.state.currentUser);
       ctx.redirect(ctx.router.url('file', { id: file.id }));
     } catch (validationError) {

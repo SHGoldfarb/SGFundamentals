@@ -1,25 +1,29 @@
-<h1>Pregunta #<%= question.id %></h1>
-
 <p>
-  <h3><%= question.title %></h3>
+  <ul class="unstyled in-line tags">
+    <% question.tags.forEach (tag => { %>
+      <li class="in-line">
+        <%= tag.name %>
+        <% if (isAdmin) { %>
+          <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+            <button class="close-icon" type="submit">X</button>
+          </form>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+  <h2><%= question.title %></h2>
   <br />
   <%= question.content %>
-</p>
-
-<ul class="unstyled">
+  <div style="font-size: 14px">
+    <br />
+    By <a href="<%= buildUserPath(question.user.id) %>"><%= question.user.username %></a>
     <% if (isOwnerOrAdmin) { %>
-      <li><a href="<%= editQuestionPath %>">Editar</a></li>
-      <li>
-        <form action="<%= deleteQuestionPath %>" method="post">
-          <input type="hidden" name="_method" value="delete" />
-          <div>
-            <input type="submit" name="delete" value="Eliminar" />
-          </div>
-        </form>
-      </li>
+      <a href="<%= editQuestionPath %>">Editar</a>
     <% } %>
-    <li><a href="<%= backToListPath %>">Volver</a></li>
-</ul>
+  </div>
+</p>
 
 <% if (isAdmin) { %>
   <form action="<%= createTagPath %>" method="post">
@@ -31,29 +35,6 @@
       <input type="submit" name="answer" value="Crear Tag" />
     </div>
   </form>
-<% } %>
-
-<% if (tags.length > 0) { %>
-  Tags:
-  <ul>
-    <% tags.forEach(tag => { %>
-      <li class="in-line">
-        <%= '  ' + tag.name %>
-        <% if (isAdmin) { %>
-          <span style="display: inline">
-            <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-              <div>
-                <input type="submit" name="delete" value="Eliminar" />
-              </div>
-            </form>
-          </span>
-        <% } %>
-        <br />
-      </li>
-    <% }) %>
-  </ul>
 <% } %>
 
 <% if (currentUser) { %>

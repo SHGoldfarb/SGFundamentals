@@ -288,3 +288,16 @@ Varios
   display: flex;
   flex-flow: row nowrap;
 }
+
+.close-icon {
+  // text-align: center;
+  // vertical-align: middle;
+  padding: 0px 2px 2px 2px;
+  margin-left: 4px;
+	border: 1px solid transparent;
+	width: 13px;
+	height: 13px;
+	background-color: #9595FA;
+	box-shadow: 0 0 2px #0F0FE5;
+  font-size: 12px;
+}
