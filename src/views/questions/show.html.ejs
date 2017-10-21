@@ -14,8 +14,28 @@
     <% }) %>
   </ul>
   <h2><%= question.title %></h2>
-  <br />
-  <%= question.content %>
+  <div class="row nowrap">
+    <div class="votes-div">
+        <% if (isLogged) { %>
+        <% const myVote = question.votes.find(v => v.userId === currentUser.id) %>
+        <form action="<%= voteQuestionPath %>" method="post">
+          <input type="hidden" name="type" value="<%= 1 %>" >
+          <input type="submit" class="triangle triangle-up <%= myVote ? (myVote.type ? "selected" : "") : "" %>">
+        </form>
+        <% } %>
+        <p class="votes-count <%= votesAmountByType(true) - votesAmountByType(false) < 0 ? "negative" : "" %>">
+          <%= votesAmountByType(true) - votesAmountByType(false) %>
+        </p>
+        <% if (isLogged) { %>
+        <% const myVote = question.votes.find(v => v.userId === currentUser.id) %>
+        <form action="<%= voteQuestionPath %>" method="post">
+            <input type="hidden" name="type" value="<%= 0 %>" >
+            <input type="submit" class="triangle triangle-down <%= myVote ? (!myVote.type ? "selected" : "") : "" %>">
+        </form>
+        <% } %>
+    </div>
+    <p><%= question.content %></p>
+  </div>
   <div style="font-size: 14px">
     <br />
     By <a href="<%= buildUserPath(question.user.id) %>"><%= question.user.username %></a>

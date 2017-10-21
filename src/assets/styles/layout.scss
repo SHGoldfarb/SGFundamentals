@@ -119,6 +119,9 @@ Containers
   flex-flow: row wrap;
   justify-content: center;
 }
+.row.nowrap {
+  flex-wrap: nowrap;
+}
 
 .col-fill{
   flex: 1 0 auto;
@@ -276,4 +279,46 @@ Varios
 .subcomment-box {
   background-color: rgba(220, 220, 220, 0.70);
   margin: 5px;
+}
+
+/**
+  Votes
+**/
+.votes-div {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  margin: 0 15px 0 0;
+}
+
+.triangle {
+  background: transparent;
+  width: 0;
+  height: 0;
+  padding: 0;
+  border: none;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  margin-bottom: 5px;
+  cursor: pointer;
+  &.triangle-down {
+    border-top: 20px solid lightblue;
+    &:hover, &.selected {
+      border-top-color: blue;
+    }
+  }
+  &.triangle-up {
+    border-bottom: 20px solid lightblue;
+    &:hover, &.selected {
+      border-bottom-color: blue;
+    }
+  }
+}
+
+.votes-count {
+  font-weight: 800;
+  color: #0F0FE5;
+  &.negative {
+    color: red;
+  }
 }

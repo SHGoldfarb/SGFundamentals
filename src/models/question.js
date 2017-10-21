@@ -12,6 +12,7 @@ module.exports = function definequestion(sequelize, DataTypes) {
     question.belongsTo(models.user);
     question.hasMany(models.comment);
     question.belongsToMany(models.tag, { through: 'questiontags' });
+    question.hasMany(models.vote);
   };
   return question;
 };
