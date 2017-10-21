@@ -10,5 +10,18 @@ module.exports = (sequelize, DataTypes) => {
     vote.belongsTo(models.solution);
     vote.belongsTo(models.user);
   };
+  vote.prototype.setResource = function setResource(resource) {
+    switch (resource._modelOptions.name.singular) {
+      case 'question':
+        this.setQuestion(resource);
+        break;
+      case 'comment':
+        this.setComment(resource);
+        break;
+      default:
+        break;
+    }
+  };
+
   return vote;
 };

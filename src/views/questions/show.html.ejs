@@ -15,25 +15,7 @@
   </ul>
   <h2><%= question.title %></h2>
   <div class="row nowrap">
-    <div class="votes-div">
-        <% if (isLogged) { %>
-        <% const myVote = question.votes.find(v => v.userId === currentUser.id) %>
-        <form action="<%= voteQuestionPath %>" method="post">
-          <input type="hidden" name="type" value="<%= 1 %>" >
-          <input type="submit" class="triangle triangle-up <%= myVote ? (myVote.type ? "selected" : "") : "" %>">
-        </form>
-        <% } %>
-        <p class="votes-count <%= votesAmountByType(true) - votesAmountByType(false) < 0 ? "negative" : "" %>">
-          <%= votesAmountByType(true) - votesAmountByType(false) %>
-        </p>
-        <% if (isLogged) { %>
-        <% const myVote = question.votes.find(v => v.userId === currentUser.id) %>
-        <form action="<%= voteQuestionPath %>" method="post">
-            <input type="hidden" name="type" value="<%= 0 %>" >
-            <input type="submit" class="triangle triangle-down <%= myVote ? (!myVote.type ? "selected" : "") : "" %>">
-        </form>
-        <% } %>
-    </div>
+    <%- include("../votes/_voting", { votes: question.votes, resource: 'question', id: question.id }) %>
     <p><%= question.content %></p>
   </div>
   <div style="font-size: 14px">
@@ -76,7 +58,10 @@
   <div class="comment-box">
     <div class="in-line">
       <div class="comment-content" style="margin-right: 20px">
-        <%= comment.content %>
+        <div class="row nowrap">
+          <%- include("../votes/_voting", { votes: comment.votes,  resource: 'comment', id: comment.id }) %>
+          <%= comment.content %>
+        </div>
         <div class="in-line" style="margin-top: 10px; font-size: 14px">
           By:&nbsp <a href="<%= buildUserPath(comment.user.id) %>"><%= comment.user.username %></a>
           &nbsp <%= comment.createdAt %>
@@ -111,7 +96,10 @@
     <% if (comment.child.length > 0) { %>
       <% comment.child.forEach (comment2 => { %>
         <div class="subcomment-box" style="margin-left: 50px">
-          <%= comment2.content %>
+          <div class="row nowrap">
+            <%- include("../votes/_voting", { votes: comment2.votes, resource: 'comment', id: comment2.id }) %>
+            <%= comment2.content %>
+          </div>
           <div class="in-line" style="margin-top: 10px; font-size: 14px">
             By:&nbsp <a href="<%= buildUserPath(comment2.user.id) %>"><%= comment2.user.username %></a>
             &nbsp <%= comment2.createdAt %>

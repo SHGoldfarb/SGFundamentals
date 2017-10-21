@@ -67,8 +67,8 @@ router.get('question', '/:id', async (ctx) => {
     include: [ctx.orm.user, {
       model: ctx.orm.comment,
       as: 'child',
-      include: [ctx.orm.user],
-    }] });
+      include: [ctx.orm.user, ctx.orm.vote],
+    }, ctx.orm.vote] });
   const owner = await question.getUser();
   await ctx.render('questions/show', {
     question,
@@ -78,9 +78,7 @@ router.get('question', '/:id', async (ctx) => {
     returnPath: ctx.router.url('question', { id: ctx.params.id }),
     comments,
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
-    voteQuestionPath: ctx.router.url('questionVote', { id: ctx.params.id }),
-    votesAmountByType: type => _.filter(question.votes, { type }).length,
-
+    voteQuestionPath: ctx.router.url('questionVote', { id: ctx.params.id }),    
   });
 });
 
@@ -122,28 +120,6 @@ router.delete('questionsDelete', '/:id', async (ctx) => {
     await question.destroy();
     ctx.redirect(ctx.router.url('questions'));
   }
-});
-
-router.post('questionVote', '/:id/vote', async (ctx) => {
-  if (!ctx.redirectIfNotLogged()) {
-    const question = await ctx.orm.question.findById(ctx.params.id);
-    const votes = await question.getVotes({ where: { userId: ctx.state.currentUser.id } });
-    const type = ctx.request.body.type === '1' ? true : false
-    let create = true;
-    if (votes.length > 0) {
-      create = false;
-      votes[0].destroy();
-      if (votes[0].type !== type) {
-        create = true;
-      }
-    }
-    if (create) {
-      const vote = await ctx.orm.vote.create({ type });
-      vote.setUser(ctx.state.currentUser);
-      vote.setQuestion(question);
-    }
-  }
-  ctx.redirect(ctx.router.url('question', { id: ctx.params.id }));
 });
 
 module.exports = router;
