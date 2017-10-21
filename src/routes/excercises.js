@@ -53,7 +53,7 @@ router.post('excercisesCreate', '/', async (ctx) => {
 
 router.get('excercise', '/:id', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id, {
-    include: [ctx.orm.user, ctx.orm.tag],
+    include: [ctx.orm.user, ctx.orm.tag, ctx.orm.vote],
   });
   if (!excercise) {
     ctx.status = 404;
@@ -64,8 +64,8 @@ router.get('excercise', '/:id', async (ctx) => {
     include: [ctx.orm.user, {
       model: ctx.orm.comment,
       as: 'child',
-      include: [ctx.orm.user],
-    }] });
+      include: [ctx.orm.user, ctx.orm.vote],
+    }, ctx.orm.vote] });
   await ctx.render('excercises/show', {
     excercise,
     editExcercisePath: ctx.router.url('excercisesEdit', { id: ctx.params.id }),
