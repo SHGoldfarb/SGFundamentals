@@ -2,17 +2,22 @@ const faker = require('faker');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    const quantity = 180;
+    const quantity = 300;
     const data = [];
     for (let i = 0; i < quantity; i += 1) {
-      const parentType = faker.random.number({ min: 1, max: 2 });
+      let parentType;
+      if (i < 200) {
+        parentType = faker.random.number({ min: 1, max: 2 });
+      } else {
+        parentType = 3;
+      }
       let { c, q, e } = { c: null, q: null, e: null };
       if (parentType === 1 || i < 3) {
         e = faker.random.number({ min: 1, max: 25 });
       } else if (parentType === 2) {
         q = faker.random.number({ min: 1, max: 25 });
       } else {
-        c = faker.random.number({ min: 1, max: i - 1 });
+        c = faker.random.number({ min: 1, max: 199 });
       }
       data.push({
         content: `${faker.lorem.sentence(1).slice(0, -1)} comment ${faker.lorem.paragraph()}`,

@@ -14,7 +14,7 @@ module.exports = function definecomment(sequelize, DataTypes) {
     comment.belongsTo(models.question);
     comment.belongsTo(models.excercise);
     comment.belongsTo(models.solution);
-    comment.hasMany(models.comment);
+    comment.hasMany(models.comment, { as: 'child' });
     comment.hasMany(models.vote);
   };
 
@@ -34,21 +34,6 @@ module.exports = function definecomment(sequelize, DataTypes) {
     } else {
       throw new Error('Comment has no parent');
     }
-    return ret;
-  };
-
-  comment.prototype.isParentComment = async function isParentComment() {
-    const ret = !!await this.getComment();
-    return ret;
-  };
-
-  comment.prototype.isParentQuestion = async function isParentQuestion() {
-    const ret = !!await this.getQuestion();
-    return ret;
-  };
-
-  comment.prototype.isParentExcercise = async function isParentExcercise() {
-    const ret = !!await this.getExcercise();
     return ret;
   };
 

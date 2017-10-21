@@ -31,7 +31,7 @@
     <input type="hidden" name="returnPath" value="<%= returnPath %>" />
     <div>
       <label for="name">Nuevo Tag:</label>
-      <input name="name" id="name">
+      <input name="name" id="name" />
       <input type="submit" name="answer" value="Crear Tag" />
     </div>
   </form>
@@ -52,13 +52,72 @@
   </form>
 <% } %>
 
-<% if (comments.length > 0) { %>
+<% comments.forEach (comment => { %>
+  <div class="comment-box">
+    <div class="in-line">
+      <div class="comment-content" style="margin-right: 20px">
+        <%= comment.content %>
+        <div class="in-line" style="margin-top: 10px; font-size: 14px">
+          By:&nbsp <a href="<%= buildUserPath(comment.user.id) %>"><%= comment.user.username %></a>
+          &nbsp <%= comment.createdAt %>
+          <% if (isAdmin || isOwner(comment.user.id)) { %>
+            <a href="<%= buildCommentEditPath(comment.id) %>">Editar</a>
+            <form action="<%= buildCommentDeletePath(comment.id) %>" method="post">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+              <button class="delete-button" type="submit">Eliminar</button>
+            </form>
+          <% } %>
+        </div>
+      </div>
+      <% if (currentUser) { %>
+        <form action="<%= createCommentPath %>" method="post">
+          <input type="hidden" name="commentId" value="<%= comment.id %>" />
+          <input type="hidden" name="userId" value="<%= currentUser.id %>" />
+          <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+          <div>
+            <label for="content">Tu respuesta:</label>
+            <div>
+              <textarea name="content" id="content"></textarea>
+
+            </div>
+          </div>
+          <div>
+            <input type="submit" name="answer" value="Responder" />
+          </div>
+        </form>
+      <% } %>
+    </div>
+    <% if (comment.child.length > 0) { %>
+      <% comment.child.forEach (comment2 => { %>
+        <div class="subcomment-box" style="margin-left: 50px">
+          <%= comment2.content %>
+          <div class="in-line" style="margin-top: 10px; font-size: 14px">
+            By:&nbsp <a href="<%= buildUserPath(comment2.user.id) %>"><%= comment2.user.username %></a>
+            &nbsp <%= comment2.createdAt %>
+            <% if (isAdmin || isOwner(comment2.user.id)) { %>
+              <a href="<%= buildCommentEditPath(comment2.id) %>">Editar</a>
+              <form action="<%= buildCommentDeletePath(comment2.id) %>" method="post">
+                <input type="hidden" name="_method" value="delete" />
+                <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+                <button class="delete-button" type="submit">Eliminar</button>
+              </form>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+<% }) %>
+
+
+<!-- <% if (comments.length > 0) { %>
   Respuestas:
-  <ul>
-    <% comments.forEach(comment => { %>
-      <li class="in-line">
-        <a href="<%= buildCommentPath(comment.id) %>">#<%= comment.id %></a>-
-        <%=  comment.user.username + ' => ' + comment.content %>
+  <% comments.forEach(comment => { %>
+    <div class="comment-box">
+      <%= comment.content %>
+      <div class="in-line">
+        <a href="<%= buildUserPath(comment.user.id) %>"><%= comment.user.username %></a>-
         <% if (isOwner(comment.user.id) || isAdmin) { %>
           <form action="<%= buildCommentDeletePath(comment.id) %>" method="post">
             <input type="hidden" name="_method" value="delete" />
@@ -68,8 +127,8 @@
             </div>
           </form>
         <% } %>
-        <br />
-      </li>
-    <% }) %>
-  </ul>
-<% } %>
+      </div>
+      <br />
+    </div>
+  <% }) %>
+<% } %> -->

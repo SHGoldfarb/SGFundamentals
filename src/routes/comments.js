@@ -111,8 +111,8 @@ router.patch('commentsUpdate', '/:id', async (ctx) => {
 
 router.delete('commentsDelete', '/:id', async (ctx) => {
   const comment = await ctx.orm.comment.findById(ctx.params.id);
+  console.log(comment);
   if (!(await ctx.redirectIfNotOwnerOrAdmin(comment.userId))) {
-    await comment.setComments([]);
     await comment.destroy();
     if (!ctx.request.body.returnPath) {
       ctx.request.body.returnPath = ctx.router.url('comments');

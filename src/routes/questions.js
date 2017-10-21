@@ -62,6 +62,12 @@ router.get('question', '/:id', async (ctx) => {
     ctx.status = 404;
     throw new Error('Not Found');
   }
+  const comments = await question.getComments({
+    include: [ctx.orm.user, {
+      model: ctx.orm.comment,
+      as: 'child',
+      include: [ctx.orm.user],
+    }] });
   const owner = await question.getUser();
   await ctx.render('questions/show', {
     question,
@@ -69,7 +75,7 @@ router.get('question', '/:id', async (ctx) => {
     deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('questions'),
     returnPath: ctx.router.url('question', { id: ctx.params.id }),
-    comments: await question.getComments({ include: [ctx.orm.user] }),
+    comments,
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
   });
 });
