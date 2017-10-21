@@ -25,10 +25,6 @@ router.post('vote', '/:resource/:id', async (ctx) => {
   let redirect;
   let redirectId;
   switch (ctx.params.resource) {
-    case 'question':
-      redirect = 'question';
-      redirectId = ctx.params.id;
-      break;
     case 'comment': {
       const resourceRedirect = () => {
         while (resource._modelOptions.name.singular === 'comment') {
@@ -39,11 +35,9 @@ router.post('vote', '/:resource/:id', async (ctx) => {
       redirectId = resource.id;
       break;
     }
-    case 'excercise':
-      redirect = 'excercise';
-      redirectId = ctx.params.id;
-      break;
     default:
+      redirect = ctx.params.resource;
+      redirectId = ctx.params.id;
       break;
   }
   ctx.redirect(ctx.router.url(redirect, { id: redirectId }));

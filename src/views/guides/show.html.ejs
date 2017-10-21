@@ -1,4 +1,7 @@
-<h1>Guia #<%= guide.id %></h1>
+<div class="row nowrap start">
+  <%- include("../votes/_voting", { votes: guide.votes, resource: 'guide', id: guide.id }) %>
+  <h1>Guia #<%= guide.id %></h1>
+</div>
 
 <p>
     <%= guide.title %>

@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       case 'excercise':
         this.setExcercise(resource);
         break;
+      case 'guide':
+        this.setGuide(resource);
+        break;
       default:
         break;
     }
