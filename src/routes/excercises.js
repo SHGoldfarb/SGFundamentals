@@ -52,18 +52,26 @@ router.post('excercisesCreate', '/', async (ctx) => {
 });
 
 router.get('excercise', '/:id', async (ctx) => {
-  const excercise = await ctx.orm.excercise.findById(ctx.params.id);
+  const excercise = await ctx.orm.excercise.findById(ctx.params.id, {
+    include: [ctx.orm.user, ctx.orm.tag],
+  });
   if (!excercise) {
     ctx.status = 404;
     throw new Error('Not Found');
   }
   const owner = await excercise.getUser();
+  const comments = await excercise.getComments({
+    include: [ctx.orm.user, {
+      model: ctx.orm.comment,
+      as: 'child',
+      include: [ctx.orm.user],
+    }] });
   await ctx.render('excercises/show', {
     excercise,
     editExcercisePath: ctx.router.url('excercisesEdit', { id: ctx.params.id }),
     deleteExcercisePath: ctx.router.url('excercisesDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('excercises'),
-    comments: await excercise.getComments({ include: [ctx.orm.user] }),
+    comments,
     returnPath: ctx.router.url('excercise', { id: ctx.params.id }),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
     tags: await excercise.getTags(),

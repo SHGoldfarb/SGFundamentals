@@ -109,26 +109,3 @@
     <% } %>
   </div>
 <% }) %>
-
-
-<!-- <% if (comments.length > 0) { %>
-  Respuestas:
-  <% comments.forEach(comment => { %>
-    <div class="comment-box">
-      <%= comment.content %>
-      <div class="in-line">
-        <a href="<%= buildUserPath(comment.user.id) %>"><%= comment.user.username %></a>-
-        <% if (isOwner(comment.user.id) || isAdmin) { %>
-          <form action="<%= buildCommentDeletePath(comment.id) %>" method="post">
-            <input type="hidden" name="_method" value="delete" />
-            <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-            <div>
-              <input type="submit" name="delete" value="Eliminar" />
-            </div>
-          </form>
-        <% } %>
-      </div>
-      <br />
-    </div>
-  <% }) %>
-<% } %> -->
