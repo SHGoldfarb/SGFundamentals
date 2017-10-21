@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       case 'comment':
         this.setComment(resource);
         break;
+      case 'excercise':
+        this.setExcercise(resource);
+        break;
       default:
         break;
     }

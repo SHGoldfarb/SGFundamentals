@@ -15,7 +15,10 @@
   </ul>
   <h2><%= excercise.title %></h2>
   <br />
-  <%= excercise.content %>
+  <div class="row nowrap start">
+    <%- include("../votes/_voting", { votes: excercise.votes, resource: 'excercise', id: excercise.id }) %>
+    <%= excercise.content %>
+  </div>
   <div style="font-size: 14px">
     <br />
     By <a href="<%= buildUserPath(excercise.user.id) %>"><%= excercise.user.username %></a>
@@ -56,7 +59,7 @@
   <div class="comment-box">
     <div class="in-line">
       <div class="comment-content" style="margin-right: 20px">
-        <div class="row nowrap">
+        <div class="row nowrap start">
           <%- include("../votes/_voting", { votes: comment.votes, resource: 'comment', id: comment.id }) %>
           <%= comment.content %>
         </div>
@@ -94,7 +97,7 @@
     <% if (comment.child.length > 0) { %>
       <% comment.child.forEach (comment2 => { %>
         <div class="subcomment-box" style="margin-left: 50px">
-          <div class="row nowrap">
+          <div class="row nowrap start">
             <%- include("../votes/_voting", { votes: comment2.votes, resource: 'comment', id: comment2.id }) %>
             <%= comment2.content %>
           </div>

@@ -39,6 +39,10 @@ router.post('vote', '/:resource/:id', async (ctx) => {
       redirectId = resource.id;
       break;
     }
+    case 'excercise':
+      redirect = 'excercise';
+      redirectId = ctx.params.id;
+      break;
     default:
       break;
   }
