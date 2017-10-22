@@ -1,27 +1,31 @@
-<ul class="unstyled in-line tags">
-  <% question.tags.forEach (tag => { %>
-    <li class="in-line">
-      <%= tag.name %>
-      <% if (isAdmin) { %>
-        <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
-          <input type="hidden" name="_method" value="delete" />
-          <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-          <button class="close-icon" type="submit">X</button>
-        </form>
-      <% } %>
-    </li>
-  <% }) %>
-</ul>
-<h2><%= question.title %></h2>
-<br />
-<%= question.content %>
-<div style="font-size: 14px">
-  <br />
-  By <a href="<%= buildUserPath(question.user.id) %>"><%= question.user.username %></a>
-  <% if (isOwnerOrAdmin) { %>
-    <a href="<%= editQuestionPath %>">Editar</a>
-  <% } %>
-</div>
+<p>
+  <ul class="unstyled in-line tags">
+    <% question.tags.forEach (tag => { %>
+      <li class="in-line">
+        <%= tag.name %>
+        <% if (isAdmin) { %>
+          <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+            <button class="close-icon" type="submit">X</button>
+          </form>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+  <h2><%= question.title %></h2>
+  <div class="row nowrap">
+    <%- include("../votes/_voting", { votes: question.votes, resource: 'question', id: question.id }) %>
+    <p><%= question.content %></p>
+  </div>
+  <div style="font-size: 14px">
+    <br />
+    By <a href="<%= buildUserPath(question.user.id) %>"><%= question.user.username %></a>
+    <% if (isOwnerOrAdmin) { %>
+      <a href="<%= editQuestionPath %>">Editar</a>
+    <% } %>
+  </div>
+</p>
 
 <% if (isAdmin) { %>
   <form action="<%= createTagPath %>" method="post">
@@ -54,7 +58,10 @@
   <div class="comment-box">
     <div class="in-line">
       <div class="comment-content" style="margin-right: 20px">
-        <%= comment.content %>
+        <div class="row nowrap">
+          <%- include("../votes/_voting", { votes: comment.votes,  resource: 'comment', id: comment.id }) %>
+          <%= comment.content %>
+        </div>
         <div class="in-line" style="margin-top: 10px; font-size: 14px">
           By:&nbsp <a href="<%= buildUserPath(comment.user.id) %>"><%= comment.user.username %></a>
           &nbsp <%= comment.createdAt %>
@@ -89,7 +96,10 @@
     <% if (comment.child.length > 0) { %>
       <% comment.child.forEach (comment2 => { %>
         <div class="subcomment-box" style="margin-left: 50px">
-          <%= comment2.content %>
+          <div class="row nowrap">
+            <%- include("../votes/_voting", { votes: comment2.votes, resource: 'comment', id: comment2.id }) %>
+            <%= comment2.content %>
+          </div>
           <div class="in-line" style="margin-top: 10px; font-size: 14px">
             By:&nbsp <a href="<%= buildUserPath(comment2.user.id) %>"><%= comment2.user.username %></a>
             &nbsp <%= comment2.createdAt %>

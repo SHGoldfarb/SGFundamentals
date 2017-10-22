@@ -53,7 +53,7 @@ router.post('guidesCreate', '/', async (ctx) => {
 
 router.get('guide', '/:id', async (ctx) => {
   const guide = await ctx.orm.guide.findById(ctx.params.id, {
-    include: [ctx.orm.tag, ctx.orm.user],
+    include: [ctx.orm.tag, ctx.orm.user, ctx.orm.vote],
   });
   if (!guide) {
     ctx.status = 404;

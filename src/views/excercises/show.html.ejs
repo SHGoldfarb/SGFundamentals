@@ -16,11 +16,18 @@
 <%= excercise.content %>
 <div style="font-size: 14px">
   <br />
+<div class="row nowrap start">
+  <%- include("../votes/_voting", { votes: excercise.votes, resource: 'excercise', id: excercise.id }) %>
+  <%= excercise.content %>
+</div>
+<div style="font-size: 14px">
+  <br />
   By <a href="<%= buildUserPath(excercise.user.id) %>"><%= excercise.user.username %></a>
   <% if (isOwnerOrAdmin) { %>
     <a href="<%= editExcercisePath %>">Editar</a>
   <% } %>
 </div>
+
 
 <% if (isAdmin) { %>
   <form action="<%= createTagPath %>" method="post">
@@ -53,7 +60,10 @@
   <div class="comment-box">
     <div class="in-line">
       <div class="comment-content" style="margin-right: 20px">
-        <%= comment.content %>
+        <div class="row nowrap start">
+          <%- include("../votes/_voting", { votes: comment.votes, resource: 'comment', id: comment.id }) %>
+          <%= comment.content %>
+        </div>
         <div class="in-line" style="margin-top: 10px; font-size: 14px">
           By:&nbsp <a href="<%= buildUserPath(comment.user.id) %>"><%= comment.user.username %></a>
           &nbsp <%= comment.createdAt %>
@@ -88,7 +98,11 @@
     <% if (comment.child.length > 0) { %>
       <% comment.child.forEach (comment2 => { %>
         <div class="subcomment-box" style="margin-left: 50px">
-          <%= comment2.content %>
+          <div class="row nowrap start">
+            <%- include("../votes/_voting", { votes: comment2.votes, resource: 'comment', id: comment2.id }) %>
+            <%= comment2.content %>
+          </div>
+
           <div class="in-line" style="margin-top: 10px; font-size: 14px">
             By:&nbsp <a href="<%= buildUserPath(comment2.user.id) %>"><%= comment2.user.username %></a>
             &nbsp <%= comment2.createdAt %>

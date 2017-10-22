@@ -60,6 +60,10 @@ $navbar_height: 60px;
   flex-flow: row nowrap;
   form, div{
     display: flex;
+    align-self: center;
+  }
+  & > * {
+    margin: 0 15px;
   }
 }
 a, button{
@@ -69,7 +73,6 @@ a, button{
     cursor: pointer;
     color: rgb(255, 255, 255);
     align-self: center;
-    margin: 0 15px;
     text-decoration: none;
     font-size: 18px;
     font-family: 'Allerta';
@@ -118,6 +121,13 @@ Containers
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
+  padding: 20px;
+}
+.row.nowrap {
+  flex-wrap: nowrap;
+}
+.row.start {
+  justify-content: flex-start;
 }
 
 .col-fill{
@@ -215,6 +225,9 @@ ul{
       background: rgba(115, 160, 239, 0.40);
     }
   }
+  &.padded > li{
+    padding: 8px;
+  }
 }
 
 #tagFilterInput {
@@ -276,4 +289,54 @@ Varios
 .subcomment-box {
   background-color: rgba(220, 220, 220, 0.70);
   margin: 5px;
+}
+
+/**
+  Votes
+**/
+.votes-div {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  margin: 0 15px 0 0;
+}
+
+.triangle {
+  background: transparent;
+  width: 0;
+  height: 0;
+  padding: 0;
+  border: none;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  margin-bottom: 5px;
+  cursor: pointer;
+  &.triangle-down {
+    border-top: 20px solid lightblue;
+    &:hover, &.selected {
+      border-top-color: blue;
+    }
+  }
+  &.triangle-up {
+    border-bottom: 20px solid lightblue;
+    &:hover, &.selected {
+      border-bottom-color: blue;
+    }
+  }
+}
+
+.votes-count {
+  font-weight: 800;
+  color: #0F0FE5;
+  &.negative {
+    color: red;
+  }
+}
+
+/**
+Files
+**/
+.pdf-view {
+  width: 100%;
+  height: 500px;
 }

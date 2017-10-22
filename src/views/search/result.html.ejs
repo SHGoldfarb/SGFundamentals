@@ -1,0 +1,38 @@
+<ul class="padded">
+  <% result.forEach( async (resource) => { %>
+    <% const name = resource._modelOptions.name.singular %>
+    <% let parent %>
+    <% if (name === "question"){ %>
+      <li>
+        <ul>
+          <li>Pregunta <%= resource.id %></li>
+          <li><%= resource.title %></li>
+          <li><%= resource.createdAt %></li>
+          <li><a href="<%= buildQuestionPath(resource.id) %>">Ver<a>
+        </ul>
+      </li>
+    <% } else if (name === "comment"){ %>
+      <li>
+        <ul>
+          <li>Comentario </li>
+          <li><%= resource.content %></li>
+          <li><%= resource.createdAt %></li>
+        </ul>
+      </li>
+    <% } else if (name === "excercise") { %> 
+      <li>
+        <ul>
+          <li>Ejercicio</li>
+          <li><%= resource.content %></li>
+          <li><%= resource.createdAt %></li>
+          <li><a href="<%= buildExcercisePath(resource.id) %>">Ver<a>
+        </ul>
+        
+      </li>
+    <% } else { %>
+    <li>
+      <%= name %>
+    </li>
+    <% } %>
+  <% }) %>
+</ul>

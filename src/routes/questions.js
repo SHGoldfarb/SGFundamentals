@@ -1,6 +1,7 @@
 const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
+const _ = require('lodash');
 
 
 router.use('/', async (ctx, next) => {
@@ -56,7 +57,7 @@ router.post('questionsCreate', '/', async (ctx) => {
 
 router.get('question', '/:id', async (ctx) => {
   const question = await ctx.orm.question.findById(ctx.params.id, {
-    include: [ctx.orm.user, ctx.orm.tag],
+    include: [ctx.orm.user, ctx.orm.tag, ctx.orm.vote],
   });
   if (!question) {
     ctx.status = 404;
@@ -66,8 +67,8 @@ router.get('question', '/:id', async (ctx) => {
     include: [ctx.orm.user, {
       model: ctx.orm.comment,
       as: 'child',
-      include: [ctx.orm.user],
-    }] });
+      include: [ctx.orm.user, ctx.orm.vote],
+    }, ctx.orm.vote] });
   const owner = await question.getUser();
   await ctx.render('questions/show', {
     question,
@@ -77,6 +78,7 @@ router.get('question', '/:id', async (ctx) => {
     returnPath: ctx.router.url('question', { id: ctx.params.id }),
     comments,
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
+    voteQuestionPath: ctx.router.url('questionVote', { id: ctx.params.id }),
   });
 });
 

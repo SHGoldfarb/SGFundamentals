@@ -7,7 +7,7 @@
     <% files.reverse().forEach(e =>{ %>
         <div class="col-fill">
             <div class="panel">
-                <a href="<%= buildFilePath(e.id) %>">#<%= e.id %></a>
+                <a href="<%= buildFilePath(e.id) %>">#<%= e.id %>: <%= e.title %></a>
                 <%= e.path %>
                 <ul>
                     <li><a href="<%= buildFilePath(e.id) %>">Ver</a></li>

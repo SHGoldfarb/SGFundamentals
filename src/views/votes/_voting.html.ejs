@@ -1,0 +1,20 @@
+<% votesAmountByType = type => _.filter(votes, { type }).length %>
+<div class="votes-div">
+  <% if (isLogged) { %>
+  <% const myVote = votes.find(v => v.userId === currentUser.id) %>
+  <form action="<%= buildVotePath(resource,id) %>" method="post">
+    <input type="hidden" name="type" value="<%= 1 %>" >
+    <input type="submit" class="triangle triangle-up <%= myVote ? (myVote.type ? "selected" : "") : "" %>">
+  </form>
+  <% } %>
+  <p class="votes-count <%= votesAmountByType(true) - votesAmountByType(false) < 0 ? "negative" : "" %>">
+    <%= votesAmountByType(true) - votesAmountByType(false) %>
+  </p>
+  <% if (isLogged) { %>
+  <% const myVote = votes.find(v => v.userId === currentUser.id) %>
+  <form action="<%= buildVotePath(resource,id) %>" method="post">
+      <input type="hidden" name="type" value="<%= 0 %>" >
+      <input type="submit" class="triangle triangle-down <%= myVote ? (!myVote.type ? "selected" : "") : "" %>">
+  </form>
+  <% } %>
+</div>

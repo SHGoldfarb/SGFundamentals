@@ -39,6 +39,12 @@
           <% } %>
       </div>
       <div class="nav-section">
+        <div>
+          <form action="<%= searchPath %>" method="get">
+            <input type="text" name="query" value="<%= typeof query === 'undefined' ? "" : query %>"/>
+            <input type="submit" value="Buscar" />
+          </form>
+        </div>
         <% if(currentUser){ %>
           <p class="nav-text"> Hola <%= currentUser.username %></p>
           <form action="<%= signOutPath %>" method="post">
