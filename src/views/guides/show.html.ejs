@@ -1,5 +1,5 @@
 <ul class="unstyled in-line wrap tags">
-  <% tags.forEach (tag => { %>
+  <% guideTags.forEach (tag => { %>
     <li class="in-line">
       <%= tag.name %>
       <% if (isAdmin) { %>
@@ -20,7 +20,12 @@
     <input type="hidden" name="returnPath" value="<%= returnPath %>" />
     <div>
       <label for="name">Nuevo Tag:</label>
-      <input name="name" id="name" />
+      <input list="tags" autocomplete="off" name="name" id="name" />
+      <datalist id="tags">
+        <% tags.forEach(tag => { %>
+          <option value="<%= tag.name %>" />
+        <% }) %>
+      </datalist>
       <input type="submit" name="answer" value="Crear Tag" />
     </div>
   </form>

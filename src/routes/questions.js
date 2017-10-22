@@ -77,6 +77,7 @@ router.get('question', '/:id', async (ctx) => {
     backToListPath: ctx.router.url('questions'),
     returnPath: ctx.router.url('question', { id: ctx.params.id }),
     comments,
+    tags: await ctx.orm.tag.findAll(),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
     voteQuestionPath: ctx.router.url('questionVote', { id: ctx.params.id }),
   });

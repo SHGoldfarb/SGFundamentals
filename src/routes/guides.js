@@ -67,12 +67,16 @@ router.get('guide', '/:id', async (ctx) => {
     throw new Error('Not Found');
   }
   const owner = await guide.getUser();
-  const tags = new Set(guide.tags);
+  const tagNames = new Set();
   guide.excercises.forEach((excercise) => {
     excercise.tags.forEach((tag) => {
-      tags.add(tag);
+      tagNames.add(tag.name);
     });
   });
+  guide.tags.forEach((tag) => {
+    tagNames.add(tag.name);
+  });
+  const guideTags = await ctx.orm.tag.findAll({ where: { name: Array.from(tagNames) } });
   await ctx.render('guides/show', {
     guide,
     editGuidePath: ctx.router.url('guidesEdit', { id: ctx.params.id }),
@@ -80,7 +84,8 @@ router.get('guide', '/:id', async (ctx) => {
     backToListPath: ctx.router.url('guides'),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
     returnPath: ctx.router.url('guide', { id: ctx.params.id }),
-    tags,
+    tags: await ctx.orm.tag.findAll(),
+    guideTags,
     excercise: await ctx.orm.excercise.build(),
     excercises: guide.excercises,
     buildFileDownloadPath: filename => ctx.router.url('fileDownload', { filename }),

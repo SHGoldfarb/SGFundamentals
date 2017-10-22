@@ -6,7 +6,12 @@ router.post('tagsCreate', '/', async (ctx) => {
   if (!await ctx.redirectIfNotAdmin()) {
     let tag = await ctx.orm.tag.find({ where: { name: ctx.request.body.name } });
     if (!tag) {
-      tag = await ctx.orm.tag.create(ctx.request.body);
+      try {
+        tag = await ctx.orm.tag.create(ctx.request.body);
+      } catch (err) {
+        console.log(err);
+        throw new Error('Not Found');
+      }
     }
     if (ctx.request.body.questionId) {
       await tag.addQuestion(await ctx.orm.question.findById(ctx.request.body.questionId));
