@@ -10,15 +10,15 @@ router.post('vote', '/:resource/:id', async (ctx) => {
     let create = true;
     if (votes.length > 0) {
       create = false;
-      votes[0].destroy();
+      await votes[0].destroy();
       if (votes[0].type !== type) {
         create = true;
       }
     }
     if (create) {
       const vote = await ctx.orm.vote.create({ type });
-      vote.setUser(ctx.state.currentUser);
-      vote.setResource(resource);
+      await vote.setUser(ctx.state.currentUser);
+      await vote.setResource(resource);
     }
   }
 
