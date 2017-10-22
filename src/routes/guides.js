@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const files = require('./files');
 
 const router = new KoaRouter();
 
@@ -32,16 +33,19 @@ router.get('guidesNew', '/new', async (ctx) => {
     await ctx.render('guides/new', {
       guide,
       backToListPath: ctx.router.url('guides'),
+      file: await ctx.orm.file.build(),
     });
   }
 });
 
-router.post('guidesCreate', '/', async (ctx) => {
+router.post('guidesCreate', '/', async (ctx, next) => {
   if (!ctx.redirectIfNotLogged()) {
     try {
-      const guide = await ctx.orm.guide.create(ctx.request.body);
-      ctx.redirect(ctx.router.url('guide', { id: guide.id }));
+      const guide = await ctx.orm.guide.create(ctx.request.body.fields);
+      ctx.request.body.fields.guideId = guide.id;
+      await next();
     } catch (validationError) {
+      console.log(validationError);
       await ctx.render('guides/new', {
         guide: ctx.orm.guide.build(ctx.request.body),
         backToListPath: ctx.router.url('guides'),
@@ -112,5 +116,7 @@ router.delete('guidesDelete', '/:id', async (ctx) => {
     ctx.redirect(ctx.router.url('guides'));
   }
 });
+
+router.use('/', files.routes());
 
 module.exports = router;

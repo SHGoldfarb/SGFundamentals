@@ -46,13 +46,16 @@ router.post('filesCreate', '/', async (ctx) => {
         filename: uploads.name,
       });
       file.setUser(ctx.state.currentUser);
-      ctx.redirect(ctx.router.url('file', { id: file.id }));
+      ctx.redirect(ctx.router.url('guide', { id: ctx.request.body.fields.guideId }));
+      console.log('FILE CREATION SUCCESSFULL');
     } catch (validationError) {
-      await ctx.render('files/new', {
-        file: ctx.orm.file.build(ctx.request.body),
-        backToListPath: ctx.router.url('files'),
-        error: validationError,
-      });
+      console.log('FILE CREATION FAILED');
+      throw validationError;
+      // await ctx.render('files/new', {
+      //   file: ctx.orm.file.build(ctx.request.body),
+      //   backToListPath: ctx.router.url('files'),
+      //   error: validationError,
+      // });
     }
   }
 });

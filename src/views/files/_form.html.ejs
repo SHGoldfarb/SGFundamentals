@@ -3,6 +3,7 @@
     <input type="hidden" name="_method" value="patch" />
   <% }%>
   <input type="hidden" name=userId value="<%= currentUser.id %>" />
+  <input type="hidden" name=guideId value="<%= guide.id %>" />
   <div>
     <label for="title">Titulo</label>
     <input name="title" id="title" defaultValue="<%= file.title %>">

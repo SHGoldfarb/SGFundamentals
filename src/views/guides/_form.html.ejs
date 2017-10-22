@@ -1,4 +1,4 @@
-<form method="POST" action="<%= submitGuidePath %>">
+<form method="POST" action="<%= submitGuidePath %>" enctype="multipart/form-data">
   <%if (!guide.isNewRecord) { %>
     <input type="hidden" name="_method" value="patch" />
   <% }%>
@@ -6,6 +6,10 @@
   <div>
     <label for="title">Titulo</label>
     <textarea name="title" id="title"><%= guide.title %></textarea>
+  </div>
+  <div>
+    <label for="file">Archivo</label>
+    <input type="file" name="file" id="file">
   </div>
   <div>
     <button type="submit">

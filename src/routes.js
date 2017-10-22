@@ -112,18 +112,18 @@ router.use('/', async (ctx, next) => {
 router.use('/', async (ctx, next) => {
   ctx.state.newCommentPath = ctx.router.url('commentsNew');
   ctx.state.createCommentPath = ctx.router.url('commentsCreate');
-  ctx.state.buildCommentPath = function _(id) { return ctx.router.url('comment', { id }); };
-  ctx.state.buildCommentEditPath = function _(id) { return ctx.router.url('commentsEdit', { id }); };
-  ctx.state.buildCommentDeletePath = function _(id) { return ctx.router.url('commentsDelete', { id }); };
-  ctx.state.buildUserPath = function _(id) { return ctx.router.url('user', { id }); };
-  ctx.state.buildQuestionPath = function _(id) { return ctx.router.url('question', { id }); };
+  ctx.state.buildCommentPath = function foo(id) { return ctx.router.url('comment', { id }); };
+  ctx.state.buildCommentEditPath = function foo(id) { return ctx.router.url('commentsEdit', { id }); };
+  ctx.state.buildCommentDeletePath = function foo(id) { return ctx.router.url('commentsDelete', { id }); };
+  ctx.state.buildUserPath = function foo(id) { return ctx.router.url('user', { id }); };
+  ctx.state.buildQuestionPath = function foo(id) { return ctx.router.url('question', { id }); };
   ctx.state.submitExcercisePath = ctx.router.url('excercisesCreate');
-  ctx.state.buildExcercisePath = function _(id) { return ctx.router.url('excercise', { id }); };
-  ctx.state.buildExcerciseEditPath = function _(id) { return ctx.router.url('excercisesEdit', { id }); };
-  ctx.state.buildExcerciseDeletePath = function _(id) { return ctx.router.url('excercisesDelete', { id }); };
-  ctx.state.buildGuidePath = function _(id) { return ctx.router.url('guide', { id }); };
+  ctx.state.buildExcercisePath = function foo(id) { return ctx.router.url('excercise', { id }); };
+  ctx.state.buildExcerciseEditPath = function foo(id) { return ctx.router.url('excercisesEdit', { id }); };
+  ctx.state.buildExcerciseDeletePath = function foo(id) { return ctx.router.url('excercisesDelete', { id }); };
+  ctx.state.buildGuidePath = function foo(id) { return ctx.router.url('guide', { id }); };
   ctx.state.createTagPath = ctx.router.url('tagsCreate');
-  ctx.state.buildTagDeletePath = function _(id) { return ctx.router.url('tagsDelete', { id }); };
+  ctx.state.buildTagDeletePath = function foo(id) { return ctx.router.url('tagsDelete', { id }); };
   await next();
 });
 
@@ -133,7 +133,7 @@ router.use('/users', users.routes());
 router.use('/excercises', excercises.routes());
 router.use('/questions', questions.routes());
 router.use('/comments', comments.routes());
-router.use('/files', files.routes());
+// router.use('/files', files.routes());
 router.use('/tags', tags.routes());
 router.use('/guides', guides.routes());
 router.use('/vote', votes.routes());
@@ -145,6 +145,7 @@ router.all(/^\/(.*)(?:\/|$)/, async (ctx, next) => {
   // So router middleware is loaded even if url doesnt exist
   // This is necesary to render the not found page
   ctx.status = 404;
+  console.log(ctx.url);
   throw new Error('Not Found');
 });
 

@@ -37,14 +37,12 @@
   <% } %>
 </div>
 
+Archivos:
+<ul>
 <% guide.files.forEach((file) => { %>
-  <ul>
-      <li><%= file.filename %></li>
-      <li><a href="<%= buildFileDownloadPath(file.filename) %>">Download</a></li>
-  </ul>
-
-  <iframe src="<%= buildFileDownloadPath(file.filename) %>" class="pdf-view" ></iframe>
+      <li><%= file.filename %>&nbsp<a href="<%= buildFileDownloadPath(file.filename) %>">Download</a></li>
 <% }) %>
+</ul>
 
 <% if (currentUser) { %>
   Agregar ejercicio:
