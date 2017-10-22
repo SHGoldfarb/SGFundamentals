@@ -11,6 +11,7 @@ const sessions = require('./routes/session');
 const tags = require('./routes/tags');
 const guides = require('./routes/guides');
 const votes = require('./routes/votes');
+const search = require('./routes/search');
 const _ = require('lodash');
 
 function isLogged() {
@@ -135,7 +136,9 @@ router.use('/files', files.routes());
 router.use('/tags', tags.routes());
 router.use('/guides', guides.routes());
 router.use('/vote', votes.routes());
+router.use('/search', search.routes());
 router.use('/', sessions.routes());
+
 
 router.all(/^\/(.*)(?:\/|$)/, async (ctx, next) => {
   // So router middleware is loaded even if url doesnt exist

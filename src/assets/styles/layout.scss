@@ -222,6 +222,9 @@ ul{
       background: rgba(115, 160, 239, 0.40);
     }
   }
+  &.padded > li{
+    padding: 8px;
+  }
 }
 
 #tagFilterInput {
