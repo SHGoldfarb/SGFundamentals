@@ -25,11 +25,9 @@
   </form>
 <% } %>
 
-<h2><%= guide.title %></h2>
-
 <div class="row nowrap start">
   <%- include("../votes/_voting", { votes: guide.votes, resource: 'guide', id: guide.id }) %>
-  <h1>Guia #<%= guide.id %></h1>
+  <h2><%= guide.title %></h2>
 </div>
 
 <div style="font-size: 14px">
@@ -39,6 +37,14 @@
   <% } %>
 </div>
 
+<% guide.files.forEach((file) => { %>
+  <ul>
+      <li><%= file.filename %></li>
+      <li><a href="<%= buildFileDownloadPath(file.filename) %>">Download</a></li>
+  </ul>
+
+  <iframe src="<%= buildFileDownloadPath(file.filename) %>" class="pdf-view" ></iframe>
+<% }) %>
 
 <% if (currentUser) { %>
   Agregar ejercicio:

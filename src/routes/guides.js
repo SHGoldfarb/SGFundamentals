@@ -53,7 +53,7 @@ router.post('guidesCreate', '/', async (ctx) => {
 
 router.get('guide', '/:id', async (ctx) => {
   const guide = await ctx.orm.guide.findById(ctx.params.id, {
-    include: [ctx.orm.tag, ctx.orm.user, ctx.orm.vote],
+    include: [ctx.orm.tag, ctx.orm.user, ctx.orm.vote, ctx.orm.file],
   });
   if (!guide) {
     ctx.status = 404;
@@ -70,6 +70,7 @@ router.get('guide', '/:id', async (ctx) => {
     tags: await guide.getTags(),
     excercise: await ctx.orm.excercise.build(),
     excercises: await guide.getExcercises({ include: [ctx.orm.user] }),
+    buildFileDownloadPath: filename => ctx.router.url('fileDownload', { filename }),
   });
 });
 
