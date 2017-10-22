@@ -29,7 +29,7 @@ router.get('commentsNew', '/new', async (ctx) => {
 });
 
 router.post('commentsCreate', '/', async (ctx) => {
-  if (!await ctx.redirectIfNotOwnerOrAdmin(ctx.request.body.userId)) {
+  if (!await ctx.redirectIfNotOwnerOrAdmin(Number(ctx.request.body.userId))) {
     try {
       const comment = await ctx.orm.comment.create(ctx.request.body);
       if (!ctx.request.body.returnPath) {
@@ -117,7 +117,7 @@ router.delete('commentsDelete', '/:id', async (ctx) => {
     } catch (err) {
       if (err.name === 'SequelizeForeignKeyConstraintError') {
         comment.content = '[Eliminado]';
-        comment.save();
+        await comment.save();
       } else {
         throw err;
       }

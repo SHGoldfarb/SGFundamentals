@@ -1,29 +1,26 @@
-<p>
-  <ul class="unstyled in-line tags">
-    <% excercise.tags.forEach (tag => { %>
-      <li class="in-line">
-        <%= tag.name %>
-        <% if (isAdmin) { %>
-          <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
-            <input type="hidden" name="_method" value="delete" />
-            <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-            <button class="close-icon" type="submit">X</button>
-          </form>
-        <% } %>
-      </li>
-    <% }) %>
-  </ul>
-  <h2><%= excercise.title %></h2>
+<h4><a href="<%= buildGuidePath(excercise.guideId) %>">Ir a guía</a></h4>
+<ul class="unstyled in-line tags">
+  <% excercise.tags.forEach (tag => { %>
+    <li class="in-line">
+      <%= tag.name %>
+      <% if (isAdmin) { %>
+        <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
+          <input type="hidden" name="_method" value="delete" />
+          <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+          <button class="close-icon" type="submit">X</button>
+        </form>
+      <% } %>
+    </li>
+  <% }) %>
+</ul>
+<%= excercise.content %>
+<div style="font-size: 14px">
   <br />
-  <%= excercise.content %>
-  <div style="font-size: 14px">
-    <br />
-    By <a href="<%= buildUserPath(excercise.user.id) %>"><%= excercise.user.username %></a>
-    <% if (isOwnerOrAdmin) { %>
-      <a href="<%= editExcercisePath %>">Editar</a>
-    <% } %>
-  </div>
-</p>
+  By <a href="<%= buildUserPath(excercise.user.id) %>"><%= excercise.user.username %></a>
+  <% if (isOwnerOrAdmin) { %>
+    <a href="<%= editExcercisePath %>">Editar</a>
+  <% } %>
+</div>
 
 <% if (isAdmin) { %>
   <form action="<%= createTagPath %>" method="post">
@@ -38,7 +35,7 @@
 <% } %>
 
 <% if (currentUser) { %>
-  <form action="<%= createCommentPath %>" method="post">
+  <form action="<%= createCommentPath %>" method="post" class="in-line">
     <input type="hidden" name="excerciseId" value="<%= excercise.id %>" />
     <input type="hidden" name="userId" value="<%= currentUser.id %>" />
     <input type="hidden" name="returnPath" value="<%= returnPath %>" />
@@ -109,103 +106,3 @@
     <% } %>
   </div>
 <% }) %>
-
-
-
-<!-- <h1></h1>
-<a href="<%= backToListPath %>">Volver</a>
-<% if (excercise.guideId) { %>
-  <a href="<%= backToGuidePath %>">Ir a guia</a>
-<% } %>
-<h1>Ejercicio #<%= excercise.id %></h1>
-
-<p>
-    <%= excercise.content %>
-</p>
-
-<ul>
-  <% if (isOwnerOrAdmin) { %>
-    <li><a href="<%= editExcercisePath %>">Editar</a></li>
-    <li>
-      <form action="<%= deleteExcercisePath %>" method="post">
-        <input type="hidden" name="_method" value="delete" />
-        <div>
-          <input type="submit" name="delete" value="Eliminar" />
-        </div>
-      </form>
-    </li>
-  <% } %>
-</ul>
-
-<% if (isAdmin) { %>
-  <form action="<%= createTagPath %>" method="post">
-    <input type="hidden" name="excerciseId" value="<%= excercise.id %>" />
-    <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-    <div>
-      <label for="name">Nuevo Tag:</label>
-      <textarea name="name" id="name"></textarea>
-      <input type="submit" name="answer" value="Crear Tag" />
-    </div>
-  </form>
-<% } %>
-
-<% if (tags.length > 0) { %>
-  Tags:
-  <ul>
-    <% tags.forEach(tag => { %>
-      <li class="in-line">
-        <%= '  ' + tag.name %>
-        <% if (isAdmin) { %>
-          <span style="display: inline">
-            <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-              <div>
-                <input type="submit" name="delete" value="Eliminar" />
-              </div>
-            </form>
-          </span>
-        <% } %>
-        <br />
-      </li>
-    <% }) %>
-  </ul>
-<% } %>
-
-
-<% if (currentUser) { %>
-  <form action="<%= createCommentPath %>" method="post">
-    <input type="hidden" name="excerciseId" value="<%= excercise.id %>" />
-    <input type="hidden" name="userId" value="<%= currentUser.id %>" />
-    <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-    <div>
-      <label for="content">Tu respuesta:</label>
-      <textarea name="content" id="content"></textarea>
-    </div>
-    <div>
-      <input type="submit" name="answer" value="Responder" />
-    </div>
-  </form>
-<% } %>
-
-<% if (comments.length > 0) { %>
-  Respuestas:
-  <ul>
-    <% comments.forEach(comment => { %>
-      <li class="in-line">
-        <a href="<%= buildCommentPath(comment.id) %>">#<%= comment.id %>-</a>
-        <%=  comment.user.username + ' => ' + comment.content %>
-        <% if (isOwner(comment.user.id) || isAdmin) { %>
-          <form action="<%= buildCommentDeletePath(comment.id) %>" method="post">
-            <input type="hidden" name="_method" value="delete" />
-            <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-            <div>
-              <input type="submit" name="delete" value="Eliminar" />
-            </div>
-          </form>
-        <% } %>
-        <br />
-      </li>
-    <% }) %>
-  </ul>
-<% } %> -->

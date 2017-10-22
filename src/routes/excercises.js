@@ -114,6 +114,7 @@ router.delete('excercisesDelete', '/:id', async (ctx) => {
   const excercise = await ctx.orm.excercise.findById(ctx.params.id);
   if (!(await ctx.redirectIfNotOwnerOrAdmin(excercise.userId))) {
     await excercise.setComments([]);
+    await excercise.setTags([]);
     await excercise.destroy();
     if (!ctx.request.body.returnPath) {
       ctx.request.body.returnPath = ctx.router.url('excercises');

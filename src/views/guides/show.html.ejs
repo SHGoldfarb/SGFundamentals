@@ -1,4 +1,69 @@
-<h1>Guia #<%= guide.id %></h1>
+<ul class="unstyled in-line tags">
+  <% guide.tags.forEach (tag => { %>
+    <li class="in-line">
+      <%= tag.name %>
+      <% if (isAdmin) { %>
+        <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
+          <input type="hidden" name="_method" value="delete" />
+          <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+          <button class="close-icon" type="submit">X</button>
+        </form>
+      <% } %>
+    </li>
+  <% }) %>
+</ul>
+
+<% if (isAdmin) { %>
+  <form action="<%= createTagPath %>" method="post">
+    <input type="hidden" name="guideId" value="<%= guide.id %>" />
+    <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+    <div>
+      <label for="name">Nuevo Tag:</label>
+      <input name="name" id="name" />
+      <input type="submit" name="answer" value="Crear Tag" />
+    </div>
+  </form>
+<% } %>
+<h2><%= guide.title %></h2>
+<div style="font-size: 14px">
+  By <a href="<%= buildUserPath(guide.user.id) %>"><%= guide.user.username %></a>
+  <% if (isOwnerOrAdmin) { %>
+    <a href="<%= editGuidePath %>">Editar</a>
+  <% } %>
+</div>
+
+
+<% if (currentUser) { %>
+  Agregar ejercicio:
+  <%- include('../excercises/_form') %>
+<% } %>
+
+Ejercicios:
+<% excercises.forEach (guide_excercise => { %>
+  <div class="comment-box">
+    <div class="in-line">
+      <div class="comment-content" style="margin-right: 20px">
+        <a href="<%= buildExcercisePath(guide_excercise.id) %>"><%= guide_excercise.content %></a>
+        <div class="in-line" style="margin-top: 10px; font-size: 14px">
+          By:&nbsp <a href="<%= buildUserPath(guide_excercise.user.id) %>"><%= guide_excercise.user.username %></a>
+          &nbsp <%= guide_excercise.createdAt %>
+          <% if (isAdmin || isOwner(guide_excercise.user.id)) { %>
+            <a href="<%= buildExcerciseEditPath(guide_excercise.id) %>">Editar</a>
+            <form action="<%= buildExcerciseDeletePath(guide_excercise.id) %>" method="post">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+              <button class="delete-button" type="submit">Eliminar</button>
+            </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% }) %>
+
+
+
+<!-- <h1>Guia #<%= guide.id %></h1>
 
 <p>
     <%= guide.title %>
@@ -80,4 +145,4 @@
       </li>
     <% }) %>
   </ul>
-<% } %>
+<% } %> -->

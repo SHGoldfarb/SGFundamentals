@@ -52,7 +52,9 @@ router.post('guidesCreate', '/', async (ctx) => {
 });
 
 router.get('guide', '/:id', async (ctx) => {
-  const guide = await ctx.orm.guide.findById(ctx.params.id);
+  const guide = await ctx.orm.guide.findById(ctx.params.id, {
+    include: [ctx.orm.tag, ctx.orm.user],
+  });
   if (!guide) {
     ctx.status = 404;
     throw new Error('Not Found');
@@ -67,7 +69,7 @@ router.get('guide', '/:id', async (ctx) => {
     returnPath: ctx.router.url('guide', { id: ctx.params.id }),
     tags: await guide.getTags(),
     excercise: await ctx.orm.excercise.build(),
-    excercises: await guide.getExcercises(),
+    excercises: await guide.getExcercises({ include: [ctx.orm.user] }),
   });
 });
 
