@@ -256,6 +256,9 @@ Varios
 .in-line{
   display: flex;
   flex-flow: row nowrap;
+  &.wrap {
+    flex-flow: row wrap;
+  }
 }
 
 .close-icon {

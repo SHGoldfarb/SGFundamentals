@@ -123,7 +123,7 @@ router.use('/', async (ctx, next) => {
   ctx.state.buildExcerciseDeletePath = function foo(id) { return ctx.router.url('excercisesDelete', { id }); };
   ctx.state.buildGuidePath = function foo(id) { return ctx.router.url('guide', { id }); };
   ctx.state.createTagPath = ctx.router.url('tagsCreate');
-  ctx.state.buildTagDeletePath = function foo(id) { return ctx.router.url('tagsDelete', { id }); };
+  ctx.state.buildTagUnsetPath = function foo(id) { return ctx.router.url('tagsUnset', { id }); };
   await next();
 });
 
@@ -146,6 +146,7 @@ router.all(/^\/(.*)(?:\/|$)/, async (ctx, next) => {
   // This is necesary to render the not found page
   ctx.status = 404;
   console.log(ctx.url);
+  console.log(ctx.request.body);
   throw new Error('Not Found');
 });
 

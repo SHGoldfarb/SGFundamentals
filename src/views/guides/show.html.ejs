@@ -1,11 +1,12 @@
-<ul class="unstyled in-line tags">
-  <% guide.tags.forEach (tag => { %>
+<ul class="unstyled in-line wrap tags">
+  <% tags.forEach (tag => { %>
     <li class="in-line">
       <%= tag.name %>
       <% if (isAdmin) { %>
-        <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
-          <input type="hidden" name="_method" value="delete" />
+        <form action="<%= buildTagUnsetPath(tag.id) %>" method="post">
+          <input type="hidden" name="_method" value="patch" />
           <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+          <input type="hidden" name="guideId" value="<%= guide.id %>" />
           <button class="close-icon" type="submit">X</button>
         </form>
       <% } %>
@@ -83,89 +84,3 @@ Ejercicios:
     </div>
   </div>
 <% }) %>
-
-
-
-<!-- <h1>Guia #<%= guide.id %></h1>
-
-<p>
-    <%= guide.title %>
-</p>
-
-<ul>
-  <% if (isOwnerOrAdmin) { %>
-    <li><a href="<%= editGuidePath %>">Editar</a></li>
-    <li>
-      <form action="<%= deleteGuidePath %>" method="post">
-        <input type="hidden" name="_method" value="delete" />
-        <div>
-          <input type="submit" name="delete" value="Eliminar" />
-        </div>
-      </form>
-    </li>
-  <% } %>
-    <li><a href="<%= backToListPath %>">Volver</a></li>
-</ul>
-
-<% if (isAdmin) { %>
-  <form action="<%= createTagPath %>" method="post">
-    <input type="hidden" name="guideId" value="<%= guide.id %>" />
-    <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-    <div>
-      <label for="name">Nuevo Tag:</label>
-      <textarea name="name" id="name"></textarea>
-      <input type="submit" name="answer" value="Crear Tag" />
-    </div>
-  </form>
-<% } %>
-
-<% if (tags.length > 0) { %>
-  Tags:
-  <ul>
-    <% tags.forEach(tag => { %>
-      <li class="in-line">
-        <%= '  ' + tag.name %>
-        <% if (isAdmin) { %>
-          <span style="display: inline">
-            <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-              <div>
-                <input type="submit" name="delete" value="Eliminar" />
-              </div>
-            </form>
-          </span>
-        <% } %>
-        <br />
-      </li>
-    <% }) %>
-  </ul>
-<% } %>
-
-<% if (isOwnerOrAdmin) { %>
-  Añadir ejercicio:
-  <%- include('../excercises/_form') %>
-<% } %>
-
-<% if (excercises.length > 0) { %>
-  Ejercicios:
-  <ul>
-    <% excercises.forEach(excercise2 => { %>
-      <li class="in-line">
-        <a href="<%= buildExcercisePath(excercise2.id) %>">#<%= excercise2.id %></a>
-        -<%= excercise2.content %>
-        <% if (isOwnerOrAdmin) { %>
-          <a href="<%= buildExcerciseEditPath(excercise2.id) %>">Editar</a>
-          <form action="<%= buildExcerciseDeletePath(excercise2.id) %>" method="post">
-            <input type="hidden" name="_method" value="delete" />
-            <input type="hidden" name="returnPath" value="<%= returnPath %>" />
-            <div>
-              <input type="submit" name="delete" value="Eliminar" />
-            </div>
-          </form>
-        <% } %>
-        <br />
-      </li>
-    <% }) %>
-  </ul>
-<% } %> -->

@@ -43,8 +43,9 @@
         <% if (isAdmin) { %>
           <span style="display: inline">
             <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
-              <input type="hidden" name="_method" value="delete" />
+              <input type="hidden" name="_method" value="patch" />
               <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+              <input type="hidden" name="fileId" value="<%= file.id %>" />
               <div>
                 <input type="submit" name="delete" value="Eliminar" />
               </div>

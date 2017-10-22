@@ -57,13 +57,22 @@ router.post('guidesCreate', '/', async (ctx, next) => {
 
 router.get('guide', '/:id', async (ctx) => {
   const guide = await ctx.orm.guide.findById(ctx.params.id, {
-    include: [ctx.orm.tag, ctx.orm.user, ctx.orm.vote, ctx.orm.file],
+    include: [ctx.orm.tag, ctx.orm.user, ctx.orm.vote, ctx.orm.file, {
+      model: ctx.orm.excercise,
+      include: [ctx.orm.tag, ctx.orm.user],
+    }],
   });
   if (!guide) {
     ctx.status = 404;
     throw new Error('Not Found');
   }
   const owner = await guide.getUser();
+  const tags = new Set(guide.tags);
+  guide.excercises.forEach((excercise) => {
+    excercise.tags.forEach((tag) => {
+      tags.add(tag);
+    });
+  });
   await ctx.render('guides/show', {
     guide,
     editGuidePath: ctx.router.url('guidesEdit', { id: ctx.params.id }),
@@ -71,9 +80,9 @@ router.get('guide', '/:id', async (ctx) => {
     backToListPath: ctx.router.url('guides'),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
     returnPath: ctx.router.url('guide', { id: ctx.params.id }),
-    tags: await guide.getTags(),
+    tags,
     excercise: await ctx.orm.excercise.build(),
-    excercises: await guide.getExcercises({ include: [ctx.orm.user] }),
+    excercises: guide.excercises,
     buildFileDownloadPath: filename => ctx.router.url('fileDownload', { filename }),
     buildFileDeletePath: id => ctx.router.url('filesDelete', id),
     submitFilePath: ctx.router.url('filesCreate'),

@@ -4,9 +4,10 @@
       <li class="in-line">
         <%= tag.name %>
         <% if (isAdmin) { %>
-          <form action="<%= buildTagDeletePath(tag.id) %>" method="post">
-            <input type="hidden" name="_method" value="delete" />
+          <form action="<%= buildTagUnsetPath(tag.id) %>" method="post">
+            <input type="hidden" name="_method" value="patch" />
             <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+            <input type="hidden" name="questionId" value="<%= question.id %>" />
             <button class="close-icon" type="submit">X</button>
           </form>
         <% } %>
