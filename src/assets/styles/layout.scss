@@ -60,6 +60,10 @@ $navbar_height: 60px;
   flex-flow: row nowrap;
   form, div{
     display: flex;
+    align-self: center;
+  }
+  & > * {
+    margin: 0 15px;
   }
 }
 a, button{
@@ -69,7 +73,6 @@ a, button{
     cursor: pointer;
     color: rgb(255, 255, 255);
     align-self: center;
-    margin: 0 15px;
     text-decoration: none;
     font-size: 18px;
     font-family: 'Allerta';

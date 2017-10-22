@@ -11,7 +11,7 @@ router.get('search', '/', async (ctx) => {
         [ctx.orm.Sequelize.Op.or]: [
           {
             content: {
-              [ctx.orm.Sequelize.Op.like]: `%${query}%`,
+              [ctx.orm.Sequelize.Op.iLike]: `%${query}%`,
             },
           },
         ],
@@ -22,12 +22,12 @@ router.get('search', '/', async (ctx) => {
         [ctx.orm.Sequelize.Op.or]: [
           {
             content: {
-              [ctx.orm.Sequelize.Op.like]: `%${query}%`,
+              [ctx.orm.Sequelize.Op.iLike]: `%${query}%`,
             },
           },
           {
             title: {
-              [ctx.orm.Sequelize.Op.like]: `%${query}%`,
+              [ctx.orm.Sequelize.Op.iLike]: `%${query}%`,
             },
           },
         ],
@@ -38,7 +38,7 @@ router.get('search', '/', async (ctx) => {
         [ctx.orm.Sequelize.Op.or]: [
           {
             content: {
-              [ctx.orm.Sequelize.Op.like]: `%${query}%`,
+              [ctx.orm.Sequelize.Op.iLike]: `%${query}%`,
             },
           },
         ],
