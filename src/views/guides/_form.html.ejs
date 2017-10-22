@@ -1,16 +1,23 @@
-<form method="POST" action="<%= submitGuidePath %>" enctype="multipart/form-data">
-  <%if (!guide.isNewRecord) { %>
-    <input type="hidden" name="_method" value="patch" />
-  <% }%>
+<%
+let enctype = '';
+if (guide.isNewRecord) {
+  enctype = 'enctype=multipart/form-data';
+}
+%>
+<form method="POST" action="<%= submitGuidePath %>" <%= enctype %>>
   <input type="hidden" name=userId value="<%= currentUser.id %>" />
   <div>
     <label for="title">Titulo</label>
     <textarea name="title" id="title"><%= guide.title %></textarea>
   </div>
-  <div>
-    <label for="file">Archivo</label>
-    <input type="file" name="file" id="file">
-  </div>
+  <%if (!guide.isNewRecord) { %>
+    <input type="hidden" name="_method" value="patch" />
+  <% } else { %>
+    <div>
+      <label for="file">Archivo</label>
+      <input type="file" name="file" id="file">
+    </div>
+  <% } %>
   <div>
     <button type="submit">
       <%if (guide.isNewRecord) { %>

@@ -23,11 +23,12 @@ module.exports = {
     },
     guideId: {
       type: Sequelize.INTEGER,
-      allowNull: false,
       references: {
         model: 'guides',
         key: 'id',
       },
+      allowNull: false,
+      onDelete: 'cascade',
     },
     createdAt: {
       allowNull: false,

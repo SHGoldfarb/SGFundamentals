@@ -75,6 +75,9 @@ router.get('guide', '/:id', async (ctx) => {
     excercise: await ctx.orm.excercise.build(),
     excercises: await guide.getExcercises({ include: [ctx.orm.user] }),
     buildFileDownloadPath: filename => ctx.router.url('fileDownload', { filename }),
+    buildFileDeletePath: id => ctx.router.url('filesDelete', id),
+    submitFilePath: ctx.router.url('filesCreate'),
+    file: await ctx.orm.file.build(),
   });
 });
 
@@ -83,6 +86,7 @@ router.get('guidesEdit', '/:id/edit', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(guide.userId))) {
     await ctx.render('guides/edit', {
       guide,
+      file: await guide.getFiles()[0],
       submitGuidePath: ctx.router.url('guidesUpdate', { id: ctx.params.id }),
       deleteGuidePath: ctx.router.url('guidesDelete', { id: ctx.params.id }),
       backToListPath: ctx.router.url('guides'),
@@ -112,6 +116,8 @@ router.patch('guidesUpdate', '/:id', async (ctx) => {
 router.delete('guidesDelete', '/:id', async (ctx) => {
   const guide = await ctx.orm.guide.findById(ctx.params.id);
   if (!(await ctx.redirectIfNotOwnerOrAdmin(guide.userId))) {
+    // await guide.setFiles([]);
+    await guide.setTags([]);
     await guide.destroy();
     ctx.redirect(ctx.router.url('guides'));
   }

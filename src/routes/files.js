@@ -116,7 +116,7 @@ router.delete('filesDelete', '/:id', async (ctx) => {
   const file = await ctx.orm.file.findById(ctx.params.id);
   if (!(await ctx.redirectIfNotOwnerOrAdmin(file.userId))) {
     await file.destroy();
-    ctx.redirect(ctx.router.url('files'));
+    ctx.redirect(ctx.request.body.returnPath);
   }
 });
 

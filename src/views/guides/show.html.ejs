@@ -30,6 +30,24 @@
   <h2><%= guide.title %></h2>
 </div>
 
+<ul>
+  <% guide.files.forEach((file) => { %>
+    <li class="in-line"><%= file.filename %>
+      &nbsp
+      <a href="<%= buildFileDownloadPath(file.filename) %>">Download</a>
+      &nbsp
+      <form action="<%= buildFileDeletePath(file.id) %>" method="post">
+        <input type="hidden" name="_method" value="delete" />
+        <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+        <button class="delete-button" type="submit">Eliminar</button>
+      </form>
+    </li>
+  <% })
+  if (guide.files.length < 1) { %>
+    <%- include('../files/_form') %>
+  <% } %>
+</ul>
+
 <div style="font-size: 14px">
   By <a href="<%= buildUserPath(guide.user.id) %>"><%= guide.user.username %></a>
   <% if (isOwnerOrAdmin) { %>
@@ -37,12 +55,6 @@
   <% } %>
 </div>
 
-Archivos:
-<ul>
-<% guide.files.forEach((file) => { %>
-      <li><%= file.filename %>&nbsp<a href="<%= buildFileDownloadPath(file.filename) %>">Download</a></li>
-<% }) %>
-</ul>
 
 <% if (currentUser) { %>
   Agregar ejercicio:
