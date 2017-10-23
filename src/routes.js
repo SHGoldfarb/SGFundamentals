@@ -12,6 +12,7 @@ const tags = require('./routes/tags');
 const guides = require('./routes/guides');
 const votes = require('./routes/votes');
 const search = require('./routes/search');
+const reports = require('./routes/reports');
 const _ = require('lodash');
 
 function isLogged() {
@@ -75,6 +76,7 @@ router.use('/', async (ctx, next) => {
   ctx.state.signOutPath = router.url('sessionDestroy');
   ctx.state.signUpPath = router.url('usersNew');
   ctx.state.searchPath = router.url('search');
+  ctx.state.reportsPath = router.url('reports');
   ctx.state.currentUrl = ctx.url;
   ctx.state.currentUser = ctx.session.userId && await ctx.orm.user.findById(ctx.session.userId);
   ctx.redirectIfNotLogged = redirectIfNotLogged;
@@ -138,6 +140,7 @@ router.use('/tags', tags.routes());
 router.use('/guides', guides.routes());
 router.use('/vote', votes.routes());
 router.use('/search', search.routes());
+router.use('/reports', reports.routes());
 router.use('/', sessions.routes());
 
 

@@ -80,6 +80,7 @@ router.get('question', '/:id', async (ctx) => {
     tags: await ctx.orm.tag.findAll(),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
     voteQuestionPath: ctx.router.url('questionVote', { id: ctx.params.id }),
+    reportCreatePath: ctx.router.url('reportsCreate'),
   });
 });
 

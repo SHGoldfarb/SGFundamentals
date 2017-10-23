@@ -59,6 +59,9 @@
   <% if (isOwnerOrAdmin) { %>
     <a href="<%= editGuidePath %>">Editar</a>
   <% } %>
+  <% if (isLogged) { %>
+    <%- include('../reports/_form', { resource: 'guide', resourceId: guide.id}) %>
+  <% } %>
 </div>
 
 

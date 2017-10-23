@@ -76,6 +76,7 @@ router.get('excercise', '/:id', async (ctx) => {
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
     tags: await ctx.orm.tag.findAll(),
     backToGuidePath: ctx.router.url('guide', excercise.guideId),
+    reportCreatePath: ctx.router.url('reportsCreate'),
   });
 });
 
