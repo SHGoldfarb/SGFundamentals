@@ -49,7 +49,7 @@
       </form>
     </li>
   <% })
-  if (guide.files.length < 1) { %>
+  if (guide.files.length < 1 && (isAdmin || isOwner(guide.id))) { %>
     <%- include('../files/_form') %>
   <% } %>
 </ul>
