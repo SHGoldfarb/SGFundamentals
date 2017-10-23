@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
         break;
     }
   };
+  vote.prototype.getParent = async function getParent() {
+    const parent = await this.getQuestion() || await this.getComment() || await this.getExcercise() || await this.getGuide();
+    return parent;
+  };
 
   return vote;
 };

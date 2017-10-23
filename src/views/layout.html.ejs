@@ -47,6 +47,7 @@
         </div>
         <% if(currentUser){ %>
           <p class="nav-text"> Hola <%= currentUser.username %></p>
+          <a class="nav-link <%= currentUrl.substr(0,profilePath.length) == profilePath ? "active" : "" %>" href="<%= profilePath %>">Perfil</a>
           <form action="<%= signOutPath %>" method="post">
             <input type="hidden" name="_method" value="delete">
             <button type="submit" class="nav-link">Logout</button>

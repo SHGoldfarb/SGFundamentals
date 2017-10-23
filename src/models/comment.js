@@ -37,5 +37,14 @@ module.exports = function definecomment(sequelize, DataTypes) {
     return ret;
   };
 
+  comment.prototype.getFinalParent = async function getFinalParent() {
+    let finalParent = await this.getParent();
+    console.log(finalParent._modelOptions.name.singular === 'comment');
+    if (finalParent._modelOptions.name.singular === 'comment') {
+      finalParent = await this.getParent();
+    }
+    return finalParent;
+  };
+
   return comment;
 };
