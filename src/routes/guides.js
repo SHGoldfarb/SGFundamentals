@@ -92,6 +92,7 @@ router.get('guide', '/:id', async (ctx) => {
     buildFileDeletePath: id => ctx.router.url('filesDelete', id),
     submitFilePath: ctx.router.url('filesCreate'),
     file: await ctx.orm.file.build(),
+    reportCreatePath: ctx.router.url('reportsCreate'),
   });
 });
 

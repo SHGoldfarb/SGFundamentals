@@ -16,6 +16,7 @@ module.exports = function definecomment(sequelize, DataTypes) {
     comment.belongsTo(models.solution);
     comment.hasMany(models.comment, { as: 'child' });
     comment.hasMany(models.vote);
+    comment.hasMany(models.report);
   };
 
   comment.prototype.getParent = async function getParent() {

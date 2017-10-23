@@ -46,6 +46,7 @@ module.exports = function defineuser(sequelize, DataTypes) {
     user.hasMany(models.file);
     user.hasMany(models.vote);
     user.hasMany(models.solution);
+    user.hasMany(models.report);
   };
   user.beforeUpdate(buildPasswordHash);
   user.beforeCreate(buildPasswordHash);

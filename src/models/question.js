@@ -13,6 +13,7 @@ module.exports = function definequestion(sequelize, DataTypes) {
     question.hasMany(models.comment);
     question.belongsToMany(models.tag, { through: 'questiontags' });
     question.hasMany(models.vote);
+    question.hasMany(models.report);
   };
   return question;
 };

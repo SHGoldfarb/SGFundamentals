@@ -1,0 +1,25 @@
+<h1>Reportes</h1>
+
+<div class="landing section">
+  <% reports.reverse().forEach (report => { %>
+    <% if (report.question) { %>
+      <a href="<%= buildQuestionPath(report.question.id) %>"><%= report.question.title %></a>
+    <% } else if (report.guide) { %>
+      <a href="<%= buildGuidePath(report.guide.id) %>"><%= report.guide.title %></a>
+    <% } else if (report.excercise) { %>
+      <a href="<%= buildExcercisePath(report.excercise.id) %>"><%= report.excercise.content %></a>
+    <% } else if (report.comment) { %>
+      <a href="<%= buildCommentPath(report.comment.id) %>"><%= report.comment.content %></a>
+    <% } %>
+    <div class="in-line" style="font-size: 15px;">
+      Reported by:&nbsp <a href="<%= buildUserPath(report.user.id) %>"><%= report.user.username %></a>
+      <%= report.createdAt %>
+      <form action="<%= buildReportDeletePath(report.id) %>" method="post">
+        <input type="hidden" name="_method" value="delete" />
+        <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+        <button class="delete-button" type="submit">Eliminar</button>
+      </form>
+    </div>
+
+  <% }) %>
+</div>

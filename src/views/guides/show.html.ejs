@@ -49,7 +49,7 @@
       </form>
     </li>
   <% })
-  if (guide.files.length < 1) { %>
+  if (guide.files.length < 1 && (isAdmin || isOwner(guide.id))) { %>
     <%- include('../files/_form') %>
   <% } %>
 </ul>
@@ -58,6 +58,9 @@
   By <a href="<%= buildUserPath(guide.user.id) %>"><%= guide.user.username %></a>
   <% if (isOwnerOrAdmin) { %>
     <a href="<%= editGuidePath %>">Editar</a>
+  <% } %>
+  <% if (isLogged) { %>
+    <%- include('../reports/_form', { resource: 'guide', resourceId: guide.id}) %>
   <% } %>
 </div>
 

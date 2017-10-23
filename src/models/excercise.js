@@ -13,6 +13,7 @@ module.exports = function defineexcercise(sequelize, DataTypes) {
   excercise.associate = function associate(models) {
     excercise.hasMany(models.comment);
     excercise.hasMany(models.vote);
+    excercise.hasMany(models.report);
     excercise.hasMany(models.solution);
     excercise.belongsTo(models.guide);
     excercise.belongsTo(models.user);
