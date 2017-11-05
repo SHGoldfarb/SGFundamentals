@@ -1,6 +1,47 @@
+<<<<<<< HEAD
 <h1>Hello world</h1>
 <p>
   App web version
   <%= appVersion %>
 </p>
 <div id="react-app">Here a React app will be rendered</div>
+=======
+
+<h2>Últimas preguntas:</h2>
+<div class="landing section">
+  <% questions.forEach (question => { %>
+    <a href="<%= buildQuestionPath(question.id) %>"><%= question.title %></a>
+    <div class="in-line" style="font-size: 15px;">
+      By:&nbsp <a href="<%= buildUserPath(question.user.id) %>"><%= question.user.username %></a>
+      <%= question.createdAt %>
+    </div>
+    <ul class="unstyled in-line tags">
+      <% question.tags.forEach (tag => { %>
+        <li>
+          <%= tag.name %>
+        </li>
+      <% }) %>
+    </ul>
+  <% }) %>
+</div>
+
+<hr />
+
+<h2>Últimas guias:</h2>
+<div class="landing section">
+  <% guides.forEach (guide => { %>
+    <a href="<%= buildGuidePath(guide.id) %>"><%= guide.title %></a>
+    <div class="in-line" style="font-size: 15px;">
+      By:&nbsp <a href="<%= buildUserPath(guide.user.id) %>"><%= guide.user.username %></a>
+      <%= guide.createdAt %>
+    </div>
+    <ul class="unstyled in-line tags">
+      <% guide.tags.forEach (tag => { %>
+        <li>
+          <%= tag.name %>
+        </li>
+      <% }) %>
+    </ul>
+  <% }) %>
+</div>
+>>>>>>> master

@@ -1,7 +1,9 @@
 <h1>Comentarios</h1>
 
-<a href="<%= newCommentPath %>">Hacer Comentario</a>
-<table>
+<% if (isLogged) { %>
+  <a href="<%= newCommentPath %>">Hacer Comentario</a>
+<% } %>
+<table class="table hover striped">
     <thead>
         <tr>
             <th>#</th>
@@ -15,18 +17,19 @@
                 <td><a href="<%= buildCommentPath(comment.id) %>"><%= comment.id %></a></td>
                 <td><%= comment.content %></td>
                 <td>
-                    <ul>
+                    <ul class="unstyled">
                         <li><a href="<%= buildCommentPath(comment.id) %>">Ver</a></li>
-                        <li><a href="<%= buildCommentEditPath(comment.id)%>">Editar</a></li>
-                        <li>
+                        <% if (isAdmin) { %>
+                          <li><a href="<%= buildCommentEditPath(comment.id)%>">Editar</a></li>
+                          <li>
                             <form action="<%= buildCommentDeletePath(comment.id) %>" method="post">
-                                <input type="hidden" name="_method" value="delete" />
-                                <div>
-                                    <input type="submit" name="delete" value="Eliminar" />
-                                </div>
-                                </form>
-                            </div>
-                        </li>
+                              <input type="hidden" name="_method" value="delete" />
+                              <div>
+                                <input type="submit" name="delete" value="Eliminar" />
+                              </div>
+                            </form>
+                          </li>
+                        <% } %>
                     </ul>
                 </td>
             </tr>

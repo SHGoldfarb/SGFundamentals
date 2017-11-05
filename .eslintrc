@@ -1,3 +1,13 @@
 {
   "extends": "airbnb-base",
+  "rules": {
+    "no-unused-vars": "off",
+    "no-console": "off",
+    "no-restricted-syntax": "off",
+    "no-underscore-dangle": "off"
+    },
+  "env": {
+    "browser": true,
+    "node": true
+  }
 }

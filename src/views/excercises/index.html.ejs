@@ -1,25 +1,53 @@
 <h1>Ejercicios</h1>
 
-<a class="end" href="<%= newExcercisePath %>">Crear Ejercicio</a>
-<div class="row">
-    <% excercises.reverse().forEach(e =>{ %>
-        <div class="col-fill">
-            <div class="panel">
-                <a href="<%= buildExcercisePath(e.id) %>">#<%= e.id %></a>
-                <%= e.content %>
-                <ul>
-                    <li><a href="<%= buildExcercisePath(e.id) %>">Ver</a></li>
-                    <li><a href="<%= buildExcerciseEditPath(e.id)%>">Editar</a></li>
-                    <li>
-                        <form action="<%= buildExcerciseDeletePath(e.id) %>" method="post">
-                            <input type="hidden" name="_method" value="delete" />
-                            <div>
-                                <input type="submit" name="delete" value="Eliminar" />
-                            </div>
-                        </form>
-                    </li>                                    
-                </ul>
-            </div>
-        </div>
+
+<form action="<%= currentUrl %>" method="get">
+  <% if (filters.length > 0) {%>
+    <input type="hidden" name="oldFilters" value="<%= filters.join(';') %>">
+  <% } %>
+  <input 
+    autocomplete="off"
+    list="tags"
+    type="text"
+    id="tagFilterInput"
+    name="tagFilter"
+    placeholder="<%= filters.length === 0 ? "Filtrar por etiqueta.." : "Agregar Filtros"%>"
+  >
+  <datalist id="tags">
+    <% tags.forEach(tag => { %>
+      <option value="<%= tag.name %>">
+    <% }) %>
+  </datalist>
+</form>
+<% if (filters.length > 0 ) { %>
+<div>
+  <h3>Filtros Actuales</h3>
+  <ul class="unstyled in-line tags">
+    <% filters.forEach (tag => { %>
+      <li><%= tag %> <a href="<%= excercisesPath %>?oldFilters=<%= filters.join(";") %>&remove=<%= tag %>">X</a></li>
     <% })%>
-</div>        
+  </ul>
+</div>
+<% } %>
+<hr>
+<div class="landing section">
+  <h3><%= filters.length > 0 ? "Resultado" : "" %></h3>
+  <% excercises.reverse().forEach (excercise => { %>
+    <a href="<%= buildExcercisePath(excercise.id) %>"><%= excercise.content %></a>
+    <p><%= excercise.guide.title %></p>
+    <div class="in-line" style="font-size: 15px;">
+      By:&nbsp <a href="<%= buildUserPath(excercise.user.id) %>"><%= excercise.user.username %></a>
+      <%= excercise.createdAt %>
+      <% if (isAdmin || isOwner(excercise.user.id)) { %>
+        <a href="<%= buildExcerciseEditPath(excercise.id)%>" style="padding-left: 15px">Editar</a>
+      <% } %>
+    </div>
+    <ul class="unstyled in-line tags">
+      <% excercise.tags.forEach (tag => { %>
+        <li>
+          <%= tag.name %>
+        </li>
+      <% }) %>
+    </ul>
+  <% }) %>
+</div>

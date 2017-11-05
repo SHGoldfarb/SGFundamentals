@@ -1,26 +1,27 @@
-// 'use strict';
-
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.createTable('excercises', {
+    return queryInterface.createTable('excercisetags', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      content: {
-        type: Sequelize.STRING,
-      },
-      userId: {
+      excerciseId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
-          model: 'users',
+          model: 'excercises',
           key: 'id',
         },
       },
-      guide_id: {
+      tagId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'tags',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,
@@ -33,6 +34,6 @@ module.exports = {
     });
   },
   down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('excercises');
+    return queryInterface.dropTable('excercisetags');
   },
 };

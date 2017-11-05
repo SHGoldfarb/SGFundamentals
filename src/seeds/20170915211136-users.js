@@ -1,28 +1,33 @@
 const faker = require('faker');
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    const rolesId = (await queryInterface.select(null, 'roles', { attributes: ['id'] }))
-                      .map(role => role.id);
-
-    const usersBulkInsertPromises = rolesId.map( (role) =>{
-      const quantity = role == 1 ? 1 : faker.random.number({min: 1, max: 15});
-      const data = []
-      for(let i = 0; i < quantity; i++){
-        data.push({
-          username: faker.internet.userName(),
-          password: faker.internet.password(),
-          email: faker.internet.email(),
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        })
-      }
-      return queryInterface.bulkInsert('users', data);
-    })
-    return Promise.all(usersBulkInsertPromises)
+  up(queryInterface, Sequelize) {
+    const quantity = 9;
+    const data = [];
+    data.push({
+      email: 'admin@admin',
+      username: 'admin',
+      password: '$2a$13$fDSlLxQUc.7lof75citqbO.9x48dtnXWJvhkXWCCJ81j2nANV5Brq',
+      activeToken: null,
+      actived: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    for (let i = 0; i < quantity; i += 1) {
+      data.push({
+        email: `user${i + 1}@users`,
+        username: `user${i + 1}`,
+        password: '$2a$13$Gt1AxSg3kTE2Um4TgEGexOaLgiFR4MJ3vLU6UQnxlDXvFUm0KlI5m',
+        activeToken: null,
+        actived: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+    }
+    return queryInterface.bulkInsert('users', data);
   },
 
-  down: (queryInterface, Sequelize) => {
+  down(queryInterface, Sequelize) {
     return queryInterface.bulkDelete('users', null, {});
-  }
+  },
 };

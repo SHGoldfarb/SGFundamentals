@@ -2,9 +2,10 @@
   <%if (!question.isNewRecord) { %>
     <input type="hidden" name="_method" value="patch" />
   <% }%>
+  <input type="hidden" name=userId value="<%= currentUser.id %>" />
   <div>
-    <label for="userId">Id del usuario</label>
-    <textarea name="userId" id="userId"><%= question.userId %></textarea>
+    <label for="title">Titulo</label>
+    <textarea name="title" id="title"><%= question.title %></textarea>
   </div>
   <div>
     <label for="content">Contenido</label>

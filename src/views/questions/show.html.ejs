@@ -1,30 +1,134 @@
-<h1>Pregunta #<%= question.id %></h1>
-
 <p>
-    <%= question.content %>
-</p>
-
-<ul>
-    <li><a href="<%= editQuestionPath %>">Editar</a></li>
-    <li><form action="<%= deleteQuestionPath %>" method="post">
-            <input type="hidden" name="_method" value="delete" />
-            <div>
-                <input type="submit" name="delete" value="Eliminar" />
-            </div>
-            </form>
-        </div>
-            </li>
-    <li><a href="<%= backToListPath %>">Volver</a></li>
-</ul>
-
-<% if (comments.length > 0) { %>
-  Respuestas:
-  <ul>
-    <% comments.forEach(comment => { %>
-      <li>
-        <%=  'id: ' + comment.id + ' => ' + comment.content %>
-        <br />
+  <ul class="unstyled in-line tags">
+    <% question.tags.forEach (tag => { %>
+      <li class="in-line">
+        <%= tag.name %>
+        <% if (isAdmin) { %>
+          <form action="<%= buildTagUnsetPath(tag.id) %>" method="post">
+            <input type="hidden" name="_method" value="patch" />
+            <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+            <input type="hidden" name="questionId" value="<%= question.id %>" />
+            <button class="close-icon" type="submit">X</button>
+          </form>
+        <% } %>
       </li>
     <% }) %>
   </ul>
+  <h2><%= question.title %></h2>
+  <div class="row nowrap">
+    <%- include("../votes/_voting", { votes: question.votes, resource: 'question', id: question.id }) %>
+    <p><%= question.content %></p>
+  </div>
+  <div style="font-size: 14px">
+    <br />
+    By <a href="<%= buildUserPath(question.user.id) %>"><%= question.user.username %></a>
+    <% if (isOwnerOrAdmin) { %>
+      <a href="<%= editQuestionPath %>">Editar</a>
+    <% } %>
+    <% if (isLogged) { %>
+      <%- include('../reports/_form', { resource: 'question', resourceId: question.id}) %>
+    <% } %>
+  </div>
+</p>
+
+<% if (isAdmin) { %>
+  <form action="<%= createTagPath %>" method="post">
+    <input type="hidden" name="questionId" value="<%= question.id %>" />
+    <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+    <div>
+      <label for="name">Nuevo Tag:</label>
+      <input list="tags" autocomplete="off" name="name" id="name" />
+      <datalist id="tags">
+        <% tags.forEach(tag => { %>
+          <option value="<%= tag.name %>" />
+        <% }) %>
+      </datalist>
+      <input type="submit" name="answer" value="Crear Tag" />
+    </div>
+  </form>
 <% } %>
+
+<% if (currentUser) { %>
+  <form action="<%= createCommentPath %>" method="post" class="in-line">
+    <input type="hidden" name="questionId" value="<%= question.id %>" />
+    <input type="hidden" name="userId" value="<%= currentUser.id %>" />
+    <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+    <div>
+      <label for="content">Tu respuesta:</label>
+      <textarea name="content" id="content"></textarea>
+    </div>
+    <div>
+      <input type="submit" name="answer" value="Responder" />
+    </div>
+  </form>
+<% } %>
+
+<% comments.forEach (comment => { %>
+  <div class="comment-box">
+    <div class="in-line">
+      <div class="comment-content" style="margin-right: 20px">
+        <div class="row nowrap">
+          <%- include("../votes/_voting", { votes: comment.votes,  resource: 'comment', id: comment.id }) %>
+          <%= comment.content %>
+        </div>
+        <div class="in-line" style="margin-top: 10px; font-size: 14px">
+          By:&nbsp <a href="<%= buildUserPath(comment.user.id) %>"><%= comment.user.username %></a>
+          &nbsp <%= comment.createdAt %>
+          <% if (isAdmin || isOwner(comment.user.id)) { %>
+            <a href="<%= buildCommentEditPath(comment.id) %>">Editar</a>
+            <form action="<%= buildCommentDeletePath(comment.id) %>" method="post">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+              <button class="delete-button" type="submit">Eliminar</button>
+            </form>
+          <% } %>
+          <% if (isLogged) { %>
+            <%- include('../reports/_form', { resource: 'comment', resourceId: comment.id}) %>
+          <% } %>
+        </div>
+      </div>
+      <% if (currentUser) { %>
+        <form action="<%= createCommentPath %>" method="post">
+          <input type="hidden" name="commentId" value="<%= comment.id %>" />
+          <input type="hidden" name="userId" value="<%= currentUser.id %>" />
+          <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+          <div>
+            <label for="content">Tu respuesta:</label>
+            <div>
+              <textarea name="content" id="content"></textarea>
+
+            </div>
+          </div>
+          <div>
+            <input type="submit" name="answer" value="Responder" />
+          </div>
+        </form>
+      <% } %>
+    </div>
+    <% if (comment.child.length > 0) { %>
+      <% comment.child.forEach (comment2 => { %>
+        <div class="subcomment-box" style="margin-left: 50px">
+          <div class="row nowrap">
+            <%- include("../votes/_voting", { votes: comment2.votes, resource: 'comment', id: comment2.id }) %>
+            <%= comment2.content %>
+          </div>
+          <div class="in-line" style="margin-top: 10px; font-size: 14px">
+            By:&nbsp <a href="<%= buildUserPath(comment2.user.id) %>"><%= comment2.user.username %></a>
+            &nbsp <%= comment2.createdAt %>
+            <% if (isAdmin || isOwner(comment2.user.id)) { %>
+              <a href="<%= buildCommentEditPath(comment2.id) %>">Editar</a>
+              <form action="<%= buildCommentDeletePath(comment2.id) %>" method="post">
+                <input type="hidden" name="_method" value="delete" />
+                <input type="hidden" name="returnPath" value="<%= returnPath %>" />
+                <button class="delete-button" type="submit">Eliminar</button>
+              </form>
+            <% } %>
+            <% if (isLogged) { %>
+              <%- include('../reports/_form', { resource: 'comment', resourceId: comment2.id}) %>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+<% }) %>

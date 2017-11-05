@@ -1,25 +1,57 @@
 <h1>Preguntas</h1>
 
-<a href="<%= newQuestionPath %>" class="end">Hacer Pregunta</a>
-<div class="row">
-    <% questions.reverse().forEach(question =>{ %>
-        <div class="col">
-            <div class="panel">
-                <a href="<%= buildQuestionPath(question.id) %>"># <%= question.id %></a>
-                <%= question.content %>
-                <ul>
-                    <li><a href="<%= buildQuestionPath(question.id) %>">Ver</a></li>
-                    <li><a href="<%= buildQuestionEditPath(question.id)%>">Editar</a></li>
-                    <li>
-                        <form action="<%= buildQuestionDeletePath(question.id) %>" method="post">
-                            <input type="hidden" name="_method" value="delete" />
-                            <div>
-                                <input type="submit" name="delete" value="Eliminar" />
-                            </div>
-                            </form>
-                    </li>
-                </ul>
-            </div>
-        </div>  
+
+<form action="<%= currentUrl %>" method="get">
+  <% if (filters.length > 0) {%>
+    <input type="hidden" name="oldFilters" value="<%= filters.join(';') %>">
+  <% } %>
+  <input 
+    autocomplete="off"
+    list="tags"
+    type="text"
+    id="tagFilterInput"
+    name="tagFilter"
+    placeholder="<%= filters.length === 0 ? "Filtrar por etiqueta.." : "Agregar Filtros"%>"
+  >
+  <datalist id="tags">
+    <% tags.forEach(tag => { %>
+      <option value="<%= tag.name %>">
+    <% }) %>
+  </datalist>
+</form>
+<% if (filters.length > 0 ) { %>
+<div>
+  <h3>Filtros Actuales</h3>
+  <ul class="unstyled in-line tags">
+    <% filters.forEach (tag => { %>
+      <li><%= tag %> <a href="<%= questionsPath %>?oldFilters=<%= filters.join(";") %>&remove=<%= tag %>">X</a></li>
     <% })%>
+  </ul>
+</div>
+<% } %>
+
+<% if (isLogged) { %>
+  <a href="<%= newQuestionPath %>" class="end">Hacer Pregunta</a>
+<% } else { %>
+  <div style="height: 15px"></div>
+<% }%>
+<div class="landing section">
+  <h3><%= filters.length > 0 ? "Resultado" : "" %></h3>
+  <% questions.reverse().forEach (question => { %>
+    <a href="<%= buildQuestionPath(question.id) %>"><%= question.title %></a>
+    <div class="in-line" style="font-size: 15px;">
+      By:&nbsp <a href="<%= buildUserPath(question.user.id) %>"><%= question.user.username %></a>
+      <%= question.createdAt %>
+      <% if (isAdmin || isOwner(question.user.id)) { %>
+        <a href="<%= buildQuestionEditPath(question.id)%>" style="padding-left: 15px">Editar</a>
+      <% } %>
+    </div>
+    <ul class="unstyled in-line tags">
+      <% question.tags.forEach (tag => { %>
+        <li>
+          <%= tag.name %>
+        </li>
+      <% }) %>
+    </ul>
+  <% }) %>
 </div>

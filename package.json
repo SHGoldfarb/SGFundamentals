@@ -9,7 +9,7 @@
     "dev": "nodemon index.js",
     "lint": "eslint ./src index.js",
     "lint-fix": "eslint --fix ./src index.js",
-    "build-assets": "yarn run clean-assets && NODE_ENV=production webpack -p",
+    "build-assets": "yarn run clean-assets && NODE_ENV=production webpack -p --config ./webpack.config.js",
     "clean-assets": "rm -f build/assets/*",
     "heroku-postbuild": "yarn run build-assets && sequelize db:migrate"
   },
@@ -35,6 +35,12 @@
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.7",
     "extract-text-webpack-plugin": "^3.0.0",
+    "bcrypt": "^1.0.3",
+    "bluebird": "^3.5.1",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "faker": "^4.1.0",
     "file-loader": "^0.11.2",
     "koa": "^2.3.0",
     "koa-body": "^2.3.0",
@@ -45,7 +51,9 @@
     "koa-router": "^7.2.1",
     "koa-session": "^5.5.0",
     "koa-static": "^4.0.1",
+    "lodash": "^4.17.4",
     "node-sass": "^4.5.3",
+<<<<<<< HEAD
     "nodemailer": "^4.1.1",
     "pg": "^7.1.2",
     "pg-hstore": "^2.3.2",
@@ -53,6 +61,12 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-hot-loader": "^3.1.1",
+=======
+    "nodemailer": "^4.1.2",
+    "pg": "^7.1.2",
+    "pg-hstore": "^2.3.2",
+    "pkgcloud": "^1.4.0",
+>>>>>>> master
     "sass-loader": "^6.0.6",
     "sequelize": "^4.6.0",
     "sequelize-cli": "https://github.com/IIC2513-2017-2/sequelize-cli#iic2513-version",
@@ -61,6 +75,6 @@
   },
   "engines": {
     "node": "^8.5.0",
-    "yarn": "^1.0.2"
+    "yarn": "^1.0.1"
   }
 }

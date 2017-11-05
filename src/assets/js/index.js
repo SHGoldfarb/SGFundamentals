@@ -1,3 +1,14 @@
 import '../styles/index.scss';
 
-console.log('App is running on the browser too!');
+function closeError() {
+  const error = document.getElementById('error_message');
+  const body = document.getElementsByTagName('BODY')[0];
+  error.classList.add('hidden');
+  setTimeout(function removeChild() {
+    body.removeChild(error), 700
+  });
+}
+
+if (document.getElementById('close')) {
+  document.getElementById('close').addEventListener('click', closeError);
+}

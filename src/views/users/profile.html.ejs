@@ -1,0 +1,80 @@
+
+<h1>Información de usuario</h1>
+<div>
+  <table>
+    <tbody>
+      <tr>
+        <th>Nombre de usuario</th>
+        <td><%= currentUser.username %></td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td><%= currentUser.email %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br>
+<h1>Actividad Reciente</h1>
+<ul class="padded">
+  <% userActivities.forEach((resource) => { %>
+    <% const name = resource._modelOptions.name.singular %>
+    <% if(name === "comment"){ %>
+    <li>
+      <ul>
+        <li>Hiciste un comentario (<%= resource.createdAt %>)</li>
+        <li>
+          <blockquote>
+            "<%= resource.content %>"
+          </blockquote>
+        </li>
+        <li><a href="<%= buildCommentPath(resource.id)%>">Ver</a></li>
+      </ul>
+    </li>
+    <% } else if(name === "excercise") { %>
+    <li>
+      <ul>
+        <li>Hiciste un ejercicio (<%= resource.createdAt %>)</li>
+        <li>
+          <blockquote>
+            "<%= resource.content %>"
+          </blockquote>
+        </li>
+        <li><a href="<%= buildExcercisePath(resource.id)%>">Ver</a></li>
+      </ul>
+    </li>
+    <% } else if(name === "question") { %>
+    <li>
+      <ul>
+        <li>Hiciste una pregunta (<%= resource.createdAt %>)</li>
+        <li>
+          <blockquote>
+            "<%= resource.title %>"
+          </blockquote>
+        </li>
+        <li><a href="<%= buildQuestionPath(resource.id)%>">Ver</a></li>
+      </ul>
+    </li>
+    <% } else if(name === "vote") {%>
+    <li>
+      <ul>
+        <li>Calificaste un <%= resource.parent._modelOptions.name.singular %> (<%= resource.createdAt %>) </li>
+        <li><a href="<%= buildDynamicPath(resource.parent._modelOptions.name.singular, resource.parent.id)%>">Ver</a></li>
+      </ul>
+    </li>
+    <% } else if(name === "guide") {%>
+    <li>
+      <ul>
+        <li>Creaste una guía (<%= resource.createdAt %>)</li>
+        <li>
+          <blockquote>
+            "<%= resource.title %>"
+          </blockquote>
+        </li>
+        <li><a href="<%= buildGuidePath(resource.id)%>">Ver</a></li>
+      </ul>
+    </li>
+    <% } %>
+  <% }) %>
+</ul>

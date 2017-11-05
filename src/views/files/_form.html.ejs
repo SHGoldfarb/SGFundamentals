@@ -1,0 +1,24 @@
+<form method="POST" action="<%= submitFilePath %>" enctype="multipart/form-data">
+  <%if (!file.isNewRecord) { %>
+    <input type="hidden" name="_method" value="patch" />
+  <% }%>
+  <input type="hidden" name=userId value="<%= currentUser.id %>" />
+  <input type="hidden" name=guideId value="<%= guide.id %>" />
+  <!-- <div>
+    <label for="title">Titulo</label>
+    <input name="title" id="title" defaultValue="<%= file.title %>">
+  </div> -->
+  <div>
+    <label for="file">Archivo</label>
+    <input type="file" name="file" id="file">
+  </div>
+  <div>
+    <button type="submit">
+      <%if (file.isNewRecord) { %>
+        Crear
+      <% } else { %>
+        Actualizar
+      <% } %>
+    </button>
+  </div>
+</form>
