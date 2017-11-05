@@ -101,12 +101,15 @@ router.get('excercise', '/:id', async (ctx) => {
       as: 'child',
       include: [ctx.orm.user, ctx.orm.vote],
     }, ctx.orm.vote] });
+  const sortedComments = _.reverse(_.sortBy(comments, (c) => {
+    return _.filter(c.votes, { type: true }).length - _.filter(c.votes, { type: false }).length;
+  }));
   await ctx.render('excercises/show', {
     excercise,
     editExcercisePath: ctx.router.url('excercisesEdit', { id: ctx.params.id }),
     deleteExcercisePath: ctx.router.url('excercisesDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('excercises'),
-    comments,
+    comments: sortedComments,
     returnPath: ctx.router.url('excercise', { id: ctx.params.id }),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
     tags: await ctx.orm.tag.findAll(),
