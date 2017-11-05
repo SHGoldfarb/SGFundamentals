@@ -9,8 +9,19 @@
     <% }) %>
   </datalist>
 </form>
-
+<% if (filters.length > 0 ) { %>
+<div>
+  <h3>Filtros Actuales</h3>
+  <ul class="unstyled in-line tags">
+    <% filters.forEach (tag => { %>
+      <li><%= tag %></li>
+    <% })%>
+  </ul>
+</div>
+<% } %>
+<hr>
 <div class="landing section">
+  <h3><%= filters.length > 0 ? "Resultado" : "" %></h3>
   <% excercises.reverse().forEach (excercise => { %>
     <a href="<%= buildExcercisePath(excercise.id) %>"><%= excercise.content %></a>
     <p><%= excercise.guide.title %></p>

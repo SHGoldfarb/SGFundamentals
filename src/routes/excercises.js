@@ -1,23 +1,38 @@
 const KoaRouter = require('koa-router');
+const _ = require('lodash');
 
 const router = new KoaRouter();
 
 router.get('excercises', '/', async (ctx) => {
-  let excercises = false;
+  let excercises = [];
+  let filters;
   if (ctx.request.query.tagFilter) {
-    const tag = await ctx.orm.tag.find({ where: { name: ctx.request.query.tagFilter } });
-    if (tag) {
-      excercises = await tag.getExcercises({ include: [ctx.orm.user, ctx.orm.tag, ctx.orm.guide] });
+    filters = ctx.request.query.tagFilter.split(';');
+    for (let i = 0; i < filters.length; i += 1) {
+      filter = filters[i];
+      const tag = await ctx.orm.tag.find({ where: { name: filter } });
+      if (i === 0) {
+        excercises = await tag.getExcercises(
+          { include: [ctx.orm.user, ctx.orm.tag, ctx.orm.guide] },
+        );
+      } else {
+        const newExcercises = await tag.getExcercises(
+          { include: [ctx.orm.user, ctx.orm.tag, ctx.orm.guide] },
+        );
+        excercises = _.intersectionBy(excercises, newExcercises, e => e.name);
+      }
     }
-  }
-  if (!excercises) {
+  } else {
+    filters = [];
     excercises = await ctx.orm.excercise.findAll({
       include: [ctx.orm.user, ctx.orm.tag, ctx.orm.guide],
     });
   }
+  console.log('rendering: ', excercises);
   await ctx.render('excercises/index', {
     excercises,
     tags: await ctx.orm.tag.findAll(),
+    filters,
   });
 });
 
