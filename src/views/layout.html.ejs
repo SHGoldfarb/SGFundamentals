@@ -3,14 +3,22 @@
 
   <head>
     <meta charset="utf-8">
+<<<<<<< HEAD
+    <title>IIC2513 - CHANGE-ME</title>
+=======
     <title>SG Fundamentals</title>
+>>>>>>> master
     <% if (env !== 'development') { %>
       <link rel="stylesheet" href="/assets/styles.css">
     <% } %>
-    <link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
   </head>
 
   <body>
+<<<<<<< HEAD
+    <header>
+      <div id="logo">
+        <img src="/assets/logo.png" alt="Logo" />
+=======
 
     <div class="nav">
       <div class="nav-section">
@@ -59,21 +67,12 @@
         <a class="nav-link <%= currentUrl.substr(0,signInPath.length) == signInPath ? "active" : "" %>" href="<%= signInPath %>">Sign In</a>
         <a class="nav-link <%= currentUrl.substr(0,signUpPath.length) == signUpPath ? "active" : "" %>" href="<%= signUpPath %>">Sign Up</a>
         <% } %>
+>>>>>>> master
       </div>
-    </div>
-    <% if (locals.error) { %>
-      <div class="error hideable" id="error_message">
-          <p>(!!) <%= error %></p>
-          <p id="close">X</p>
-      </div>
-    <% } %>
-    <div class="wrapper">
+    </header>
     <%- body %>
-    </div>
-    <div class="footer">
-      <h1>Footer</h1>
-    </div>
     <script src="/assets/app.js"></script>
+    <script src="/assets/appReact.js"></script>
   </body>
 
 </html>

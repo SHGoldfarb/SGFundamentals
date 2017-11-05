@@ -7,8 +7,10 @@ const koaFlashMessage = require('koa-flash-message').default;
 const render = require('koa-ejs');
 const session = require('koa-session');
 const override = require('koa-override-method');
+const mailer = require('./mailers');
 const routes = require('./routes');
 const orm = require('./models');
+
 const mailer = require('./mailers');
 // App constructor
 const app = new Koa();

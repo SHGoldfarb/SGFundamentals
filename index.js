@@ -1,3 +1,5 @@
+/* eslint no-console: "off" */
+
 const app = require('./src/app');
 const db = require('./src/models');
 
