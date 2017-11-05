@@ -1,6 +1,7 @@
 const KoaRouter = require('koa-router');
 const fileStorage = require('../services/file-storage');
 const _ = require('lodash');
+const faker = require('faker');
 
 const router = new KoaRouter();
 
@@ -39,7 +40,7 @@ router.post('filesCreate', '/', async (ctx) => {
       const uploads = ctx.request.body.files.file;
       const filename = uploads.name.substr(0, uploads.name.length - 4);
       const ext = uploads.name.substr(uploads.name.length - 4);
-      uploads.name = _.camelCase(_.deburr(filename)) + ext;
+      uploads.name = _.camelCase(_.deburr(filename)) + faker.random.alphaNumeric(15)  + ext;
       await fileStorage.upload(uploads);
       const file = await ctx.orm.file.create({
         ...ctx.request.body.fields,
