@@ -22,25 +22,38 @@ router.post('vote', '/:resource/:id', async (ctx) => {
     }
   }
 
-  let redirect;
-  let redirectId;
-  switch (ctx.params.resource) {
-    case 'comment': {
-      const resourceRedirect = () => {
-        while (resource._modelOptions.name.singular === 'comment') {
-          resource = resource.getParent();
+  switch (ctx.accepts('html', 'json')) {
+    case 'html': {
+      let redirect;
+      let redirectId;
+      switch (ctx.params.resource) {
+        case 'comment': {
+          const resourceRedirect = () => {
+            while (resource._modelOptions.name.singular === 'comment') {
+              resource = resource.getParent();
+            }
+          };
+          redirect = resource._modelOptions.name.singular;
+          redirectId = resource.id;
+          break;
         }
+        default:
+          redirect = ctx.params.resource;
+          redirectId = ctx.params.id;
+          break;
+      }
+      ctx.redirect(ctx.router.url(redirect, { id: redirectId }));
+      break;
+    }
+    case 'json': {
+      const responseResource = await ctx.orm[ctx.params.resource].findById(ctx.params.id);
+      ctx.body = {
+        votes: await responseResource.getVotes(),
       };
-      redirect = resource._modelOptions.name.singular;
-      redirectId = resource.id;
       break;
     }
     default:
-      redirect = ctx.params.resource;
-      redirectId = ctx.params.id;
-      break;
   }
-  ctx.redirect(ctx.router.url(redirect, { id: redirectId }));
 });
 
 module.exports = router;

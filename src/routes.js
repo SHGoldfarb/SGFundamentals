@@ -114,6 +114,14 @@ router.use('/', async (ctx, next) => {
 });
 
 router.use('/', async (ctx, next) => {
+  switch (ctx.accepts('html', 'json')) {
+    case 'json':
+      if (Object.keys(ctx.request.body).length > 0) {
+        ctx.request.body = JSON.parse(ctx.request.body);
+      }
+      break;
+    default:
+  }
   ctx.state.newCommentPath = ctx.router.url('commentsNew');
   ctx.state.createCommentPath = ctx.router.url('commentsCreate');
   ctx.state.buildCommentPath = function foo(id) { return ctx.router.url('comment', { id }); };

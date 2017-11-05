@@ -114,18 +114,30 @@ router.get('question', '/:id', async (ctx) => {
   const sortedComments = _.reverse(_.sortBy(comments, (c) => {
     return _.filter(c.votes, { type: true }).length - _.filter(c.votes, { type: false }).length;
   }));
-  await ctx.render('questions/show', {
-    question,
-    editQuestionPath: ctx.router.url('questionsEdit', { id: ctx.params.id }),
-    deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
-    backToListPath: ctx.router.url('questions'),
-    returnPath: ctx.router.url('question', { id: ctx.params.id }),
-    comments: sortedComments,
-    tags: await ctx.orm.tag.findAll(),
-    isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
-    voteQuestionPath: ctx.router.url('questionVote', { id: ctx.params.id }),
-    reportCreatePath: ctx.router.url('reportsCreate'),
-  });
+  switch (ctx.accepts('html', 'json')) {
+    case 'html':
+      await ctx.render('questions/show', {
+        question,
+        editQuestionPath: ctx.router.url('questionsEdit', { id: ctx.params.id }),
+        deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
+        backToListPath: ctx.router.url('questions'),
+        returnPath: ctx.router.url('question', { id: ctx.params.id }),
+        comments: sortedComments,
+        tags: await ctx.orm.tag.findAll(),
+        isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
+        voteQuestionPath: ctx.router.url('questionVote', { id: ctx.params.id }),
+        reportCreatePath: ctx.router.url('reportsCreate'),
+      });
+      break;
+    case 'json':
+      ctx.body = {
+        question,
+        comments: sortedComments,
+        tags: await ctx.orm.tag.findAll(),
+      };
+      break;
+    default:
+  }
 });
 
 router.get('questionsEdit', '/:id/edit', async (ctx) => {

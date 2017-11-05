@@ -1,4 +1,11 @@
+<div 
+  id="react-app"
+  data-id="<%= question.id %>"
+  data-user-id="<%= currentUser.id %>"
+  >
+</div>
 <p>
+LISTO
   <ul class="unstyled in-line tags">
     <% question.tags.forEach (tag => { %>
       <li class="in-line">
@@ -14,14 +21,14 @@
       </li>
     <% }) %>
   </ul>
-  <h2><%= question.title %></h2>
+  <h2><%= question.title %> LISTO</h2>
   <div class="row nowrap">
     <%- include("../votes/_voting", { votes: question.votes, resource: 'question', id: question.id }) %>
-    <p><%= question.content %></p>
+    <p><%= question.content %> LISTO</p>
   </div>
   <div style="font-size: 14px">
     <br />
-    By <a href="<%= buildUserPath(question.user.id) %>"><%= question.user.username %></a>
+    LISTO By <a href="<%= buildUserPath(question.user.id) %>"><%= question.user.username %></a>
     <% if (isOwnerOrAdmin) { %>
       <a href="<%= editQuestionPath %>">Editar</a>
     <% } %>
@@ -70,6 +77,7 @@
         <div class="row nowrap">
           <%- include("../votes/_voting", { votes: comment.votes,  resource: 'comment', id: comment.id }) %>
           <%= comment.content %>
+          LISTO
         </div>
         <div class="in-line" style="margin-top: 10px; font-size: 14px">
           By:&nbsp <a href="<%= buildUserPath(comment.user.id) %>"><%= comment.user.username %></a>

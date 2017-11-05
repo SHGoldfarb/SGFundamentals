@@ -9,7 +9,7 @@ if (reactAppContainer) {
   const render = function render(Component) {
     ReactDOM.render(
       <AppContainer>
-        <Component />
+        <Component {...reactAppContainer.dataset} />
       </AppContainer>,
       document.getElementById('react-app'),
     );
