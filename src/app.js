@@ -10,8 +10,6 @@ const override = require('koa-override-method');
 const mailer = require('./mailers');
 const routes = require('./routes');
 const orm = require('./models');
-
-const mailer = require('./mailers');
 // App constructor
 const app = new Koa();
 
