@@ -101,6 +101,11 @@ router.get('excercise', '/:id', async (ctx) => {
       as: 'child',
       include: [ctx.orm.user, ctx.orm.vote],
     }, ctx.orm.vote] });
+  comments.forEach((comment) => {
+    comment.child = _.reverse(_.sortBy(comment.child, (c) => {
+      return _.filter(c.votes, { type: true }).length - _.filter(c.votes, { type: false }).length;
+    }));
+  });
   const sortedComments = _.reverse(_.sortBy(comments, (c) => {
     return _.filter(c.votes, { type: true }).length - _.filter(c.votes, { type: false }).length;
   }));

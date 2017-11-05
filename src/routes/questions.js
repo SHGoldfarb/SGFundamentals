@@ -106,13 +106,21 @@ router.get('question', '/:id', async (ctx) => {
       include: [ctx.orm.user, ctx.orm.vote],
     }, ctx.orm.vote] });
   const owner = await question.getUser();
+  comments.forEach((comment) => {
+    comment.child = _.reverse(_.sortBy(comment.child, (c) => {
+      return _.filter(c.votes, { type: true }).length - _.filter(c.votes, { type: false }).length;
+    }));
+  });
+  const sortedComments = _.reverse(_.sortBy(comments, (c) => {
+    return _.filter(c.votes, { type: true }).length - _.filter(c.votes, { type: false }).length;
+  }));
   await ctx.render('questions/show', {
     question,
     editQuestionPath: ctx.router.url('questionsEdit', { id: ctx.params.id }),
     deleteQuestionPath: ctx.router.url('questionsDelete', { id: ctx.params.id }),
     backToListPath: ctx.router.url('questions'),
     returnPath: ctx.router.url('question', { id: ctx.params.id }),
-    comments,
+    comments: sortedComments,
     tags: await ctx.orm.tag.findAll(),
     isOwnerOrAdmin: await ctx.isOwnerOrAdmin(owner.id),
     voteQuestionPath: ctx.router.url('questionVote', { id: ctx.params.id }),
