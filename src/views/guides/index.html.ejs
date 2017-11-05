@@ -1,19 +1,39 @@
 <h1>Guias</h1>
 <form action="<%= currentUrl %>" method="get">
-  <input autocomplete="off" list="tags" type="text" id="tagFilterInput" name="tagFilter" placeholder="Filtrar por etiqueta..">
+  <% if (filters.length > 0) {%>
+    <input type="hidden" name="oldFilters" value="<%= filters.join(';') %>">
+  <% } %>
+  <input 
+    autocomplete="off"
+    list="tags"
+    type="text"
+    id="tagFilterInput"
+    name="tagFilter"
+    placeholder="<%= filters.length === 0 ? "Filtrar por etiqueta.." : "Agregar Filtros"%>"
+  >
   <datalist id="tags">
     <% tags.forEach(tag => { %>
       <option value="<%= tag.name %>">
     <% }) %>
   </datalist>
 </form>
-
+<% if (filters.length > 0 ) { %>
+<div>
+  <h3>Filtros Actuales</h3>
+  <ul class="unstyled in-line tags">
+    <% filters.forEach (tag => { %>
+      <li><%= tag %> <a href="<%= guidesPath %>?oldFilters=<%= filters.join(";") %>&remove=<%= tag %>">X</a></li>
+    <% })%>
+  </ul>
+</div>
+<% } %>
 <% if (isLogged) { %>
   <a href="<%= newGuidePath %>" class="end">Nueva Guía</a>
 <% } else { %>
   <div style="height: 15px"></div>
 <% }%>
 <div class="landing section">
+  <h3><%= filters.length > 0 ? "Resultado" : "" %></h3>
   <% guides.reverse().forEach (guide => { %>
     <a href="<%= buildGuidePath(guide.id) %>"><%= guide.title %></a>
     <div class="in-line" style="font-size: 15px;">

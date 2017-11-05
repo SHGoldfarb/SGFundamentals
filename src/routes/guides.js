@@ -1,5 +1,6 @@
 const KoaRouter = require('koa-router');
 const files = require('./files');
+const _ = require('lodash');
 
 const router = new KoaRouter();
 
@@ -9,18 +10,56 @@ router.use('/', async (ctx, next) => {
 });
 
 router.get('guides', '/', async (ctx) => {
-  let guides;
-  if (ctx.request.query.tagFilter) {
-    const tag = await ctx.orm.tag.find({ where: { name: ctx.request.query.tagFilter } });
-    if (tag) {
-      guides = await tag.getGuides({ include: [ctx.orm.user, ctx.orm.tag] });
+  let guides = [];
+  let filters = [];
+  let tag;
+  let filter;
+  if (ctx.request.query.tagFilter || ctx.request.query.remove) {
+    if (ctx.request.query.tagFilter) {
+      if (ctx.request.query.oldFilters) {
+        filters = _.concat([ctx.request.query.tagFilter], ctx.request.query.oldFilters.split(';'));
+      } else {
+        filters = [ctx.request.query.tagFilter]
+      }
+    } else {
+      filters = ctx.request.query.oldFilters.split(';');
+      _.remove(filters, e => e === ctx.request.query.remove);
     }
   }
-  if (!guides) {
-    guides = await ctx.orm.guide.findAll({ include: [ctx.orm.user, ctx.orm.tag] });
+  if (filters.length > 0) {
+    for (let i = 0; i < filters.length; i += 1) {
+      filter = filters[i];
+      tag = await ctx.orm.tag.find({ where: { name: filter } });
+      if (tag) {
+        if (i === 0) {
+          guides = await tag.getGuides(
+            { include: [ctx.orm.user, ctx.orm.tag] },
+          );
+          console.log(tag);
+          console.log(guides.length);
+        } else {
+          const newGuides = await tag.getGuides(
+            { include: [ctx.orm.user, ctx.orm.tag] },
+          );
+          guides = _.intersectionBy(guides, newGuides, e => e.id);
+          console.log("INTERSECTION ###########");
+          console.log(tag);
+          console.log(guides.length);
+        }
+      } else {
+        guides = [];
+        break;
+      }
+    }
+  } else {
+    guides = await ctx.orm.guide.findAll({
+      include: [ctx.orm.user, ctx.orm.tag],
+    });
   }
+  console.log(filters)
   await ctx.render('guides/index', {
     guides,
+    filters,
     tags: await ctx.orm.tag.findAll(),
     newGuidePath: ctx.router.url('guidesNew'),
     buildGuideEditPath: id => ctx.router.url('guidesEdit', id),

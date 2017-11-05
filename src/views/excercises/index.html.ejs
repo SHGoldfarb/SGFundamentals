@@ -2,7 +2,17 @@
 
 
 <form action="<%= currentUrl %>" method="get">
-  <input autocomplete="off" list="tags" type="text" id="tagFilterInput" name="tagFilter" placeholder="Filtrar por etiqueta..">
+  <% if (filters.length > 0) {%>
+    <input type="hidden" name="oldFilters" value="<%= filters.join(';') %>">
+  <% } %>
+  <input 
+    autocomplete="off"
+    list="tags"
+    type="text"
+    id="tagFilterInput"
+    name="tagFilter"
+    placeholder="<%= filters.length === 0 ? "Filtrar por etiqueta.." : "Agregar Filtros"%>"
+  >
   <datalist id="tags">
     <% tags.forEach(tag => { %>
       <option value="<%= tag.name %>">
@@ -14,7 +24,7 @@
   <h3>Filtros Actuales</h3>
   <ul class="unstyled in-line tags">
     <% filters.forEach (tag => { %>
-      <li><%= tag %></li>
+      <li><%= tag %> <a href="<%= excercisesPath %>?oldFilters=<%= filters.join(";") %>&remove=<%= tag %>">X</a></li>
     <% })%>
   </ul>
 </div>

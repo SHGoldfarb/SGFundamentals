@@ -11,18 +11,54 @@ router.use('/', async (ctx, next) => {
 
 
 router.get('questions', '/', async (ctx) => {
-  let questions;
-  if (ctx.request.query.tagFilter) {
-    const tag = await ctx.orm.tag.find({ where: { name: ctx.request.query.tagFilter } });
-    if (tag) {
-      questions = await tag.getQuestions({ include: [ctx.orm.user, ctx.orm.tag] });
+  let questions = [];
+  let filters = [];
+  let tag;
+  let filter;
+  if (ctx.request.query.tagFilter || ctx.request.query.remove) {
+    if (ctx.request.query.tagFilter) {
+      if (ctx.request.query.oldFilters) {
+        filters = _.concat([ctx.request.query.tagFilter], ctx.request.query.oldFilters.split(';'));
+      } else {
+        filters = [ctx.request.query.tagFilter]
+      }
+    } else {
+      filters = ctx.request.query.oldFilters.split(';');
+      _.remove(filters, e => e === ctx.request.query.remove);
     }
   }
-  if (!questions) {
-    questions = await ctx.orm.question.findAll({ include: [ctx.orm.user, ctx.orm.tag] });
+  if (filters.length > 0) {
+    for (let i = 0; i < filters.length; i += 1) {
+      filter = filters[i];
+      try {
+        tag = await ctx.orm.tag.find({ where: { name: filter } });
+      } catch (e) {
+        tag = false;
+      }
+      if (tag) {
+        if (i === 0) {
+          questions = await tag.getQuestions(
+            { include: [ctx.orm.user, ctx.orm.tag] },
+          );
+        } else {
+          const newQuestions = await tag.getQuestions(
+            { include: [ctx.orm.user, ctx.orm.tag] },
+          );
+          questions = _.intersectionBy(questions, newQuestions, e => e.id);
+        }
+      } else {
+        questions = [];
+        break;
+      }
+    }
+  } else {
+    questions = await ctx.orm.question.findAll({
+      include: [ctx.orm.user, ctx.orm.tag],
+    });
   }
   const tags = await ctx.orm.tag.findAll();
   await ctx.render('questions/index', {
+    filters,
     questions,
     tags,
     newQuestionPath: ctx.router.url('questionsNew'),
