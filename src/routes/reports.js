@@ -16,7 +16,7 @@ router.get('reports', '/', async (ctx) => {
 });
 
 router.post('reportsCreate', '/', async (ctx) => {
-  if (!await ctx.redirectIfNotAdmin()) {
+  if (!await ctx.redirectIfNotLogged()) {
     const report = await ctx.orm.report.create({ userId: ctx.state.currentUser.id });
 
     switch (ctx.request.body.resource) {
@@ -36,7 +36,16 @@ router.post('reportsCreate', '/', async (ctx) => {
         throw new Error('Report has no valid resource');
     }
     await report.save();
-    ctx.redirect(ctx.request.body.returnPath);
+    switch (ctx.accepts('html', 'json')) {
+      case 'html':
+        ctx.redirect(ctx.request.body.returnPath);
+        break;
+      case 'json':
+        ctx.body = { status: true };
+        break;
+      default:
+    }
+    
   }
 });
 

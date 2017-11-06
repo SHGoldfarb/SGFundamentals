@@ -25,7 +25,17 @@ router.post('tagsCreate', '/', async (ctx) => {
     if (ctx.request.body.guideId) {
       await tag.addGuide(await ctx.orm.guide.findById(ctx.request.body.guideId));
     }
-    ctx.redirect(ctx.request.body.returnPath);
+    switch (ctx.accepts('html', 'json')) {
+      case 'html':
+        ctx.redirect(ctx.request.body.returnPath);
+        break;
+      case 'json':
+        ctx.body = {
+          status: true,
+        };
+        break;
+      default:
+    }
   }
 });
 
@@ -46,12 +56,22 @@ router.patch('tagsUnset', '/unset/:id', async (ctx) => {
         const guide = await ctx.orm.guide.findById(ctx.request.body.guideId, {
           include: [ctx.orm.excercise],
         });
-        console.log('\n\n\nSAMMM');
         await tag.removeExcercises(guide.excercises);
         await tag.removeGuide(guide);
       }
     }
-    ctx.redirect(ctx.request.body.returnPath);
+    switch (ctx.accepts('html', 'json')) {
+      case 'html':
+        ctx.redirect(ctx.request.body.returnPath);
+        break;
+      case 'json':
+        ctx.body = {
+          status: true,
+          deletedTagId: ctx.params.id,
+        };
+        break;
+      default:
+    }
   }
 });
 

@@ -11,25 +11,35 @@ class Voting extends Component{
   }
   render(){
     const { userId, votes } = this.props;
-    const myVote = votes.find(v => v.userId === userId)
     const total = _.filter(votes, { type: true }).length - _.filter(votes, { type: false }).length;
-    return(
-      <div class="votes-div">        
-        <div
-          className={`triangle triangle-up ${myVote && myVote.type ? "selected" : ""}`}
-          onClick={() => this.handleVote('1')}
-        >
+    if(userId){
+      const myVote = votes.find(v => v.userId === userId)
+      return(
+        <div class="votes-div">        
+          <div
+            className={`triangle triangle-up ${myVote && myVote.type ? "selected" : ""}`}
+            onClick={() => this.handleVote('1')}
+          >
+          </div>
+          <p class={`votes-count ${total < 0 ? "negative" : ""}`}>
+            {total}
+          </p>
+          <div
+            className={`triangle triangle-down ${myVote && !myVote.type ? "selected" : ""}`}
+            onClick={() => this.handleVote('0')}
+          >
+          </div>
         </div>
-        <p class={`votes-count ${total < 0 ? "negative" : ""}`}>
-          {total}
-        </p>
-        <div
-          className={`triangle triangle-down ${myVote && !myVote.type ? "selected" : ""}`}
-          onClick={() => this.handleVote('0')}
-        >
+      )
+    } else {
+      return(
+        <div class="votes-div">        
+          <p class={`votes-count ${total < 0 ? "negative" : ""}`}>
+            {total}
+          </p>
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 

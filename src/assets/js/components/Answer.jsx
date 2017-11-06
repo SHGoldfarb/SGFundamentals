@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import Voting from './Voting'
+import Voting from './Voting';
+import Report from './Report';
+import Form from './Form';
 
 class Answer extends Component {
   constructor(props){
@@ -37,7 +39,19 @@ class Answer extends Component {
                 userId={parseInt(this.props.userId, 10)}
                 vote={type => this.onVote(this.props.id, type)}
               />
-              {this.props.content}
+              <div>
+                {this.props.content}
+              </div>
+              {this.props.sub || !this.props.userId ? (
+                undefined
+              ) : (
+              <Form
+                url="/comments"
+                userId={this.props.userId}
+                commentId={this.props.id}
+                reloadData={this.props.reloadData}
+              />
+              )}
             </div>
             <div className="in-line" style={{
               marginTop: "10px",
@@ -45,11 +59,30 @@ class Answer extends Component {
             }}>
               By: &nbsp; <a href={`/users/${this.props.user.id}`}>{this.props.user.username}</a>
               &nbsp; {this.props.createdAt}
+              {parseInt(this.props.userId, 10) > 0 ? (
+                <Report resource="comment" resourceId={this.props.id} />
+              ) : (
+                undefined
+              )}
+              {
+                parseInt(this.props.userId, 10) === parseInt(this.props.user.id, 10) ||
+                parseInt(this.props.isAdmin, 10) ? (
+                  <a href={`/comments/${this.props.id}/edit`}>Editar</a>
+                ) : (
+                  undefined
+                )
+              }
             </div>
           </div>
         </div> 
         {this.props.child ? (
-          this.props.child.map(comment => <Answer {...comment} sub userId={parseInt(this.props.userId, 10)} />)
+          this.props.child.map(comment => 
+            <Answer
+              {...comment}
+              sub
+              userId={parseInt(this.props.userId, 10)}
+              reloadData={this.props.reloadData}
+            />)
         ): (
           undefined
         )}
