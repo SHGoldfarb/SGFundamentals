@@ -4,7 +4,8 @@
     "no-unused-vars": "off",
     "no-console": "off",
     "no-restricted-syntax": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "guard-for-in": "off"
     },
   "env": {
     "browser": true,

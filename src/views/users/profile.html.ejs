@@ -5,17 +5,14 @@
     <tbody>
       <tr>
         <th>Nombre de usuario</th>
-        <td><%= currentUser.username %></td>
-      </tr>
-      <tr>
-        <th>Email</th>
-        <td><%= currentUser.email %></td>
+        <td><%= user.username %></td>
       </tr>
     </tbody>
   </table>
 </div>
 
 <br>
+<h3>Rating: <%= user.rating %></h3>
 <h1>Actividad Reciente</h1>
 <ul class="padded">
   <% userActivities.forEach((resource) => { %>

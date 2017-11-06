@@ -73,12 +73,47 @@ router.get('user', '/:id', async (ctx) => {
     throw new Error('Not Found');
   }
   const roles = await user.getRoles();
-  await ctx.render('users/show', {
+  const excercises = await user.getExcercises();
+  const comments = await user.getComments();
+  const questions = await user.getQuestions();
+  const guides = await user.getGuides();
+  const votes = await user.getVotes({ include: [
+    ctx.orm.excercise, ctx.orm.question, ctx.orm.comment, ctx.orm.guide,
+  ] });
+  for (const i in votes) {
+    votes[i].parent = votes[i].excercise || votes[i].question || votes[i].comment || votes[i].guide;
+  }
+  const userActivities = _.orderBy(
+    _.concat(excercises, comments, questions, votes, guides),
+    ['createdAt'],
+    ['desc'],
+  ).slice(0, 20);
+  const allVotes = await ctx.orm.vote.findAll({
+    include: [ctx.orm.excercise, ctx.orm.guide, ctx.orm.comment, ctx.orm.question],
+  });
+  let rating = 0;
+  for (const i in allVotes) {
+    const parent = (
+      allVotes[i].excercise || allVotes[i].question ||
+      allVotes[i].comment || allVotes[i].guide
+    );
+    if (parent.userId === user.id) {
+      if (allVotes[i].type === true) {
+        rating += 1;
+      } else {
+        rating -= 1;
+      }
+    }
+  }
+  user.rating = rating;
+  await ctx.render('users/profile', {
     user,
-    roles,
-    editUserPath: ctx.router.url('usersEdit', {
-      id: user.id,
-    }),
+    userActivities,
+    buildQuestionPath: id => ctx.router.url('question', { id }),
+    buildExcercisePath: id => ctx.router.url('excercise', { id }),
+    buildCommentPath: id => ctx.router.url('comment', { id }),
+    buildGuidePath: id => ctx.router.url('guide', { id }),
+    buildDynamicPath: (resource, id) => ctx.router.url(resource, { id }),
   });
 });
 
