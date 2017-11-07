@@ -15,7 +15,22 @@ router.get('users', '/', async (ctx) => {
   if (!await ctx.redirectIfNotAdmin()) {
     const users = await ctx.orm.user.findAll({ include: [ctx.orm.role] });
     const roles = await ctx.orm.role.findAll();
+    const data = {};
+    data.elementsQuantity = [];
+    data.elementsQuantity.push(await ctx.orm.user.count());
+    data.elementsQuantity.push(await ctx.orm.guide.count());
+    data.elementsQuantity.push(await ctx.orm.question.count());
+    data.elementsQuantity.push(await ctx.orm.excercise.count());
+    data.elementsQuantity.push(await ctx.orm.comment.count());
+    data.positiveNegativeVotes = [];
+    data.positiveNegativeVotes.push(await ctx.orm.vote.count({ where: {
+      type: true,
+    } }));
+    data.positiveNegativeVotes.push(await ctx.orm.vote.count({ where: {
+      type: false,
+    } }));
     await ctx.render('users/index', {
+      data,
       users,
       roles,
       newUserPath: ctx.router.url('usersNew'),
