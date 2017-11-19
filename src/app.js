@@ -53,7 +53,7 @@ render(app, {
   cache: !developmentMode,
 });
 
-app.use(mount('/api', apiApp));
+app.use(mount('/api/v1', apiApp));
 app.use(mount(uiApp));
 
 module.exports = app;

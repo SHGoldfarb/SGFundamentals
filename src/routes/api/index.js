@@ -1,8 +1,8 @@
 const KoaRouter = require('koa-router');
-const hello = require('./hello');
+const questions = require('./questions');
 
 const router = new KoaRouter();
 
-router.use('/hello', hello.routes());
+router.use('/questions', questions.routes());
 
 module.exports = router;
