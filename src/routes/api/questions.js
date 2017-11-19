@@ -3,6 +3,7 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 router.get('questions', '/', async (ctx) => {
+  console.log('Current user: ', ctx.state.currentUser);
   const questions = await ctx.orm.question.findAll();
   ctx.body = ctx.jsonSerializer('questions', {
     attributes: ['id', 'title', 'userId', 'createdAt'],

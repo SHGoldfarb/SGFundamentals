@@ -10,13 +10,6 @@ const app = new Koa();
 
 const developmentMode = app.env === 'development';
 
-app.keys = [
-  'these secret keys are used to sign HTTP cookies',
-  'to make sure only this app can generate a valid one',
-  'and thus preventing someone just writing a cookie',
-  'saying he is logged in when it\'s really not',
-];
-
 // webpack middleware for dev mode only
 if (developmentMode) {
   /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */

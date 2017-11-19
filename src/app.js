@@ -19,6 +19,13 @@ const developmentMode = app.env === 'development';
 // expose ORM through context's prototype
 app.context.orm = orm;
 
+app.keys = [
+  'these secret keys are used to sign HTTP cookies',
+  'to make sure only this app can generate a valid one',
+  'and thus preventing someone just writing a cookie',
+  'saying he is logged in when it\'s really not',
+];
+
 /**
  * Middlewares
  */
@@ -43,8 +50,7 @@ app.use(session({
   maxAge: 14 * 24 * 60 * 60 * 1000, // 2 weeks
 }, app));
 
-mailer(uiApp);
-mailer(apiApp);
+mailer(app);
 
 // Configure EJS views
 render(app, {
@@ -55,5 +61,7 @@ render(app, {
 
 app.use(mount('/api/v1', apiApp));
 app.use(mount(uiApp));
+
+console.log(app);
 
 module.exports = app;
