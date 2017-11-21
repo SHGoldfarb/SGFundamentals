@@ -9,6 +9,8 @@
       <link rel="stylesheet" href="/assets/styles.css">
     <% } %>
     <link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.2.5/dist/instantsearch.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.2.5/dist/instantsearch-theme-algolia.min.css">
   </head>
 
   <body>
@@ -24,9 +26,6 @@
         <a class="nav-link <%= currentUrl.substr(0,questionsPath.length) == questionsPath ? "active" : "" %>"
           href="<%= questionsPath %>">Preguntas
         </a>
-        <!-- <a class="nav-link <%= currentUrl.substr(0,filesPath.length) == filesPath ? "active" : "" %>"
-          href="<%= filesPath %>">Archivos
-        </a> -->
         <a class="nav-link <%= currentUrl.substr(0,guidesPath.length) == guidesPath ? "active" : "" %>"
           href="<%= guidesPath %>">Guias
         </a>
@@ -43,11 +42,14 @@
           <% } %>
       </div>
       <div class="nav-section">
-        <div>
+        <!-- <div>
           <form action="<%= searchPath %>" method="get">
             <input type="text" name="query" value="<%= typeof query === 'undefined' ? "" : query %>"/>
             <input type="submit" value="Buscar" />
           </form>
+        </div> -->
+        <div id="search-box">
+          <!-- SearchBox widget will appear here -->
         </div>
         <% if(currentUser){ %>
           <p class="nav-text"> Hola <%= currentUser.username %></p>
@@ -69,6 +71,9 @@
       </div>
     <% } %>
     <div class="wrapper">
+      <div id="hits">
+        <!-- Hits widget will appear here -->
+      </div>
     <%- body %>
     </div>
     <div class="footer">
@@ -77,6 +82,34 @@
     <script src="/assets/app.js"></script>
     <script src="/assets/appReact.js"></script>
     <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.2.5/dist/instantsearch.min.js"></script>
+    <script>
+      const search = instantsearch({
+        appId: '<%= algolia.appId %>',
+        apiKey: '<%= algolia.apiKey %>',
+        indexName: '<%= algolia.indexName%>',
+        urlSync: true
+      });
+
+      search.addWidget(
+        instantsearch.widgets.searchBox({
+          container: '#search-box',
+          placeholder: 'Buscar'
+        })
+      );
+
+      search.addWidget(
+        instantsearch.widgets.hits({
+          container: '#hits',
+          templates: {
+            empty: '',
+            item: '<div class="comment-box"><a href="{{{url}}}">{{{type}}}:</a>{{{_highlightResult.title.value}}} {{{_highlightResult.content.value}}}</div>',
+          },
+        })
+      );
+
+      search.start();
+    </script>
   </body>
 
 </html>

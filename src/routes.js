@@ -96,6 +96,11 @@ router.use('/', async (ctx, next) => {
   };
   ctx.state._ = _;
   ctx.state.buildVotePath = (resource, id) => ctx.router.url('vote', { resource, id });
+  ctx.state.algolia = {
+    appId: process.env.ALGOLIA_APP_ID,
+    apiKey: process.env.ALGOLIA_SEARCH_KEY,
+    indexName: process.env.ALGOLIA_INDEX,
+  };
   try {
     await next();
   } catch (err) {

@@ -61,37 +61,50 @@ router.get('/update-algolia', async (ctx) => {
     attributes: [['id', 'objectID'], 'title'],
     raw: true,
   });
+  for (const i in guides) {
+    guides[i].url = ctx.state.guidesPath + guides[i].objectID;
+    guides[i].objectID += 30000;
+    guides[i].type = 'Guide';
+  }
   const excercises = await ctx.orm.excercise.findAll({
     attributes: [['id', 'objectID'], 'content'],
     raw: true,
   });
+  for (const i in excercises) {
+    excercises[i].url = ctx.state.excercisesPath + excercises[i].objectID;
+    excercises[i].objectID += 20000;
+    excercises[i].type = 'Excercise';
+  }
   const questions = await ctx.orm.question.findAll({
     attributes: [['id', 'objectID'], 'title', 'content'],
     raw: true,
   });
+  for (const i in questions) {
+    questions[i].url = ctx.state.questionsPath + questions[i].objectID;
+    questions[i].objectID += 40000;
+    questions[i].type = 'Question';
+  }
   const comments = await ctx.orm.comment.findAll({
     attributes: [['id', 'objectID'], 'content'],
     raw: true,
   });
-  ctx.guideIndex.clearIndex((err, content) => {
-    ctx.guideIndex.waitTask(content.taskID, (err2) => {
-      ctx.guideIndex.addObjects(guides);
+  for (const i in comments) {
+    comments[i].url = ctx.state.commentsPath + comments[i].objectID;
+    comments[i].objectID += 10000;
+    comments[i].type = 'Comment';
+  }
+  ctx.algoliaIndex.clearIndex((err, content) => {
+    ctx.algoliaIndex.waitTask(content.taskID, (err2) => {
+      ctx.algoliaIndex.addObjects(guides);
+      ctx.algoliaIndex.addObjects(comments);
+      ctx.algoliaIndex.addObjects(excercises);
+      ctx.algoliaIndex.addObjects(questions);
     });
   });
-  ctx.excerciseIndex.clearIndex((err, content) => {
-    ctx.excerciseIndex.waitTask(content.taskID, (err2) => {
-      ctx.excerciseIndex.addObjects(excercises);
-    });
-  });
-  ctx.questionIndex.clearIndex((err, content) => {
-    ctx.questionIndex.waitTask(content.taskID, (err2) => {
-      ctx.questionIndex.addObjects(questions);
-    });
-  });
-  ctx.commentIndex.clearIndex((err, content) => {
-    ctx.commentIndex.waitTask(content.taskID, (err2) => {
-      ctx.commentIndex.addObjects(comments);
-    });
+  ctx.algoliaIndex.setSettings({
+    customRanking: [
+      'desc(objectID)',
+    ],
   });
   ctx.customErrorMessage = 'Algolia Updated';
   throw new Error('Not Found');

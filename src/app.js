@@ -24,11 +24,13 @@ const commentIndex = client.initIndex(`${process.env.ALGOLIA_INDEX}-comment`);
 const questionIndex = client.initIndex(`${process.env.ALGOLIA_INDEX}-question`);
 const guideIndex = client.initIndex(`${process.env.ALGOLIA_INDEX}-guide`);
 const excerciseIndex = client.initIndex(`${process.env.ALGOLIA_INDEX}-excercise`);
+const algoliaIndex = client.initIndex(process.env.ALGOLIA_INDEX);
 
 app.context.commentIndex = commentIndex;
 app.context.questionIndex = questionIndex;
 app.context.excerciseIndex = excerciseIndex;
 app.context.guideIndex = guideIndex;
+app.context.algoliaIndex = algoliaIndex;
 
 app.keys = [
   'these secret keys are used to sign HTTP cookies',

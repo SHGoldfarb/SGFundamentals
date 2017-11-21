@@ -73,9 +73,11 @@ router.post('excercisesCreate', '/', async (ctx) => {
       if (!ctx.request.body.returnPath) {
         ctx.request.body.returnPath = ctx.router.url('excercise', { id: excercise.id });
       }
-      ctx.excerciseIndex.addObject({
-        objectID: excercise.id,
+      ctx.algoliaIndex.addObject({
+        objectID: Number(excercise.id) + 20000,
         content: excercise.content,
+        type: 'Excercise',
+        url: ctx.state.excercisesPath + excercise.id,
       });
       ctx.redirect(ctx.request.body.returnPath);
     } catch (validationError) {
@@ -144,8 +146,8 @@ router.patch('excercisesUpdate', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(excercise.userId))) {
     try {
       await excercise.update(ctx.request.body);
-      ctx.excerciseIndex.addObject({
-        objectID: excercise.id,
+      ctx.algoliaIndex.addObject({
+        objectID: Number(excercise.id) + 20000,
         content: ctx.request.body.content,
       });
       ctx.redirect(ctx.router.url('excercise', { id: ctx.params.id }));
@@ -171,7 +173,7 @@ router.delete('excercisesDelete', '/:id', async (ctx) => {
     if (!ctx.request.body.returnPath) {
       ctx.request.body.returnPath = ctx.router.url('excercises');
     }
-    ctx.excerciseIndex.deleteObject(excercise.id);
+    ctx.algoliaIndex.deleteObject(Number(excercise.id) + 20000);
     ctx.redirect(ctx.request.body.returnPath);
   }
 });

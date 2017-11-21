@@ -81,10 +81,12 @@ router.post('questionsCreate', '/', async (ctx) => {
   if (!ctx.redirectIfNotLogged()) {
     try {
       const question = await ctx.orm.question.create(ctx.request.body);
-      ctx.questionIndex.addObject({
-        objectID: question.id,
+      ctx.algoliaIndex.addObject({
+        objectID: Number(question.id) + 40000,
         title: question.title,
         content: question.content,
+        type: 'Question',
+        url: ctx.state.questionsPath + question.id,
       });
       ctx.redirect(ctx.router.url('question', { id: question.id }));
     } catch (validationError) {
@@ -163,8 +165,8 @@ router.patch('questionsUpdate', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(question.userId))) {
     try {
       await question.update(ctx.request.body);
-      ctx.questionIndex.addObject({
-        objectID: question.id,
+      ctx.algoliaIndex.addObject({
+        objectID: Number(question.id) + 40000,
         title: ctx.requesti.body.title,
         content: ctx.requesti.body.content,
       });
@@ -187,7 +189,7 @@ router.delete('questionsDelete', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(question.userId))) {
     await question.setComments([]);
     await question.destroy();
-    ctx.questionIndex.deleteObject(question.id);
+    ctx.algoliaIndex.deleteObject(Number(question.id) + 40000);
     ctx.redirect(ctx.router.url('questions'));
   }
 });

@@ -35,9 +35,11 @@ router.post('commentsCreate', '/', async (ctx) => {
       if (!ctx.request.body.returnPath) {
         ctx.request.body.returnPath = ctx.router.url('comment', { id: comment.id });
       }
-      ctx.commentIndex.addObject({
-        objectID: comment.id,
+      ctx.algoliaIndex.addObject({
+        objectID: Number(comment.id) + 10000,
         content: comment.content,
+        type: 'Comment',
+        url: ctx.state.commentsPath + comment.id,
       });
       ctx.redirect(ctx.request.body.returnPath);
     } catch (validationError) {
@@ -100,8 +102,8 @@ router.patch('commentsUpdate', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(comment.userId))) {
     try {
       await comment.update(ctx.request.body);
-      ctx.commentIndex.addObject({
-        objectID: comment.id,
+      ctx.algoliaIndex.addObject({
+        objectID: Number(comment.id) + 10000,
         content: ctx.request.body.content,
       });
       ctx.redirect(ctx.router.url('comment', { id: ctx.params.id }));
@@ -122,13 +124,13 @@ router.delete('commentsDelete', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(comment.userId))) {
     try {
       await comment.destroy();
-      ctx.commentIndex.deleteObject(comment.id);
+      ctx.algoliaIndex.deleteObject(Number(comment.id) + 10000);
     } catch (err) {
       if (err.name === 'SequelizeForeignKeyConstraintError') {
         comment.content = '[Eliminado]';
         await comment.save();
-        ctx.commentIndex.addObject({
-          objectID: comment.id,
+        ctx.algoliaIndex.addObject({
+          objectID: Number(comment.id) + 10000,
           content: '[Eliminado]',
         });
       } else {

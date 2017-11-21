@@ -343,3 +343,11 @@ Files
   width: 100%;
   height: 500px;
 }
+
+// Algolia
+
+.ais-hits--item {
+  em {
+    background-color: rgb(145, 180, 255);
+  }
+}
