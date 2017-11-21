@@ -14,6 +14,7 @@ module.exports = {
           model: 'guides',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       tagId: {
         type: Sequelize.INTEGER,
@@ -22,6 +23,7 @@ module.exports = {
           model: 'tags',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       createdAt: {
         allowNull: false,

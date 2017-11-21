@@ -23,6 +23,7 @@ module.exports = {
           model: 'questions',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       excerciseId: {
         type: Sequelize.INTEGER,
@@ -30,6 +31,7 @@ module.exports = {
           model: 'excercises',
           key: 'id',
         },
+        onDelete: 'set null',
       },
       solutionId: {
         type: Sequelize.INTEGER,
