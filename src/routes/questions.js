@@ -81,6 +81,11 @@ router.post('questionsCreate', '/', async (ctx) => {
   if (!ctx.redirectIfNotLogged()) {
     try {
       const question = await ctx.orm.question.create(ctx.request.body);
+      ctx.questionIndex.addObject({
+        objectID: question.id,
+        title: question.title,
+        content: question.content,
+      });
       ctx.redirect(ctx.router.url('question', { id: question.id }));
     } catch (validationError) {
       await ctx.render('questions/new', {
@@ -158,6 +163,11 @@ router.patch('questionsUpdate', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(question.userId))) {
     try {
       await question.update(ctx.request.body);
+      ctx.questionIndex.addObject({
+        objectID: question.id,
+        title: ctx.requesti.body.title,
+        content: ctx.requesti.body.content,
+      });
       ctx.redirect(ctx.router.url('question', { id: ctx.params.id }));
     } catch (validationError) {
       await question.set(ctx.request.body);
@@ -177,6 +187,7 @@ router.delete('questionsDelete', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(question.userId))) {
     await question.setComments([]);
     await question.destroy();
+    ctx.questionIndex.deleteObject(question.id);
     ctx.redirect(ctx.router.url('questions'));
   }
 });

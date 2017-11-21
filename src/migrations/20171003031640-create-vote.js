@@ -23,6 +23,7 @@ module.exports = {
         model: 'guides',
         key: 'id',
       },
+      onDelete: 'cascade',
     },
     commentId: {
       type: Sequelize.INTEGER,
@@ -30,6 +31,7 @@ module.exports = {
         model: 'comments',
         key: 'id',
       },
+      onDelete: 'cascade',
     },
     questionId: {
       type: Sequelize.INTEGER,
@@ -37,6 +39,7 @@ module.exports = {
         model: 'questions',
         key: 'id',
       },
+      onDelete: 'cascade',
     },
     excerciseId: {
       type: Sequelize.INTEGER,
@@ -44,6 +47,7 @@ module.exports = {
         model: 'excercises',
         key: 'id',
       },
+      onDelete: 'cascade',
     },
     solutionId: {
       type: Sequelize.INTEGER,
@@ -51,6 +55,7 @@ module.exports = {
         model: 'solutions',
         key: 'id',
       },
+      onDelete: 'cascade',
     },
     createdAt: {
       allowNull: false,

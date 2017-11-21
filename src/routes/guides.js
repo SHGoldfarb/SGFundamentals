@@ -82,6 +82,10 @@ router.post('guidesCreate', '/', async (ctx, next) => {
     try {
       const guide = await ctx.orm.guide.create(ctx.request.body.fields);
       ctx.request.body.fields.guideId = guide.id;
+      ctx.guideIndex.addObject({
+        objectID: guide.id,
+        title: guide.title,
+      });
       await next();
     } catch (validationError) {
       console.log(validationError);
@@ -153,6 +157,10 @@ router.patch('guidesUpdate', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(guide.userId))) {
     try {
       await guide.update(ctx.request.body);
+      ctx.guideIndex.addObject({
+        objectID: guide.id,
+        title: ctx.request.body.title,
+      });
       ctx.redirect(ctx.router.url('guide', { id: ctx.params.id }));
     } catch (validationError) {
       await guide.set(ctx.request.body);
@@ -173,6 +181,7 @@ router.delete('guidesDelete', '/:id', async (ctx) => {
     // await guide.setFiles([]);
     await guide.setTags([]);
     await guide.destroy();
+    ctx.guideIndex.deleteObject(guide.id);
     ctx.redirect(ctx.router.url('guides'));
   }
 });

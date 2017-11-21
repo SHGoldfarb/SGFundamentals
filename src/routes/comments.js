@@ -35,6 +35,10 @@ router.post('commentsCreate', '/', async (ctx) => {
       if (!ctx.request.body.returnPath) {
         ctx.request.body.returnPath = ctx.router.url('comment', { id: comment.id });
       }
+      ctx.commentIndex.addObject({
+        objectID: comment.id,
+        content: comment.content,
+      });
       ctx.redirect(ctx.request.body.returnPath);
     } catch (validationError) {
       console.log('Catched error in router-commentsCreate:');
@@ -96,6 +100,10 @@ router.patch('commentsUpdate', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(comment.userId))) {
     try {
       await comment.update(ctx.request.body);
+      ctx.commentIndex.addObject({
+        objectID: comment.id,
+        content: ctx.request.body.content,
+      });
       ctx.redirect(ctx.router.url('comment', { id: ctx.params.id }));
     } catch (validationError) {
       await comment.set(ctx.request.body);
@@ -114,10 +122,15 @@ router.delete('commentsDelete', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(comment.userId))) {
     try {
       await comment.destroy();
+      ctx.commentIndex.deleteObject(comment.id);
     } catch (err) {
       if (err.name === 'SequelizeForeignKeyConstraintError') {
         comment.content = '[Eliminado]';
         await comment.save();
+        ctx.commentIndex.addObject({
+          objectID: comment.id,
+          content: '[Eliminado]',
+        });
       } else {
         throw err;
       }

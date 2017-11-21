@@ -13,7 +13,7 @@ router.get('excercises', '/', async (ctx) => {
       if (ctx.request.query.oldFilters) {
         filters = _.concat([ctx.request.query.tagFilter], ctx.request.query.oldFilters.split(';'));
       } else {
-        filters = [ctx.request.query.tagFilter]
+        filters = [ctx.request.query.tagFilter];
       }
     } else {
       filters = ctx.request.query.oldFilters.split(';');
@@ -73,6 +73,10 @@ router.post('excercisesCreate', '/', async (ctx) => {
       if (!ctx.request.body.returnPath) {
         ctx.request.body.returnPath = ctx.router.url('excercise', { id: excercise.id });
       }
+      ctx.excerciseIndex.addObject({
+        objectID: excercise.id,
+        content: excercise.content,
+      });
       ctx.redirect(ctx.request.body.returnPath);
     } catch (validationError) {
       ctx.state.error = validationError; // needs fixing
@@ -140,6 +144,10 @@ router.patch('excercisesUpdate', '/:id', async (ctx) => {
   if (!(await ctx.redirectIfNotOwnerOrAdmin(excercise.userId))) {
     try {
       await excercise.update(ctx.request.body);
+      ctx.excerciseIndex.addObject({
+        objectID: excercise.id,
+        content: ctx.request.body.content,
+      });
       ctx.redirect(ctx.router.url('excercise', { id: ctx.params.id }));
     } catch (validationError) {
       await excercise.set(ctx.request.body);
@@ -163,6 +171,7 @@ router.delete('excercisesDelete', '/:id', async (ctx) => {
     if (!ctx.request.body.returnPath) {
       ctx.request.body.returnPath = ctx.router.url('excercises');
     }
+    ctx.excerciseIndex.deleteObject(excercise.id);
     ctx.redirect(ctx.request.body.returnPath);
   }
 });
