@@ -1,3 +1,7 @@
 <h3>
-  oops! You are not authorized to do that!
+  <% if (message) { %>
+    <%= message %>
+  <% } else { %>
+    oops! You are not authorized to do that!
+  <% } %>
 </h3>

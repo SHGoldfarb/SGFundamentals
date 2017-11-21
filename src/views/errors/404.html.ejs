@@ -1,3 +1,7 @@
 <h3>
-  oops! The page you are looking for was not found
+  <% if (message) { %>
+    <%= message %>
+  <% } else { %>
+    oops! The page you are looking for was not found
+  <% } %>
 </h3>

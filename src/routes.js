@@ -103,9 +103,11 @@ router.use('/', async (ctx, next) => {
     console.log(err.stack);
     if (err.message === 'Not Found') {
       ctx.status = 404;
+      ctx.state.message = ctx.customErrorMessage;
       await ctx.render('errors/404');
     } else if (err.message === 'Unauthorized') {
       ctx.status = 401;
+      ctx.state.message = ctx.customErrorMessage;
       await ctx.render('errors/401');
     } else {
       throw err;

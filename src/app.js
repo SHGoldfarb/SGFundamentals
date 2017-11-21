@@ -7,9 +7,9 @@ const mailer = require('./mailers');
 const mount = require('koa-mount');
 const session = require('koa-session');
 const path = require('path');
-
 const apiApp = require('./api-app');
 const uiApp = require('./ui-app');
+const algoliasearch = require('algoliasearch');
 
 // App constructor
 const app = new Koa();
@@ -18,6 +18,17 @@ const developmentMode = app.env === 'development';
 
 // expose ORM through context's prototype
 app.context.orm = orm;
+
+const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
+const commentIndex = client.initIndex(`${process.env.ALGOLIA_INDEX}-comment`);
+const questionIndex = client.initIndex(`${process.env.ALGOLIA_INDEX}-question`);
+const guideIndex = client.initIndex(`${process.env.ALGOLIA_INDEX}-guide`);
+const excerciseIndex = client.initIndex(`${process.env.ALGOLIA_INDEX}-excercise`);
+
+app.context.commentIndex = commentIndex;
+app.context.questionIndex = questionIndex;
+app.context.excerciseIndex = excerciseIndex;
+app.context.guideIndex = guideIndex;
 
 app.keys = [
   'these secret keys are used to sign HTTP cookies',

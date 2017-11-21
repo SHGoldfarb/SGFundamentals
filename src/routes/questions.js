@@ -1,8 +1,9 @@
-const KoaRouter = require('koa-router');
+/* eslint no-await-in-loop: "off", arrow-body-style: "off" */
 
-const router = new KoaRouter();
+const KoaRouter = require('koa-router');
 const _ = require('lodash');
 
+const router = new KoaRouter();
 
 router.use('/', async (ctx, next) => {
   ctx.state.submitQuestionPath = ctx.router.url('questionsCreate');
@@ -20,7 +21,7 @@ router.get('questions', '/', async (ctx) => {
       if (ctx.request.query.oldFilters) {
         filters = _.concat([ctx.request.query.tagFilter], ctx.request.query.oldFilters.split(';'));
       } else {
-        filters = [ctx.request.query.tagFilter]
+        filters = [ctx.request.query.tagFilter];
       }
     } else {
       filters = ctx.request.query.oldFilters.split(';');
@@ -106,11 +107,11 @@ router.get('question', '/:id', async (ctx) => {
       include: [ctx.orm.user, ctx.orm.vote],
     }, ctx.orm.vote] });
   const owner = await question.getUser();
-  comments.forEach((comment) => {
-    comment.child = _.reverse(_.sortBy(comment.child, (c) => {
+  for (const i in comments) {
+    comments[i].child = _.reverse(_.sortBy(comments[i].child, (c) => {
       return _.filter(c.votes, { type: true }).length - _.filter(c.votes, { type: false }).length;
     }));
-  });
+  }
   const sortedComments = _.reverse(_.sortBy(comments, (c) => {
     return _.filter(c.votes, { type: true }).length - _.filter(c.votes, { type: false }).length;
   }));
