@@ -67,11 +67,12 @@ router.post('questionCreate', '/', async (ctx) => {
 router.patch('questionUpdate', '/:id', async (ctx) => {
   try {
     const question = await ctx.orm.question.findById(ctx.params.id);
+    console.log(ctx.request)
     await question.update(questionParams(ctx.request.body));
     ctx.algoliaIndex.addObject({
       objectID: Number(question.id) + 40000,
-      title: ctx.requesti.body.title,
-      content: ctx.requesti.body.content,
+      title: ctx.request.body.title,
+      content: ctx.request.body.content,
     });
     ctx.body = questionShowSerializer(ctx, question);
     ctx.status = 200;

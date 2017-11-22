@@ -25,6 +25,7 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
+    "@koa/cors": "2",
     "algoliasearch": "^3.24.6",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -44,7 +45,6 @@
     "jsonwebtoken": "^8.1.0",
     "koa": "^2.3.0",
     "koa-body": "^2.3.0",
-    "koa-cors": "^0.0.16",
     "koa-ejs": "^4.1.0",
     "koa-flash-message": "^0.1.6",
     "koa-jwt": "^3.2.2",

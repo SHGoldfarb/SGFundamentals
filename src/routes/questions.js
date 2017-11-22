@@ -167,8 +167,8 @@ router.patch('questionsUpdate', '/:id', async (ctx) => {
       await question.update(ctx.request.body);
       ctx.algoliaIndex.addObject({
         objectID: Number(question.id) + 40000,
-        title: ctx.requesti.body.title,
-        content: ctx.requesti.body.content,
+        title: ctx.request.body.title,
+        content: ctx.request.body.content,
       });
       ctx.redirect(ctx.router.url('question', { id: ctx.params.id }));
     } catch (validationError) {
