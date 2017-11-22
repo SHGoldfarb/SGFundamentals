@@ -5,7 +5,6 @@ const router = new KoaRouter();
 
 router.post('auth', '/', async (ctx) => {
   const { email, password } = ctx.request.body;
-  console.log("received:", {email, password})
   const user = await ctx.orm.user.find({ where: { email } });
   if (user && await user.checkPassword(password)) {
     const token = await new Promise((resolve, reject) => {
