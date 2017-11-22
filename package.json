@@ -44,6 +44,7 @@
     "jsonwebtoken": "^8.1.0",
     "koa": "^2.3.0",
     "koa-body": "^2.3.0",
+    "koa-cors": "^0.0.16",
     "koa-ejs": "^4.1.0",
     "koa-flash-message": "^0.1.6",
     "koa-jwt": "^3.2.2",
