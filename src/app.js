@@ -9,7 +9,7 @@ const session = require('koa-session');
 const path = require('path');
 const apiApp = require('./api-app');
 const uiApp = require('./ui-app');
-const algoliasearch = require('algoliasearch');
+const algoliasearch = require('./algoliasearch');
 
 // App constructor
 const app = new Koa();
