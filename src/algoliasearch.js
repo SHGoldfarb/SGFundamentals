@@ -1,4 +1,4 @@
-/* eslint no-param-reassign:off */
+/* eslint no-param-reassign:off, no-await-in-loop:off */
 
 const request = require('superagent');
 const _ = require('lodash');
@@ -25,7 +25,6 @@ const shuffle = function shuffle(array) {
   return array;
 };
 
-
 const clientGenerator = function clientGenerator(appId, key) {
   const client = {};
   client.writeHosts = [
@@ -43,34 +42,77 @@ const clientGenerator = function clientGenerator(appId, key) {
   shuffle(client.writeHosts);
   shuffle(client.readHosts);
 
+  const _send = async function _send(times, method, url, object) {
+    let response;
+    switch (method) {
+      case 'get':
+        response = await request
+          .get(`${client.readHosts[times]}${url}`)
+          .set('X-Algolia-Application-Id', `${appId}`)
+          .set('X-Algolia-API-Key', `${key}`)
+          .set('Content-Type', 'application/json; charset=UTF-8');
+        break;
+      case 'post':
+        response = await request
+          .post(`${client.writeHosts[times]}${url}`)
+          .set('X-Algolia-Application-Id', `${appId}`)
+          .set('X-Algolia-API-Key', `${key}`)
+          .set('Content-Type', 'application/json; charset=UTF-8')
+          .send(object);
+        break;
+      case 'put':
+        response = await request.put(`${client.writeHosts[times]}${url}`)
+          .set('X-Algolia-Application-Id', `${appId}`)
+          .set('X-Algolia-API-Key', `${key}`)
+          .set('Content-Type', 'application/json; charset=UTF-8')
+          .send(object);
+        break;
+      case 'delete':
+        response = await request.delete(`${client.writeHosts[times]}${url}`)
+          .set('X-Algolia-Application-Id', `${appId}`)
+          .set('X-Algolia-API-Key', `${key}`);
+        break;
+      default:
+        throw new Error('Unsupported method');
+    }
+    return response;
+  };
+
+  const send = async function send(method, url, object, name) {
+    console.log(`REQUESTING ${name}`);
+    let response;
+    let times = 0;
+    while (times < 4) {
+      try {
+        response = await _send(times, method, url, object);
+      } catch (err) {
+        response = { text: 'ERROR' };
+      }
+      if (!response.text || response.text === 'ERROR') {
+        times += 1;
+      } else {
+        times = 4;
+      }
+    }
+    console.log(`RESPONSE ${name} ${response.text}`);
+    return response;
+  };
+
   client.initIndex = function initIndex(indexName) {
     const index = {};
 
     index.addObject = async function addObject(object) {
       let response;
       const fname = 'addObject';
-      console.log(`REQUESTING ${fname}`);
       if (object.objectID) {
-        response = await request
-          .post(`${client.writeHosts[0]}/1/indexes/${indexName}/${object.objectID}/partial`)
-          .set('X-Algolia-Application-Id', `${appId}`)
-          .set('X-Algolia-API-Key', `${key}`)
-          .set('Content-Type', 'application/json; charset=UTF-8')
-          .send(object);
+        response = await send('post', `/1/indexes/${indexName}/${object.objectID}/partial`, object, fname);
       } else {
-        response = await request
-          .post(`${client.writeHosts[0]}/1/indexes/${indexName}`)
-          .set('X-Algolia-Application-Id', `${appId}`)
-          .set('X-Algolia-API-Key', `${key}`)
-          .set('Content-Type', 'application/json; charset=UTF-8')
-          .send(object);
+        response = await send('post', `/1/indexes/${indexName}`, object, fname);
       }
-      console.log(`RESPONSE ${fname} ${response.text}`);
     };
 
     index.addObjects = async function addObjects(objects) {
       const fname = 'addObjects';
-      console.log(`REQUESTING ${fname}`);
       let response;
       if (objects[0].objectID) {
         for (const i in objects) {
@@ -81,12 +123,7 @@ const clientGenerator = function clientGenerator(appId, key) {
             body: aux,
           };
         }
-        response = await request
-          .post(`${client.writeHosts[0]}/1/indexes/${indexName}/batch`)
-          .set('X-Algolia-Application-Id', `${appId}`)
-          .set('X-Algolia-API-Key', `${key}`)
-          .set('Content-Type', 'application/json; charset=UTF-8')
-          .send({ requests: objects });
+        response = await send('post', `/1/indexes/${indexName}/batch`, { requests: objects }, fname);
       } else {
         for (const i in objects) {
           const aux = objects[i];
@@ -95,33 +132,18 @@ const clientGenerator = function clientGenerator(appId, key) {
             body: aux,
           };
         }
-        response = await request
-          .post(`${client.writeHosts[0]}/1/indexes/${indexName}/batch`)
-          .set('X-Algolia-Application-Id', `${appId}`)
-          .set('X-Algolia-API-Key', `${key}`)
-          .set('Content-Type', 'application/json; charset=UTF-8')
-          .send({ requests: objects });
+        response = await send('post', `/1/indexes/${indexName}/batch`, { requests: objects }, fname);
       }
-      console.log(`RESPONSE ${fname} ${response.text}`);
     };
 
     index.deleteObject = async function deleteObject(objectID) {
       const fname = 'deleteObject';
-      console.log(`REQUESTING ${fname}`);
-      const response = await request.delete(`${client.writeHosts[0]}/1/indexes/${indexName}/${objectID}`)
-        .set('X-Algolia-Application-Id', `${appId}`)
-        .set('X-Algolia-API-Key', `${key}`);
-      console.log(`RESPONSE ${fname} ${response.text}`);
+      const response = await send('delete', `/1/indexes/${indexName}/${objectID}`, null, fname);
     };
 
     index.clearIndex = async function clearIndex(callbackFoo) {
       const fname = 'clearIndex';
-      console.log(`REQUESTING ${fname}`);
-      const response = await request.post(`${client.writeHosts[0]}/1/indexes/${indexName}/clear`)
-        .set('X-Algolia-Application-Id', `${appId}`)
-        .set('X-Algolia-API-Key', `${key}`)
-        .set('Content-Type', 'application/json; charset=UTF-8');
-      console.log(`RESPONSE ${fname} ${response.text}`);
+      const response = await send('post', `/1/indexes/${indexName}/clear`, null, fname);
       callbackFoo(null, response);
     };
 
@@ -131,13 +153,7 @@ const clientGenerator = function clientGenerator(appId, key) {
 
     index.setSettings = async function setSettings(settings) {
       const fname = 'setSettings';
-      console.log(`REQUESTING ${fname}`);
-      const response = await request.put(`${client.writeHosts[0]}/1/indexes/${indexName}/settings`)
-        .set('X-Algolia-Application-Id', `${appId}`)
-        .set('X-Algolia-API-Key', `${key}`)
-        .set('Content-Type', 'application/json; charset=UTF-8')
-        .send(settings);
-      console.log(`RESPONSE ${fname} ${response.text}`);
+      const response = await send('put', `/1/indexes/${indexName}/settings`, settings, fname);
     };
 
     return index;
