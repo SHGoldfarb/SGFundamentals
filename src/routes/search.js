@@ -4,8 +4,10 @@ const _ = require('lodash');
 const router = KoaRouter();
 
 router.get('search', '/', async (ctx) => {
+  let query = [];
+  let result = [];
   if (ctx.query.query) {
-    const query = ctx.query.query;
+    query = ctx.query.query;
     const excercises = await ctx.orm.excercise.findAll({
       where: {
         [ctx.orm.Sequelize.Op.or]: [
@@ -44,16 +46,14 @@ router.get('search', '/', async (ctx) => {
         ],
       },
     });
-    const result = _.reverse(_.sortBy(_.concat(questions, excercises, comments), ['createdAt']));
-    await ctx.render('/search/result', {
-      query,
-      result,
-      buildQuestionPath: id => ctx.router.url('question', { id }),
-      buildExcercisePath: id => ctx.router.url('excercise', { id }),
-    });
-  } else {
-    throw new Error('Not Found');
+    result = _.reverse(_.sortBy(_.concat(questions, excercises, comments), ['createdAt']));
   }
+  await ctx.render('/search/result', {
+    query,
+    result,
+    buildQuestionPath: id => ctx.router.url('question', { id }),
+    buildExcercisePath: id => ctx.router.url('excercise', { id }),
+  });
 });
 
 router.get('/update-algolia', async (ctx) => {
