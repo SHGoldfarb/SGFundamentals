@@ -2,11 +2,14 @@ const faker = require('faker');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    const quantity = 5;
+    const titles = [
+      'Examen completo marzo 2016', 'Modulo matematicas 2016-1', 'Guia de ejercicios calculo III',
+      'Modulo fisica 2016-2', 'Compilacion fisica v2.0',
+    ];
     const data = [];
-    for (let i = 0; i < quantity; i += 1) {
+    for (let i = 0; i < titles.length; i += 1) {
       data.push({
-        title: `${faker.lorem.sentence(1).slice(0, -1)} guide ${faker.lorem.sentence()}`,
+        title: titles[i],
         userId: faker.random.number({ min: 1, max: 10 }),
         createdAt: new Date(),
         updatedAt: new Date(),

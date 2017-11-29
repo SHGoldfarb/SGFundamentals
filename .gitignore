@@ -64,3 +64,6 @@ typings/
 .envrc
 
 .idea
+
+# Files in sam dev
+remigrate.run
