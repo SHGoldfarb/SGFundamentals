@@ -43,11 +43,8 @@
       </div>
       <div class="nav-section">
         <div>
-          <div id="search-box" style="width: 250px; height: 50px">
-            <!-- SearchBox widget will appear here -->
-          </div>
           <form action="<%= searchPath %>" method="get" style="margin-top: 18px">
-            <input type="hidden" name="query" value="<%= typeof query === 'undefined' ? "" : query %>"/>
+            <input type="text" name="query" value="<%= typeof query === 'undefined' ? "" : query %>"/>
             <input type="submit" value="Buscar" />
           </form>
         </div>
@@ -76,9 +73,6 @@
     <div class="footer">
       <h1> </h1>
     </div>
-    <div id="hits" style="display: none">
-      <!-- Hits widget will appear here -->
-    </div>
     <script src="/assets/app.js"></script>
     <script src="/assets/appReact.js"></script>
     <script src="/assets/algoliasearch.js"></script>
@@ -102,7 +96,7 @@
         instantsearch.widgets.hits({
           container: '#hits',
           templates: {
-            empty: 'No results',
+            empty: 'No se han encontrado resultados.',
             item: '<div class="comment-box"><a href="{{{url}}}">{{{type}}}:</a>{{{_highlightResult.title.value}}} {{{_highlightResult.content.value}}}</div>',
           },
         })
