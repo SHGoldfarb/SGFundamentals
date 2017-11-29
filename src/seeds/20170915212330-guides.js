@@ -3,8 +3,7 @@ const faker = require('faker');
 module.exports = {
   up: (queryInterface, Sequelize) => {
     const titles = [
-      'Examen completo marzo 2016', 'Modulo matematicas 2016-1', 'Guia de ejercicios calculo III',
-      'Modulo fisica 2016-2', 'Compilacion fisica v2.0',
+      'Guia de ejercicios 2017-2', 'Modulo matematicas 2016-1',
     ];
     const data = [];
     for (let i = 0; i < titles.length; i += 1) {

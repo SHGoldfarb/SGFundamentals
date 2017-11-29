@@ -18,7 +18,7 @@
   <br />
 <div class="row nowrap start">
   <%- include("../votes/_voting", { votes: excercise.votes, resource: 'excercise', id: excercise.id }) %>
-  <%= excercise.content %>
+  <%- excercise.content.replace(/\n/g, '<br />') %>
 </div>
 <div style="font-size: 14px">
   <br />

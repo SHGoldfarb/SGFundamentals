@@ -2,7 +2,7 @@ const faker = require('faker');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    const quantity = 25;
+    const quantity = 4;
     const data = [];
     for (let i = 0; i < quantity; i += 1) {
       const ntags = faker.random.number({ min: 1, max: 5 });

@@ -3,10 +3,10 @@ const faker = require('faker');
 module.exports = {
   up: (queryInterface, Sequelize) => {
     const quantityUsers = 10;
-    const quantityGuides = 5;
-    const quantityExcercises = 25;
-    const quantityQuestions = 25;
-    const quantityComments = 400;
+    const quantityGuides = 2;
+    const quantityExcercises = 4;
+    const quantityQuestions = 4;
+    const quantityComments = 8;
     const data = [];
     for (let j = 1; j <= quantityUsers; j += 1) {
       for (let i = 1; i <= quantityGuides; i += 1) {

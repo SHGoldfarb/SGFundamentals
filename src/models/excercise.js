@@ -3,11 +3,12 @@
 module.exports = function defineexcercise(sequelize, DataTypes) {
   const excercise = sequelize.define('excercise', {
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       validate: {
         notEmpty: true,
       },
     },
+    number: DataTypes.INTEGER,
     guideId: DataTypes.INTEGER,
   });
   excercise.associate = function associate(models) {
