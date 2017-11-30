@@ -75,7 +75,8 @@ Ejercicios:
   <div class="comment-box">
     <div class="in-line">
       <div class="comment-content" style="margin-right: 20px">
-        <a href="<%= buildExcercisePath(guide_excercise.id) %>"><%= guide_excercise.content %></a>
+        <h3><a href="<%= buildExcercisePath(guide_excercise.id) %>">Ejercicio <%= guide_excercise.number %></a></h3>
+        <%= guide_excercise.content %>
         <div class="in-line" style="margin-top: 10px; font-size: 14px">
           By:&nbsp <a href="<%= buildUserPath(guide_excercise.user.id) %>"><%= guide_excercise.user.username %></a>
           &nbsp <%= guide_excercise.createdAt %>
