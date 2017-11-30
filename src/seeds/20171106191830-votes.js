@@ -6,7 +6,7 @@ module.exports = {
     const quantityGuides = 2;
     const quantityExcercises = 4;
     const quantityQuestions = 4;
-    const quantityComments = 8;
+    const quantityComments = 9;
     const data = [];
     for (let j = 1; j <= quantityUsers; j += 1) {
       for (let i = 1; i <= quantityGuides; i += 1) {

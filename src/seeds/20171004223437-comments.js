@@ -11,6 +11,7 @@ module.exports = {
       [null, 2, null, 'Lo puedes reprobar 3 veces y luego tienes que hacer los ramos que reprobaste de nuevo antes de darlo por 4ta vez'],
       [6, null, null, 'Tenia la misma duda, gracias!'],
       [null, 2, null, '4 veces! Tienes que hacer unos ramos antes eso si, y si te lo echas de nuevo ahi si que no se que pasa. Pregunta en la dipre.'],
+      [null, null, 4, 'Pa ke quieres saber eso jajaja saludos.'],
     ];
     // const quantity = 400;
     const data = [];
